@@ -2,7 +2,6 @@ import { createClient } from "@/lib/supabase/server";
 import { formatDistanceToNow } from "date-fns";
 import { id as localeId } from "date-fns/locale";
 import { MarketplaceClient } from "@/components/MarketplaceClient";
-import { getCachedMarketItems } from "@/lib/data/market";
 
 export default async function Pasar() {
   const supabase = await createClient();

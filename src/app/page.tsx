@@ -3,7 +3,6 @@ import { FeedInput } from "@/components/FeedInput";
 import { createClient } from "@/lib/supabase/server";
 import { formatDistanceToNow } from "date-fns";
 import { id } from "date-fns/locale";
-import { getCachedPosts } from "@/lib/data/posts";
 import { getUserProfile } from "@/lib/data/user";
 
 export default async function Home() {
