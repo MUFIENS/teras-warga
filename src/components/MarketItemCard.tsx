@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { MapPin, Tag, Package, MoreVertical, Trash2, Edit, Eye, EyeOff, MessageCircle } from "lucide-react";
+import { MapPin, Tag, Package, MoreVertical, Trash2, Edit, Eye, EyeOff, MessageCircle, X } from "lucide-react";
 import { deleteMarketItem, toggleMarketItemStatus } from "@/app/pasar/actions";
-import Swal from "sweetalert2";
+import { CustomSwal as Swal } from "@/lib/swal";
 import Link from "next/link";
+import { CryptoPaymentModal } from "./crypto/CryptoPaymentModal";
+import { PaymentSelector } from "./pasar/PaymentSelector";
 
 interface MarketItemCardProps {
   id: string;
@@ -19,6 +21,9 @@ interface MarketItemCardProps {
   seller_name: string;
   seller_username: string;
   seller_avatar: string | null;
+  seller_crypto_wallet?: string | null;
+  seller_id: string;
+  currentUserId: string | null;
   isOwner: boolean;
   timeAgo: string;
   onEdit?: (id: string) => void;
@@ -37,12 +42,17 @@ export function MarketItemCard({
   seller_name,
   seller_username,
   seller_avatar,
+  seller_crypto_wallet,
+  seller_id,
+  currentUserId,
   isOwner,
   timeAgo,
   onEdit,
 }: MarketItemCardProps) {
   const [isPending, startTransition] = useTransition();
   const [showMenu, setShowMenu] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
+  const [showCryptoModal, setShowCryptoModal] = useState(false);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("id-ID", {
@@ -112,12 +122,12 @@ export function MarketItemCard({
 
   return (
     <div
-      className={`group relative bg-white dark:bg-neutral-900 rounded-2xl border border-gray-200 dark:border-neutral-800 overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 hover:-translate-y-0.5 ${
+      className={`group relative flex flex-col h-full bg-white dark:bg-neutral-900 rounded-2xl border border-gray-200 dark:border-neutral-800 overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 hover:-translate-y-0.5 ${
         isPending ? "opacity-50 pointer-events-none" : ""
       } ${!is_active ? "opacity-70" : ""}`}
     >
       {/* Image */}
-      <div className="relative aspect-[4/3] bg-gray-100 dark:bg-neutral-800 overflow-hidden">
+      <Link href={`/pasar/${id}`} className="relative aspect-[4/3] bg-gray-100 dark:bg-neutral-800 overflow-hidden block">
         {image_url ? (
           <img
             src={image_url}
@@ -150,7 +160,7 @@ export function MarketItemCard({
         {isOwner && (
           <div className="absolute top-3 right-3">
             <button
-              onClick={() => setShowMenu(!showMenu)}
+              onClick={(e) => { e.preventDefault(); setShowMenu(!showMenu); }}
               className="p-1.5 bg-black/40 hover:bg-black/60 rounded-full text-white transition-colors"
             >
               <MoreVertical className="w-4 h-4" />
@@ -159,20 +169,20 @@ export function MarketItemCard({
             {showMenu && (
               <div className="absolute right-0 top-9 w-44 bg-white dark:bg-neutral-900 rounded-xl shadow-xl border border-gray-200 dark:border-neutral-700 overflow-hidden z-20 py-1">
                 <button
-                  onClick={() => { setShowMenu(false); onEdit?.(id); }}
+                  onClick={(e) => { e.preventDefault(); setShowMenu(false); onEdit?.(id); }}
                   className="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors flex items-center gap-2.5"
                 >
                   <Edit className="w-4 h-4" /> Edit Barang
                 </button>
                 <button
-                  onClick={handleToggleStatus}
+                  onClick={(e) => { e.preventDefault(); handleToggleStatus(); }}
                   className="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors flex items-center gap-2.5"
                 >
                   {is_active ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   {is_active ? "Tandai Terjual" : "Aktifkan Kembali"}
                 </button>
                 <button
-                  onClick={handleDelete}
+                  onClick={(e) => { e.preventDefault(); handleDelete(); }}
                   className="w-full text-left px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors flex items-center gap-2.5"
                 >
                   <Trash2 className="w-4 h-4" /> Hapus Barang
@@ -181,19 +191,21 @@ export function MarketItemCard({
             )}
           </div>
         )}
-      </div>
+      </Link>
 
       {/* Content */}
-      <div className="p-4">
+      <div className="p-4 flex flex-col flex-1">
         {/* Price */}
         <p className="text-lg font-bold text-[#1D9BF0]">
           {formatPrice(price_idr)}
         </p>
 
         {/* Title */}
-        <h3 className="font-semibold text-[15px] mt-1 line-clamp-2 leading-snug">
-          {title}
-        </h3>
+        <Link href={`/pasar/${id}`}>
+          <h3 className="font-semibold text-[15px] mt-1 line-clamp-2 leading-snug hover:text-[#1D9BF0] transition-colors cursor-pointer">
+            {title}
+          </h3>
+        </Link>
 
         {/* Condition & Location */}
         <div className="flex flex-wrap items-center gap-2 mt-2.5">
@@ -210,7 +222,7 @@ export function MarketItemCard({
         </div>
 
         {/* Separator */}
-        <div className="border-t border-gray-100 dark:border-neutral-800 mt-3 pt-3">
+        <div className="border-t border-gray-100 dark:border-neutral-800 mt-auto pt-3">
           <div className="flex items-center justify-between">
             {/* Seller Info */}
             <Link href={`/profil/${seller_username}`} className="flex items-center gap-2 min-w-0 hover:opacity-80 transition-opacity">
@@ -226,17 +238,71 @@ export function MarketItemCard({
 
             {/* Contact Button */}
             {!isOwner && is_active && (
-              <button
-                onClick={handleContact}
-                className="flex items-center gap-1.5 text-xs font-semibold text-[#1D9BF0] hover:bg-[#1D9BF0]/10 px-3 py-1.5 rounded-full transition-colors"
-              >
-                <MessageCircle className="w-3.5 h-3.5" />
-                Hubungi
-              </button>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => setShowPayment(true)}
+                  className="flex items-center gap-1.5 text-[11px] font-semibold bg-[#1D9BF0] text-white px-2.5 py-1.5 rounded-full hover:bg-[#1A8CD8] transition-colors"
+                >
+                  <Package className="w-3.5 h-3.5" />
+                  Beli
+                </button>
+                <button
+                  onClick={handleContact}
+                  className="flex items-center gap-1.5 text-[11px] font-semibold text-[#1D9BF0] hover:bg-[#1D9BF0]/10 px-2.5 py-1.5 rounded-full transition-colors"
+                >
+                  <MessageCircle className="w-3.5 h-3.5" />
+                  Chat
+                </button>
+              </div>
             )}
           </div>
         </div>
       </div>
+      
+      {/* Payment Selector Modal */}
+      {showPayment && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setShowPayment(false)}>
+          <div className="bg-white dark:bg-neutral-900 rounded-2xl w-full max-w-sm relative shadow-2xl border border-gray-100 dark:border-neutral-800 animate-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
+             <div className="flex items-center justify-between p-4 border-b border-gray-100 dark:border-neutral-800">
+                <h3 className="text-lg font-bold">Pilih Pembayaran</h3>
+                <button onClick={() => setShowPayment(false)} className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-full transition-colors">
+                   <X className="w-5 h-5" />
+                </button>
+             </div>
+             <div className="p-4">
+               <PaymentSelector 
+                  itemId={id}
+                  sellerId={seller_id}
+                  priceIdr={price_idr}
+                  sellerHasWallet={!!seller_crypto_wallet}
+                  currentUserId={currentUserId}
+                  onOpenCryptoModal={() => {
+                    setShowPayment(false);
+                    setShowCryptoModal(true);
+                  }}
+               />
+             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Crypto Payment Modal */}
+      {showCryptoModal && (
+        <CryptoPaymentModal
+          isOpen={showCryptoModal}
+          onClose={() => setShowCryptoModal(false)}
+          item={{
+            id,
+            title,
+            price_idr,
+            seller_crypto_wallet: seller_crypto_wallet || null,
+          }}
+          onSuccess={(hash) => {
+            // Optional: send success event
+            setShowCryptoModal(false);
+          }}
+        />
+      )}
     </div>
   );
 }

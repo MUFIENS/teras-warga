@@ -5,7 +5,7 @@ import { Search, UserPlus, UserCheck, X, Users, UserMinus, Check, MessageCircle,
 import { sendFriendRequest, acceptFriendRequest, rejectFriendRequest, cancelFriendRequest, removeFriend } from "@/app/teman/actions";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import Swal from "sweetalert2";
+import { CustomSwal as Swal } from "@/lib/swal";
 import Link from "next/link";
 
 interface Profile {
@@ -55,10 +55,7 @@ export function TemanClient({ currentUserId, friendships: initialFriendships, al
     setFriendships(initialFriendships);
   }, [initialFriendships]);
 
-  const swalTheme = () => ({
-    background: document.documentElement.classList.contains("dark") ? "#171717" : "#fff",
-    color: document.documentElement.classList.contains("dark") ? "#fff" : "#000",
-  });
+  
 
   // Kategorikan
   const acceptedFriends = friendships.filter(f => f.status === "accepted");
@@ -90,7 +87,7 @@ export function TemanClient({ currentUserId, friendships: initialFriendships, al
       try {
         await sendFriendRequest(targetId);
       } catch (err: any) {
-        Swal.fire({ title: "Gagal!", text: err.message, icon: "error", ...swalTheme() });
+        Swal.fire({ title: "Gagal!", text: err.message, icon: "error" });
       }
     });
   };
@@ -98,21 +95,21 @@ export function TemanClient({ currentUserId, friendships: initialFriendships, al
   const handleAcceptRequest = (requestId: string) => {
     startTransition(async () => {
       try { await acceptFriendRequest(requestId); } 
-      catch (err: any) { Swal.fire({ title: "Gagal!", text: err.message, icon: "error", ...swalTheme() }); }
+      catch (err: any) { Swal.fire({ title: "Gagal!", text: err.message, icon: "error" }); }
     });
   };
 
   const handleRejectRequest = (requestId: string) => {
     startTransition(async () => {
       try { await rejectFriendRequest(requestId); } 
-      catch (err: any) { Swal.fire({ title: "Gagal!", text: err.message, icon: "error", ...swalTheme() }); }
+      catch (err: any) { Swal.fire({ title: "Gagal!", text: err.message, icon: "error" }); }
     });
   };
 
   const handleCancelRequest = (requestId: string) => {
     startTransition(async () => {
       try { await cancelFriendRequest(requestId); } 
-      catch (err: any) { Swal.fire({ title: "Gagal!", text: err.message, icon: "error", ...swalTheme() }); }
+      catch (err: any) { Swal.fire({ title: "Gagal!", text: err.message, icon: "error" }); }
     });
   };
 
@@ -120,7 +117,7 @@ export function TemanClient({ currentUserId, friendships: initialFriendships, al
     Swal.fire({
       title: "Hapus Pertemanan?", text: `Anda akan menghapus ${name} dari daftar teman.`, icon: "warning",
       showCancelButton: true, confirmButtonColor: "#d33", cancelButtonColor: "#3085d6",
-      confirmButtonText: "Hapus", cancelButtonText: "Batal", ...swalTheme(),
+      confirmButtonText: "Hapus", cancelButtonText: "Batal",
     }).then((res) => {
       if (res.isConfirmed) startTransition(async () => { await removeFriend(friendshipId); });
     });

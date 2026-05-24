@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { submitKasPayment } from "@/app/kas/actions";
 import { useRouter } from "next/navigation";
-import Swal from "sweetalert2";
+import { CustomSwal as Swal } from "@/lib/swal";
 
 const MONTHS = [
   "Januari", "Februari", "Maret", "April", "Mei", "Juni",

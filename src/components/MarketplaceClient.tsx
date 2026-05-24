@@ -3,7 +3,8 @@
 import { useState, useMemo } from "react";
 import { Search, Plus, SlidersHorizontal, Package, X } from "lucide-react";
 import { MarketItemCard } from "@/components/MarketItemCard";
-import { MarketItemForm } from "@/components/MarketItemForm";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const CATEGORIES = ["Semua", "Elektronik", "Pakaian", "Makanan", "Furnitur", "Kendaraan", "Jasa", "Lainnya"];
 
@@ -23,6 +24,7 @@ interface MarketItem {
     full_name: string;
     username: string;
     avatar_url: string | null;
+    crypto_wallet: string | null;
   } | null;
   timeAgo: string;
 }
@@ -33,11 +35,10 @@ interface MarketplaceClientProps {
 }
 
 export function MarketplaceClient({ items, currentUserId }: MarketplaceClientProps) {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Semua");
   const [showSoldItems, setShowSoldItems] = useState(false);
-  const [showForm, setShowForm] = useState(false);
-  const [editItem, setEditItem] = useState<any>(null);
   const [showFilter, setShowFilter] = useState(false);
 
   const filteredItems = useMemo(() => {
@@ -61,16 +62,7 @@ export function MarketplaceClient({ items, currentUserId }: MarketplaceClientPro
   }, [items, searchQuery, selectedCategory, showSoldItems, currentUserId]);
 
   const handleEdit = (id: string) => {
-    const item = items.find((i) => i.id === id);
-    if (item) {
-      setEditItem(item);
-      setShowForm(true);
-    }
-  };
-
-  const handleCloseForm = () => {
-    setShowForm(false);
-    setEditItem(null);
+    router.push(`/pasar/jual?edit=${id}`);
   };
 
   const activeCount = items.filter(i => i.is_active).length;
@@ -86,13 +78,13 @@ export function MarketplaceClient({ items, currentUserId }: MarketplaceClientPro
               {activeCount} barang
             </span>
           </div>
-          <button
-            onClick={() => { setEditItem(null); setShowForm(true); }}
+          <Link
+            href="/pasar/jual"
             className="flex items-center gap-1.5 bg-[#1D9BF0] text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-[#1A8CD8] transition-colors"
           >
             <Plus className="w-4 h-4" />
             Jual
-          </button>
+          </Link>
         </div>
 
         {/* Search Bar */}
@@ -180,6 +172,9 @@ export function MarketplaceClient({ items, currentUserId }: MarketplaceClientPro
               seller_name={item.profiles?.full_name || "Anonymous"}
               seller_username={item.profiles?.username || "anonymous"}
               seller_avatar={item.profiles?.avatar_url || null}
+              seller_crypto_wallet={item.profiles?.crypto_wallet || null}
+              seller_id={item.user_id}
+              currentUserId={currentUserId}
               isOwner={currentUserId === item.user_id}
               timeAgo={item.timeAgo}
               onEdit={handleEdit}
@@ -206,24 +201,18 @@ export function MarketplaceClient({ items, currentUserId }: MarketplaceClientPro
             <>
               <p className="text-gray-500 text-lg font-medium">Pasar masih kosong</p>
               <p className="text-gray-400 text-sm mt-1">Jadilah yang pertama menjual barang!</p>
-              <button
-                onClick={() => setShowForm(true)}
+              <Link
+                href="/pasar/jual"
                 className="mt-4 flex items-center gap-2 bg-[#1D9BF0] text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-[#1A8CD8] transition-colors"
               >
                 <Plus className="w-4 h-4" />
                 Jual Barang
-              </button>
+              </Link>
             </>
           )}
         </div>
       )}
 
-      {/* Form Modal */}
-      <MarketItemForm
-        isOpen={showForm}
-        onClose={handleCloseForm}
-        editItem={editItem}
-      />
     </>
   );
 }

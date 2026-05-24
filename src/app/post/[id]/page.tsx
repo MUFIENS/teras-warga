@@ -7,6 +7,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { FeedInput } from "@/components/FeedInput";
 import { RealtimeListener } from "@/components/RealtimeListener";
+import fs from 'fs';
 
 export default async function PostPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
@@ -26,7 +27,7 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
   }
 
   // Ambil postingan utama
-  const { data: mainPost } = await supabase
+  const { data: mainPost, error: mainPostError } = await supabase
     .from('posts')
     .select(`
       id,
@@ -43,6 +44,8 @@ export default async function PostPage({ params }: { params: Promise<{ id: strin
     .single();
 
   if (!mainPost) {
+    fs.writeFileSync('debug-404.txt', JSON.stringify({ postId, error: mainPostError }));
+    console.error("Error fetching post:", mainPostError);
     notFound();
   }
 

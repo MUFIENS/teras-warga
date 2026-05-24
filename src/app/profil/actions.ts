@@ -137,3 +137,19 @@ export async function updateLastActive() {
     .update({ last_active: new Date().toISOString() })
     .eq('id', user.id)
 }
+
+export async function updateCryptoWallet(walletAddress: string) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) throw new Error("Unauthorized")
+
+  const { error } = await supabase
+    .from('profiles')
+    .update({ crypto_wallet: walletAddress || null })
+    .eq('id', user.id)
+
+  if (error) throw error
+
+  revalidatePath('/profil')
+}

@@ -10,7 +10,7 @@ import {
 import { toggleUpvote, addComment, deleteComment, updateReportStatus } from "@/app/laporan/actions";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import Swal from "sweetalert2";
+import { CustomSwal as Swal } from "@/lib/swal";
 import Link from "next/link";
 
 const STATUS_CFG: Record<string, { label: string; icon: any; color: string; bg: string; border: string; dot: string }> = {
@@ -93,10 +93,7 @@ export function LaporanDetailClient({ report, comments, hasUpvoted, currentUserI
     return () => { supabase.removeChannel(channel); };
   }, [report.id, router]);
 
-  const swalTheme = () => ({
-    background: document.documentElement.classList.contains("dark") ? "#171717" : "#fff",
-    color: document.documentElement.classList.contains("dark") ? "#fff" : "#000",
-  });
+  
 
   const handleUpvote = () => {
     startTransition(async () => {
@@ -114,7 +111,7 @@ export function LaporanDetailClient({ report, comments, hasUpvoted, currentUserI
         await addComment(report.id, text);
         router.refresh();
       } catch (err: any) {
-        Swal.fire({ title: "Gagal!", text: err.message, icon: "error", confirmButtonColor: "#d33", ...swalTheme() });
+        Swal.fire({ title: "Gagal!", text: err.message, icon: "error", confirmButtonColor: "#d33" });
       }
     });
   };
@@ -124,7 +121,7 @@ export function LaporanDetailClient({ report, comments, hasUpvoted, currentUserI
     Swal.fire({
       title: "Hapus Komentar?", icon: "warning", showCancelButton: true,
       confirmButtonColor: "#d33", cancelButtonColor: "#3085d6",
-      confirmButtonText: "Hapus", cancelButtonText: "Batal", ...swalTheme(),
+      confirmButtonText: "Hapus", cancelButtonText: "Batal",
     }).then((res) => {
       if (res.isConfirmed) startTransition(async () => { await deleteComment(commentId); router.refresh(); });
     });
@@ -136,9 +133,9 @@ export function LaporanDetailClient({ report, comments, hasUpvoted, currentUserI
         await updateReportStatus(report.id, adminStatus, adminNotes || undefined);
         router.refresh();
         setShowAdminPanel(false);
-        Swal.fire({ title: "Status Diperbarui!", icon: "success", timer: 1500, showConfirmButton: false, ...swalTheme() });
+        Swal.fire({ title: "Status Diperbarui!", icon: "success", timer: 1500, showConfirmButton: false });
       } catch (err: any) {
-        Swal.fire({ title: "Gagal!", text: err.message, icon: "error", confirmButtonColor: "#d33", ...swalTheme() });
+        Swal.fire({ title: "Gagal!", text: err.message, icon: "error", confirmButtonColor: "#d33" });
       }
     });
   };

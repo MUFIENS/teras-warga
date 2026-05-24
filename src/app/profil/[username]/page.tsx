@@ -16,7 +16,7 @@ export default async function ProfilUserPage({ params }: PageProps) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data: profile } = await (supabase as any)
     .from("profiles")
-    .select("id, username, full_name, bio, avatar_url, cover_url, role, account_status, points, is_seller, last_active, created_at")
+    .select("id, username, full_name, bio, avatar_url, cover_url, role, account_status, points, is_seller, crypto_wallet, last_active, created_at")
     .eq("username", username)
     .single();
 

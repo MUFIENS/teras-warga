@@ -19,6 +19,7 @@ import {
 import { ThemeToggle } from "./ThemeToggle";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { usePresence } from "@/components/providers/PresenceProvider";
 
 interface NavItem {
   label: string;
@@ -28,6 +29,7 @@ interface NavItem {
 }
 
 interface ProfileData {
+  id: string;
   username: string;
   full_name: string;
   avatar_url: string | null;
@@ -59,7 +61,7 @@ export function Sidebar({ unreadNotifications = 0, unreadMessages = 0, profile }
     router.refresh();
   };
 
-  const isOnline = profile?.last_active ? (Date.now() - new Date(profile.last_active).getTime()) / 60000 < 5 : false;
+  const { isOnline } = usePresence(profile?.id, profile?.last_active || null);
 
   return (
     <aside className="w-[275px] h-screen sticky top-0 flex flex-col px-4 py-6 border-r border-gray-200 dark:border-neutral-800 bg-white dark:bg-black">

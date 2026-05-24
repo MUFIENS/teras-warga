@@ -5,7 +5,7 @@ import Link from "next/link";
 import { MessageCircle, Repeat2, Heart, Share, MoreHorizontal, Image as ImageIcon } from "lucide-react";
 import { toggleLike, toggleRepost, deletePost, reportPost } from "@/app/actions";
 import { useTransition, useState, useRef, useEffect } from "react";
-import Swal from 'sweetalert2';
+import { CustomSwal as Swal } from "@/lib/swal";
 import { useRouter } from "next/navigation";
 
 interface PostCardProps {

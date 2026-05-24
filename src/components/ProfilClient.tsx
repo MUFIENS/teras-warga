@@ -10,7 +10,9 @@ import {
 import { sendFriendRequest, acceptFriendRequest, cancelFriendRequest, removeFriend } from "@/app/teman/actions";
 import { updateProfile, uploadAvatar, uploadCover } from "@/app/profil/actions";
 import { useRouter } from "next/navigation";
-import Swal from "sweetalert2";
+import { CustomSwal as Swal } from "@/lib/swal";
+import { usePresence } from "@/components/providers/PresenceProvider";
+import { WalletProfileCard } from "@/components/crypto/WalletProfileCard";
 
 interface Profile {
   id: string;
@@ -23,6 +25,7 @@ interface Profile {
   account_status: string;
   points: number;
   is_seller: boolean;
+  crypto_wallet?: string | null;
   last_active: string | null;
   created_at: string;
 }
@@ -65,11 +68,12 @@ interface Props {
   friendships: Friendship[];
 }
 
-function getActivityStatus(lastActive: string | null): { label: string; color: string } {
+function getActivityStatus(isOnline: boolean, lastActive: string | null): { label: string; color: string } {
+  if (isOnline) return { label: "Online", color: "bg-green-500" };
   if (!lastActive) return { label: "Offline", color: "bg-gray-400" };
+  
   const diff = Date.now() - new Date(lastActive).getTime();
   const mins = diff / 60000;
-  if (mins < 5) return { label: "Online", color: "bg-green-500" };
   if (mins < 60) return { label: "Baru Aktif", color: "bg-yellow-400" };
   return { label: "Offline", color: "bg-gray-400" };
 }
@@ -88,21 +92,20 @@ export function ProfilClient({ profile, isOwnProfile, currentUserId, relationshi
   const [showEditModal, setShowEditModal] = useState(false);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
-  const activity = getActivityStatus(profile.last_active);
+  
+  const { isOnline, lastActive } = usePresence(profile.id, profile.last_active);
+  const activity = getActivityStatus(isOnline, lastActive);
 
-  const swalTheme = () => ({
-    background: document.documentElement.classList.contains("dark") ? "#171717" : "#fff",
-    color: document.documentElement.classList.contains("dark") ? "#fff" : "#000",
-  });
+  
 
   const handleSendRequest = () => startTransition(async () => {
     try { await sendFriendRequest(profile.id); }
-    catch (e: any) { Swal.fire({ title: "Gagal", text: e.message, icon: "error", ...swalTheme() }); }
+    catch (e: any) { Swal.fire({ title: "Gagal", text: e.message, icon: "error" }); }
   });
   const handleAccept = () => startTransition(async () => { if (relationship) await acceptFriendRequest(relationship.id); });
   const handleCancel = () => startTransition(async () => { if (relationship) await cancelFriendRequest(relationship.id); });
   const handleRemove = () => {
-    Swal.fire({ title: "Hapus Pertemanan?", showCancelButton: true, confirmButtonText: "Hapus", cancelButtonText: "Batal", confirmButtonColor: "#d33", ...swalTheme() })
+    Swal.fire({ title: "Hapus Pertemanan?", showCancelButton: true, confirmButtonText: "Hapus", cancelButtonText: "Batal", confirmButtonColor: "#d33" })
       .then(r => { if (r.isConfirmed && relationship) startTransition(async () => { await removeFriend(relationship.id); }); });
   };
 
@@ -301,42 +304,7 @@ export function ProfilClient({ profile, isOwnProfile, currentUserId, relationshi
             ) : friendships.map(f => {
               const friend = f.sender?.id === profile.id ? f.receiver : f.sender;
               if (!friend) return null;
-              const friendActivity = getActivityStatus(friend.last_active || null);
-              return (
-                <div key={f.id} className="flex items-center justify-between p-3 rounded-2xl border border-gray-100 dark:border-neutral-800 hover:border-gray-200 dark:hover:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-900/30 transition-all group">
-                  <Link href={`/profil/${friend.username}`} className="flex items-center gap-3 min-w-0 flex-1">
-                    <div className="relative">
-                      {friend.avatar_url ? (
-                        <img src={friend.avatar_url} alt="" className="w-12 h-12 rounded-full object-cover border border-gray-100 dark:border-neutral-800" />
-                      ) : (
-                        <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-neutral-800 flex items-center justify-center font-bold text-gray-400 text-lg">{friend.full_name?.charAt(0) || "?"}</div>
-                      )}
-                      <span className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${friendActivity.color} border-2 border-white dark:border-black`} title={friendActivity.label} />
-                    </div>
-                    <div className="min-w-0 pr-2">
-                      <div className="flex items-center gap-1.5">
-                        <p className="font-semibold text-[15px] text-gray-900 dark:text-white truncate group-hover:underline">{friend.full_name}</p>
-                        {friend.role === "admin" && (
-                          <span className="flex-shrink-0 text-purple-600 dark:text-purple-400" title="Admin">
-                            <Shield className="w-3.5 h-3.5" />
-                          </span>
-                        )}
-                        {friend.is_seller && (
-                          <span className="flex-shrink-0 text-amber-600 dark:text-amber-400" title="Seller">
-                            <Store className="w-3.5 h-3.5" />
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-[13px] text-gray-500 truncate">@{friend.username}</p>
-                    </div>
-                  </Link>
-                  {currentUserId && currentUserId !== friend.id && (
-                    <Link href={`/pesan?user=${friend.id}`} className="p-2 text-gray-400 hover:text-[#1D9BF0] hover:bg-[#1D9BF0]/10 rounded-full transition-colors flex-shrink-0">
-                      <MessageCircle className="w-4 h-4" />
-                    </Link>
-                  )}
-                </div>
-              );
+              return <FriendCard key={f.id} friend={friend} currentUserId={currentUserId} />;
             })}
           </div>
         )}
@@ -370,13 +338,19 @@ export function ProfilClient({ profile, isOwnProfile, currentUserId, relationshi
         {/* TENTANG */}
         {activeTab === "tentang" && (
           <div className="space-y-4">
-            <InfoRow label="Nama Lengkap" value={profile.full_name} />
-            <InfoRow label="Username" value={`@${profile.username}`} />
-            <InfoRow label="Bio" value={profile.bio || "Belum ada bio."} />
-            <InfoRow label="Status Akun" value={profile.account_status === "verified" ? "Terverifikasi ✓" : "Belum Diverifikasi"} />
-            <InfoRow label="Poin" value={`${profile.points || 0} poin`} />
-            <InfoRow label="Bergabung" value={formatJoinDate(profile.created_at)} />
-            {profile.is_seller && <InfoRow label="Status Seller" value="Aktif sebagai Penjual ✓" />}
+            {isOwnProfile && profile.is_seller && (
+              <WalletProfileCard initialWallet={profile.crypto_wallet || null} />
+            )}
+            <div className="bg-white dark:bg-neutral-900 rounded-2xl border border-gray-200 dark:border-neutral-800 p-4 sm:p-6 space-y-4">
+              <InfoRow label="Nama Lengkap" value={profile.full_name} />
+              <InfoRow label="Username" value={`@${profile.username}`} />
+              <InfoRow label="Bio" value={profile.bio || "Belum ada bio."} />
+              <InfoRow label="Status Akun" value={profile.account_status === "verified" ? "Terverifikasi ✓" : "Belum Diverifikasi"} />
+              <InfoRow label="Poin" value={`${profile.points || 0} poin`} />
+              <InfoRow label="Bergabung" value={formatJoinDate(profile.created_at)} />
+              {profile.is_seller && <InfoRow label="Status Seller" value="Aktif sebagai Penjual ✓" />}
+              {profile.crypto_wallet && !isOwnProfile && <InfoRow label="Crypto Wallet" value={profile.crypto_wallet} />}
+            </div>
           </div>
         )}
       </div>
@@ -592,6 +566,47 @@ function Field({ label, name, defaultValue, required, hint, as }: {
         <input type="text" name={name} defaultValue={defaultValue} required={required} className={cls} />
       )}
       {hint && <p className="text-xs text-gray-400 mt-1">{hint}</p>}
+    </div>
+  );
+}
+
+function FriendCard({ friend, currentUserId }: { friend: any, currentUserId: string | null }) {
+  const { isOnline, lastActive } = usePresence(friend.id, friend.last_active || null);
+  const friendActivity = getActivityStatus(isOnline, lastActive);
+  
+  return (
+    <div className="flex items-center justify-between p-3 rounded-2xl border border-gray-100 dark:border-neutral-800 hover:border-gray-200 dark:hover:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-900/30 transition-all group">
+      <Link href={`/profil/${friend.username}`} className="flex items-center gap-3 min-w-0 flex-1">
+        <div className="relative">
+          {friend.avatar_url ? (
+            <img src={friend.avatar_url} alt="" className="w-12 h-12 rounded-full object-cover border border-gray-100 dark:border-neutral-800" />
+          ) : (
+            <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-neutral-800 flex items-center justify-center font-bold text-gray-400 text-lg">{friend.full_name?.charAt(0) || "?"}</div>
+          )}
+          <span className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${friendActivity.color} border-2 border-white dark:border-black`} title={friendActivity.label} />
+        </div>
+        <div className="min-w-0 pr-2">
+          <div className="flex items-center gap-1.5">
+            <p className="font-semibold text-[15px] text-gray-900 dark:text-white truncate group-hover:underline">{friend.full_name}</p>
+            {friend.role === "admin" && (
+              <span className="flex-shrink-0 text-purple-600 dark:text-purple-400" title="Admin">
+                <Shield className="w-3.5 h-3.5" />
+              </span>
+            )}
+            {friend.is_seller && (
+              <span className="flex-shrink-0 text-amber-600 dark:text-amber-400" title="Seller">
+                <Store className="w-3.5 h-3.5" />
+              </span>
+            )}
+          </div>
+          <p className="text-[13px] text-gray-500 truncate">@{friend.username}</p>
+        </div>
+      </Link>
+      {currentUserId && currentUserId !== friend.id && (
+        <Link href={`/pesan?user=${friend.id}`} className="p-2 text-gray-400 hover:text-[#1D9BF0] hover:bg-[#1D9BF0]/10 rounded-full transition-colors flex-shrink-0">
+          <MessageCircle className="w-4 h-4" />
+        </Link>
+      )}
     </div>
   );
 }

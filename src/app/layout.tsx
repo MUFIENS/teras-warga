@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Sidebar } from "@/components/Sidebar";
-import { ActivityUpdater } from "@/components/ActivityUpdater";
+import { PresenceProvider } from "@/components/providers/PresenceProvider";
+import { Web3Provider } from "@/components/providers/Web3Provider";
 import { createClient } from "@/lib/supabase/server";
 import "./globals.css";
 
@@ -31,7 +32,7 @@ export default async function RootLayout({
 
   let unreadNotifications = 0;
   let unreadMessages = 0;
-  let profileData: { username: string; full_name: string; avatar_url: string | null; is_seller: boolean; last_active: string | null } | null = null;
+  let profileData: { id: string; username: string; full_name: string; avatar_url: string | null; is_seller: boolean; last_active: string | null } | null = null;
 
   if (user) {
     // Paralelisasi query agar tidak sequential (waterfall)
@@ -55,7 +56,7 @@ export default async function RootLayout({
 
     unreadNotifications = notiResult.count || 0;
     unreadMessages = msgResult.count || 0;
-    profileData = profileResult.data ? { ...profileResult.data, is_seller: profileResult.data.is_seller ?? false } : null;
+    profileData = profileResult.data ? { ...profileResult.data, id: user.id, is_seller: profileResult.data.is_seller ?? false } : null;
   }
 
   return (
@@ -66,19 +67,22 @@ export default async function RootLayout({
     >
       <body>
         <ThemeProvider>
-          {user && <ActivityUpdater />}
-          {user ? (
-            <div className="max-w-[1440px] mx-auto flex min-h-screen">
-              <Sidebar unreadNotifications={unreadNotifications} unreadMessages={unreadMessages} profile={profileData || undefined} />
-              <main className="flex-1 flex flex-col relative">
-                <div className="max-w-4xl mx-auto w-full flex-1">
-                  {children}
+          <Web3Provider>
+            <PresenceProvider currentUserId={user?.id}>
+              {user ? (
+                <div className="max-w-[1440px] mx-auto flex min-h-screen">
+                  <Sidebar unreadNotifications={unreadNotifications} unreadMessages={unreadMessages} profile={profileData ? { ...profileData, id: user.id } : undefined} />
+                  <main className="flex-1 flex flex-col relative">
+                    <div className="max-w-4xl mx-auto w-full flex-1">
+                      {children}
+                    </div>
+                  </main>
                 </div>
-              </main>
-            </div>
-          ) : (
-            children
-          )}
+              ) : (
+                children
+              )}
+            </PresenceProvider>
+          </Web3Provider>
         </ThemeProvider>
       </body>
     </html>

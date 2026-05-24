@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { createBorrowRequest, updateBorrowStatus, deleteBorrowRequest } from "@/app/peminjaman/actions";
 import { useRouter } from "next/navigation";
-import Swal from "sweetalert2";
+import { CustomSwal as Swal } from "@/lib/swal";
 import Link from "next/link";
 import { BORROW_CATEGORIES } from "@/lib/validators";
 import { format } from "date-fns";
@@ -82,10 +82,7 @@ export function PeminjamanClient({ items, requests, currentUserId, userRole }: P
   const [adminStatus, setAdminStatus] = useState<string>("pending");
   const [adminNotes, setAdminNotes] = useState("");
 
-  const swalTheme = () => ({
-    background: document.documentElement.classList.contains("dark") ? "#171717" : "#fff",
-    color: document.documentElement.classList.contains("dark") ? "#fff" : "#000",
-  });
+  
 
   const filteredItems = items.filter((item) => {
     const matchSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) || (item.description || "").toLowerCase().includes(searchQuery.toLowerCase());
@@ -114,9 +111,9 @@ export function PeminjamanClient({ items, requests, currentUserId, userRole }: P
         setSelectedItem(null);
         setPurpose(""); setStartDate(""); setEndDate("");
         setViewTab("riwayat");
-        Swal.fire({ title: "Berhasil!", text: "Permintaan peminjaman berhasil diajukan.", icon: "success", confirmButtonColor: "#1D9BF0", ...swalTheme() });
+        Swal.fire({ title: "Berhasil!", text: "Permintaan peminjaman berhasil diajukan.", icon: "success", confirmButtonColor: "#1D9BF0" });
       } catch (err: any) {
-        Swal.fire({ title: "Gagal!", text: err.message, icon: "error", confirmButtonColor: "#d33", ...swalTheme() });
+        Swal.fire({ title: "Gagal!", text: err.message, icon: "error", confirmButtonColor: "#d33" });
       }
     });
   };
@@ -125,7 +122,7 @@ export function PeminjamanClient({ items, requests, currentUserId, userRole }: P
     Swal.fire({
       title: "Batalkan Permintaan?", text: "Permintaan peminjaman akan dibatalkan.", icon: "warning",
       showCancelButton: true, confirmButtonColor: "#d33", cancelButtonColor: "#3085d6",
-      confirmButtonText: "Ya, batalkan!", cancelButtonText: "Tidak", ...swalTheme(),
+      confirmButtonText: "Ya, batalkan!", cancelButtonText: "Tidak",
     }).then((res) => {
       if (res.isConfirmed) startTransition(async () => { await deleteBorrowRequest(id); router.refresh(); });
     });
@@ -138,9 +135,9 @@ export function PeminjamanClient({ items, requests, currentUserId, userRole }: P
         await updateBorrowStatus(adminRequest.id, adminStatus, adminNotes);
         setShowAdminModal(false);
         setAdminRequest(null);
-        Swal.fire({ title: "Berhasil!", text: "Status diperbarui.", icon: "success", confirmButtonColor: "#1D9BF0", ...swalTheme() });
+        Swal.fire({ title: "Berhasil!", text: "Status diperbarui.", icon: "success", confirmButtonColor: "#1D9BF0" });
       } catch (err: any) {
-        Swal.fire({ title: "Gagal!", text: err.message, icon: "error", confirmButtonColor: "#d33", ...swalTheme() });
+        Swal.fire({ title: "Gagal!", text: err.message, icon: "error", confirmButtonColor: "#d33" });
       }
     });
   };

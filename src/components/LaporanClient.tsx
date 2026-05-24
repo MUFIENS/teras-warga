@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { createReport, deleteReport, toggleUpvote } from "@/app/laporan/actions";
 import { useRouter } from "next/navigation";
-import Swal from "sweetalert2";
+import { CustomSwal as Swal } from "@/lib/swal";
 import Link from "next/link";
 import { REPORT_CATEGORIES } from "@/lib/validators";
 
@@ -101,10 +101,7 @@ export function LaporanClient({ reports, currentUserId, userRole }: LaporanClien
     rejected: reports.filter((r) => r.status === "rejected").length,
   };
 
-  const swalTheme = () => ({
-    background: document.documentElement.classList.contains("dark") ? "#171717" : "#fff",
-    color: document.documentElement.classList.contains("dark") ? "#fff" : "#000",
-  });
+  
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
@@ -134,9 +131,9 @@ export function LaporanClient({ reports, currentUserId, userRole }: LaporanClien
         if (image) fd.append("image", image);
         await createReport(fd);
         resetForm(); setShowForm(false); router.refresh();
-        Swal.fire({ title: "Laporan Terkirim!", text: "Laporan Anda akan ditinjau oleh admin.", icon: "success", confirmButtonColor: "#1D9BF0", ...swalTheme() });
+        Swal.fire({ title: "Laporan Terkirim!", text: "Laporan Anda akan ditinjau oleh admin.", icon: "success", confirmButtonColor: "#1D9BF0" });
       } catch (err: unknown) {
-        Swal.fire({ title: "Gagal!", text: err instanceof Error ? err.message : 'Terjadi kesalahan', icon: "error", confirmButtonColor: "#d33", ...swalTheme() });
+        Swal.fire({ title: "Gagal!", text: err instanceof Error ? err.message : 'Terjadi kesalahan', icon: "error", confirmButtonColor: "#d33" });
       }
     });
   };
@@ -146,7 +143,7 @@ export function LaporanClient({ reports, currentUserId, userRole }: LaporanClien
     Swal.fire({
       title: "Hapus Laporan?", text: "Laporan akan dihapus permanen.", icon: "warning",
       showCancelButton: true, confirmButtonColor: "#d33", cancelButtonColor: "#3085d6",
-      confirmButtonText: "Ya, hapus!", cancelButtonText: "Batal", ...swalTheme(),
+      confirmButtonText: "Ya, hapus!", cancelButtonText: "Batal",
     }).then((res) => {
       if (res.isConfirmed) startTransition(async () => { await deleteReport(id); router.refresh(); });
     });
@@ -228,7 +225,7 @@ export function LaporanClient({ reports, currentUserId, userRole }: LaporanClien
             const isOwner = currentUserId === r.user_id;
 
             return (
-              <Link href={`/laporan/${r.id}`} key={r.id} className="block group">
+              <div onClick={() => router.push(`/laporan/${r.id}`)} key={r.id} className="block group cursor-pointer">
                 <div className="bg-white dark:bg-neutral-900 rounded-2xl border border-gray-200 dark:border-neutral-800 hover:border-gray-300 dark:hover:border-neutral-700 transition-all">
                   {/* Image */}
                   {r.image_url && (
@@ -295,7 +292,7 @@ export function LaporanClient({ reports, currentUserId, userRole }: LaporanClien
                             </button>
                             {menuOpen === r.id && (
                               <div className="absolute right-0 top-8 w-40 bg-white dark:bg-neutral-900 rounded-xl shadow-xl border border-gray-200 dark:border-neutral-700 py-1 z-20" onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>
-                                <button onClick={() => handleDelete(r.id)} className="w-full text-left px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2">
+                                <button onClick={(e) => { e.stopPropagation(); handleDelete(r.id); }} className="w-full text-left px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2">
                                   <Trash2 className="w-4 h-4" />Hapus
                                 </button>
                               </div>
@@ -306,7 +303,7 @@ export function LaporanClient({ reports, currentUserId, userRole }: LaporanClien
                     </div>
                   </div>
                 </div>
-              </Link>
+              </div>
             );
           })}
         </div>

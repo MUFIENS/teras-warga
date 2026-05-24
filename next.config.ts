@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: "5mb",
     },
+    optimizePackageImports: ["lucide-react", "date-fns"],
   },
   images: {
     remotePatterns: [

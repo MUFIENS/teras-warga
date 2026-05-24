@@ -50,10 +50,44 @@ export async function searchUsers(query: string) {
 
   const { data } = await supabase
     .from('profiles')
-    .select('id, username, full_name, avatar_url')
+    .select('id, username, full_name, avatar_url, last_active')
     .neq('id', user.id)
     .or(`username.ilike.%${query}%,full_name.ilike.%${query}%`)
     .limit(10)
 
   return data || []
+}
+
+export async function deleteMessageForMe(messageId: string) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  const { data: msg } = await supabase.from('messages').select('deleted_for').eq('id', messageId).single()
+  if (!msg) return
+
+  const currentDeletedFor = msg.deleted_for || []
+  if (!currentDeletedFor.includes(user.id)) {
+    await supabase.from('messages').update({ deleted_for: [...currentDeletedFor, user.id] }).eq('id', messageId)
+  }
+  revalidatePath('/pesan', 'layout')
+}
+
+export async function deleteMessageForEveryone(messageId: string) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  const { data: msg } = await supabase.from('messages').select('sender_id, created_at').eq('id', messageId).single()
+  if (!msg) return
+  if (msg.sender_id !== user.id) throw new Error('Hanya bisa menghapus pesan milik sendiri')
+  
+  const createdTime = new Date(msg.created_at).getTime()
+  const now = Date.now()
+  if (now - createdTime > 2 * 60 * 60 * 1000) {
+    throw new Error('Batas waktu 2 jam telah terlewati')
+  }
+
+  await supabase.from('messages').update({ content: '{"type":"deleted"}' }).eq('id', messageId)
+  revalidatePath('/pesan', 'layout')
 }

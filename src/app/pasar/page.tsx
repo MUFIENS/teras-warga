@@ -22,7 +22,7 @@ export default async function Pasar() {
       is_active,
       created_at,
       user_id,
-      profiles:user_id (full_name, username, avatar_url)
+      profiles:user_id (full_name, username, avatar_url, crypto_wallet)
     `)
     .order("created_at", { ascending: false });
 
