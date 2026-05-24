@@ -39,22 +39,22 @@ export default function HomeLoading() {
               
               {/* Post Text */}
               <div className="space-y-2">
-                <div className="h-4 w-full bg-gray-150 dark:bg-neutral-800/50 rounded" />
-                <div className="h-4 w-5/6 bg-gray-150 dark:bg-neutral-800/50 rounded" />
-                {i % 2 === 0 && <div className="h-4 w-2/3 bg-gray-150 dark:bg-neutral-800/50 rounded" />}
+                <div className="h-4 w-full bg-gray-200 dark:bg-neutral-800/50 rounded" />
+                <div className="h-4 w-5/6 bg-gray-200 dark:bg-neutral-800/50 rounded" />
+                {i % 2 === 0 && <div className="h-4 w-2/3 bg-gray-200 dark:bg-neutral-800/50 rounded" />}
               </div>
 
               {/* Optional Post Image */}
               {i % 3 === 0 && (
-                <div className="h-48 w-full bg-gray-100 dark:bg-neutral-800/30 rounded-2xl border border-gray-200 dark:border-neutral-850" />
+                <div className="h-48 w-full bg-gray-100 dark:bg-neutral-800/30 rounded-2xl border border-gray-200 dark:border-neutral-800" />
               )}
               
               {/* Interaction Buttons */}
               <div className="flex justify-between max-w-md pt-2">
-                <div className="h-4 w-12 bg-gray-100 dark:bg-neutral-850 rounded" />
-                <div className="h-4 w-12 bg-gray-100 dark:bg-neutral-850 rounded" />
-                <div className="h-4 w-12 bg-gray-100 dark:bg-neutral-850 rounded" />
-                <div className="h-4 w-8 bg-gray-100 dark:bg-neutral-850 rounded" />
+                <div className="h-4 w-12 bg-gray-100 dark:bg-neutral-800 rounded" />
+                <div className="h-4 w-12 bg-gray-100 dark:bg-neutral-800 rounded" />
+                <div className="h-4 w-12 bg-gray-100 dark:bg-neutral-800 rounded" />
+                <div className="h-4 w-8 bg-gray-100 dark:bg-neutral-800 rounded" />
               </div>
             </div>
           </div>

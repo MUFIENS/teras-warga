@@ -10,7 +10,7 @@ export default function PesanLoading() {
       </header>
 
       {/* Conversations List Skeleton */}
-      <div className="flex flex-col divide-y divide-gray-150 dark:divide-neutral-850">
+      <div className="flex flex-col divide-y divide-gray-200 dark:divide-neutral-800">
         {Array.from({ length: 6 }).map((_, i) => (
           <div key={i} className="p-4 flex items-center gap-3">
             {/* Avatar */}
@@ -22,12 +22,12 @@ export default function PesanLoading() {
                 {/* Full name */}
                 <div className="h-4 w-28 bg-gray-200 dark:bg-neutral-800 rounded" />
                 {/* Timestamp */}
-                <div className="h-3 w-10 bg-gray-100 dark:bg-neutral-850 rounded" />
+                <div className="h-3 w-10 bg-gray-100 dark:bg-neutral-800 rounded" />
               </div>
               
               <div className="flex items-center justify-between">
                 {/* Last message snippet */}
-                <div className="h-3.5 w-7/12 bg-gray-150 dark:bg-neutral-850 rounded" />
+                <div className="h-3.5 w-7/12 bg-gray-200 dark:bg-neutral-800 rounded" />
                 {/* Unread badge if any */}
                 {i < 2 && (
                   <div className="h-4.5 w-4.5 rounded-full bg-[#1D9BF0]/50" />

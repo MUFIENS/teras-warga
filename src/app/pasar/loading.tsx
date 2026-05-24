@@ -13,7 +13,7 @@ export default function PasarLoading() {
 
         {/* Search Bar Skeleton */}
         <div className="px-4 pb-3">
-          <div className="h-10 w-full bg-gray-100 dark:bg-neutral-850 rounded-full" />
+          <div className="h-10 w-full bg-gray-100 dark:bg-neutral-800 rounded-full" />
         </div>
 
         {/* Category Chips Skeleton */}
@@ -45,7 +45,7 @@ export default function PasarLoading() {
                   {/* Category chip & time */}
                   <div className="flex items-center justify-between">
                     <div className="h-5 w-16 bg-gray-100 dark:bg-neutral-800 rounded-full" />
-                    <div className="h-3.5 w-12 bg-gray-100 dark:bg-neutral-850 rounded" />
+                    <div className="h-3.5 w-12 bg-gray-100 dark:bg-neutral-800 rounded" />
                   </div>
                   
                   {/* Title */}
@@ -60,7 +60,7 @@ export default function PasarLoading() {
                   {/* Seller Info */}
                   <div className="flex items-center gap-2 pt-1">
                     <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-neutral-800 flex-shrink-0" />
-                    <div className="h-3.5 w-16 bg-gray-150 dark:bg-neutral-850 rounded" />
+                    <div className="h-3.5 w-16 bg-gray-200 dark:bg-neutral-800 rounded" />
                   </div>
                 </div>
               </div>

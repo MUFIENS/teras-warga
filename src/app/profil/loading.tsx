@@ -28,25 +28,25 @@ export default function ProfilLoading() {
           {/* Full Name */}
           <div className="h-6 w-48 bg-gray-200 dark:bg-neutral-800 rounded-lg" />
           {/* Username */}
-          <div className="h-4 w-32 bg-gray-150 dark:bg-neutral-850 rounded" />
+          <div className="h-4 w-32 bg-gray-200 dark:bg-neutral-800 rounded" />
         </div>
 
         {/* Bio */}
         <div className="space-y-2">
-          <div className="h-4 w-11/12 bg-gray-100 dark:bg-neutral-850 rounded" />
-          <div className="h-4 w-3/4 bg-gray-100 dark:bg-neutral-850 rounded" />
+          <div className="h-4 w-11/12 bg-gray-100 dark:bg-neutral-800 rounded" />
+          <div className="h-4 w-3/4 bg-gray-100 dark:bg-neutral-800 rounded" />
         </div>
 
         {/* Joined & Location */}
         <div className="flex gap-4 pt-1">
-          <div className="h-4 w-36 bg-gray-100 dark:bg-neutral-850 rounded" />
-          <div className="h-4 w-24 bg-gray-100 dark:bg-neutral-850 rounded" />
+          <div className="h-4 w-36 bg-gray-100 dark:bg-neutral-800 rounded" />
+          <div className="h-4 w-24 bg-gray-100 dark:bg-neutral-800 rounded" />
         </div>
 
         {/* Following/Followers Stats */}
         <div className="flex gap-4 pt-2">
-          <div className="h-5 w-20 bg-gray-150 dark:bg-neutral-800 rounded" />
-          <div className="h-5 w-24 bg-gray-150 dark:bg-neutral-800 rounded" />
+          <div className="h-5 w-20 bg-gray-200 dark:bg-neutral-800 rounded" />
+          <div className="h-5 w-24 bg-gray-200 dark:bg-neutral-800 rounded" />
         </div>
       </div>
 
@@ -63,15 +63,15 @@ export default function ProfilLoading() {
       <div className="flex flex-col divide-y divide-gray-200 dark:divide-neutral-800">
         {Array.from({ length: 3 }).map((_, i) => (
           <div key={i} className="p-4 flex gap-3">
-            <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-neutral-850 flex-shrink-0" />
+            <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-neutral-800 flex-shrink-0" />
             <div className="flex-1 space-y-3">
               <div className="flex items-center gap-2">
                 <div className="h-4 w-24 bg-gray-250 dark:bg-neutral-800 rounded" />
-                <div className="h-3.5 w-16 bg-gray-100 dark:bg-neutral-850 rounded" />
+                <div className="h-3.5 w-16 bg-gray-100 dark:bg-neutral-800 rounded" />
               </div>
               <div className="space-y-2">
-                <div className="h-4 w-full bg-gray-100 dark:bg-neutral-850 rounded" />
-                <div className="h-4 w-5/6 bg-gray-100 dark:bg-neutral-850 rounded" />
+                <div className="h-4 w-full bg-gray-100 dark:bg-neutral-800 rounded" />
+                <div className="h-4 w-5/6 bg-gray-100 dark:bg-neutral-800 rounded" />
               </div>
             </div>
           </div>
