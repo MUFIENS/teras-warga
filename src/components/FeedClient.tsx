@@ -20,6 +20,35 @@ export function FeedClient({ initialPosts, currentUserId }: FeedClientProps) {
   const [hasMore, setHasMore] = useState((initialPosts?.length || 0) >= 10);
   const [loading, setLoading] = useState(false);
 
+  // Sinkronisasi data server terbaru (misal saat post baru dibuat atau dilike) dengan state lokal
+  // tanpa menghilangkan postingan yang sudah di-load (halaman > 1)
+  useEffect(() => {
+    if (!initialPosts || initialPosts.length === 0) return;
+
+    setPosts(prev => {
+      const newPosts = [...prev];
+      const completelyNew: any[] = [];
+      
+      initialPosts.forEach(serverPost => {
+        const index = newPosts.findIndex(p => p.id === serverPost.id);
+        if (index !== -1) {
+          // Update data jika ada perubahan (misal jumlah like)
+          newPosts[index] = serverPost;
+        } else {
+          // Postingan baru
+          completelyNew.push(serverPost);
+        }
+      });
+      
+      // Jika tidak ada perubahan signifikan, kembalikan referensi sebelumnya agar tidak re-render
+      if (completelyNew.length === 0 && JSON.stringify(newPosts.slice(0, initialPosts.length)) === JSON.stringify(initialPosts)) {
+        return prev;
+      }
+      
+      return [...completelyNew, ...newPosts].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    });
+  }, [initialPosts]);
+
   const { ref, inView } = useInView({
     threshold: 0,
     rootMargin: "400px", // Fetch before it reaches the exact bottom
