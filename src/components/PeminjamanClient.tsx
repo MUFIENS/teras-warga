@@ -150,7 +150,7 @@ export function PeminjamanClient({ items, requests, currentUserId, userRole }: P
     <ConfirmDialog />
     <div className="flex flex-col min-h-screen">
       {/* ─── HEADER ─── */}
-      <header className="sticky top-0 z-10 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
+      <header className="sticky top-14 md:top-0 z-10 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
         <div className="flex items-center justify-between px-4 h-14">
           <div className="flex items-center gap-2.5">
             <h1 className="text-xl font-bold">Peminjaman</h1>
@@ -207,7 +207,7 @@ export function PeminjamanClient({ items, requests, currentUserId, userRole }: P
               <div key={item.id} className="bg-white dark:bg-neutral-900 rounded-2xl border border-gray-200 dark:border-neutral-800 overflow-hidden flex flex-col hover:border-[#1D9BF0] transition-colors">
                 <div className="relative aspect-[4/3] bg-gray-100 dark:bg-neutral-800">
                   {item.image_url ? (
-                    <img src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
+                    <img loading="lazy" src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-gray-400"><Box className="w-8 h-8 opacity-50" /></div>
                   )}
@@ -244,7 +244,7 @@ export function PeminjamanClient({ items, requests, currentUserId, userRole }: P
                     {/* Item Image */}
                     <div className="w-20 h-20 rounded-xl bg-gray-100 dark:bg-neutral-800 overflow-hidden flex-shrink-0">
                       {req.inventory?.image_url ? (
-                        <img src={req.inventory.image_url} alt="" className="w-full h-full object-cover" />
+                        <img loading="lazy" src={req.inventory.image_url} alt="" className="w-full h-full object-cover" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center"><Box className="w-6 h-6 text-gray-400" /></div>
                       )}
@@ -317,7 +317,7 @@ export function PeminjamanClient({ items, requests, currentUserId, userRole }: P
             <div className="p-5 space-y-4">
               <div className="flex gap-3 items-center p-3 rounded-xl bg-gray-50 dark:bg-neutral-800/50 border border-gray-100 dark:border-neutral-800">
                 <div className="w-12 h-12 rounded-lg bg-gray-200 dark:bg-neutral-700 overflow-hidden flex-shrink-0">
-                  {selectedItem.image_url ? <img src={selectedItem.image_url} alt="" className="w-full h-full object-cover" /> : <Box className="w-6 h-6 m-auto mt-3 text-gray-400" />}
+                  {selectedItem.image_url ? <img loading="lazy" src={selectedItem.image_url} alt="" className="w-full h-full object-cover" /> : <Box className="w-6 h-6 m-auto mt-3 text-gray-400" />}
                 </div>
                 <div>
                   <h3 className="font-semibold text-sm">{selectedItem.name}</h3>

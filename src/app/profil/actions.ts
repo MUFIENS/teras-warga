@@ -127,16 +127,6 @@ export async function updateProfile(formData: FormData) {
   return { success: true }
 }
 
-export async function updateLastActive() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  await (supabase.from('profiles') as any)
-    .update({ last_active: new Date().toISOString() })
-    .eq('id', user.id)
-}
 
 export async function updateCryptoWallet(walletAddress: string) {
   const supabase = await createClient()

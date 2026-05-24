@@ -12,6 +12,7 @@ import { createClient } from "@/lib/supabase/client";
 import { usePresence } from "./providers/PresenceProvider";
 import { showError } from "@/lib/toast";
 import { useConfirmDialog } from "@/components/ui/confirm-dialog";
+import { Avatar } from "@/components/ui/avatar";
 
 interface Message {
   id: string;
@@ -52,13 +53,7 @@ function AvatarWithPresence({ user, className = "w-12 h-12" }: { user: UserProfi
 
   return (
     <div className="relative flex-shrink-0">
-      {user.avatar_url ? (
-        <img src={user.avatar_url} alt="" className={`${className} rounded-full object-cover`} />
-      ) : (
-        <div className={`${className} rounded-full bg-gradient-to-br from-[#1D9BF0] to-blue-600 flex items-center justify-center text-white font-bold text-lg`}>
-          {user.full_name.charAt(0)}
-        </div>
-      )}
+      <Avatar src={user.avatar_url} alt={user.full_name} className={className} />
       <span className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${color} border-2 border-white dark:border-black`} />
     </div>
   );
@@ -440,7 +435,7 @@ export function MessagesClient({ conversations, currentUserId, allMessages, init
 
   const renderConversationList = () => (
     <>
-      <header className="sticky top-0 z-10 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
+      <header className="sticky top-14 md:top-0 z-10 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
         <div className="flex items-center justify-between px-4 h-14">
           <h1 className="text-xl font-bold">Pesan</h1>
           <button onClick={() => setShowNewChat(true)} className="p-2 hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-full transition-colors text-[#1D9BF0]">
@@ -520,7 +515,7 @@ export function MessagesClient({ conversations, currentUserId, allMessages, init
             <Link href={`/pasar/${parsed.id}`} className={`block rounded-xl overflow-hidden border ${isMine ? 'border-white/20 bg-white/10' : 'border-gray-200 dark:border-neutral-700 bg-white dark:bg-neutral-900'} hover:opacity-90 transition-opacity`}>
               <div className="flex items-center gap-3 p-2">
                 {parsed.image_url ? (
-                  <img src={parsed.image_url} alt={parsed.title} className="w-16 h-16 object-cover rounded-lg" />
+                  <img loading="lazy" src={parsed.image_url} alt={parsed.title} className="w-16 h-16 object-cover rounded-lg" />
                 ) : (
                   <div className="w-16 h-16 bg-black/5 rounded-lg flex items-center justify-center">
                     <Package className="w-6 h-6 opacity-50" />
@@ -541,7 +536,7 @@ export function MessagesClient({ conversations, currentUserId, allMessages, init
         if (isImg) {
           contentEl = (
             <a href={parsed.url} target="_blank" rel="noreferrer" className="block w-[200px] h-[200px] sm:w-[240px] sm:h-[240px]">
-              <img src={parsed.url} alt="Attachment" className="w-full h-full object-cover rounded-xl" />
+              <img loading="lazy" src={parsed.url} alt="Attachment" className="w-full h-full object-cover rounded-xl" />
             </a>
           );
         } else if (isVid) {
@@ -606,7 +601,7 @@ export function MessagesClient({ conversations, currentUserId, allMessages, init
       <input type="file" accept="image/*,video/*" capture="environment" className="hidden" ref={cameraInputRef} onChange={handleFileUpload} />
 
       {/* Chat Header */}
-      <header className="sticky top-0 z-10 flex items-center gap-3 px-3 h-14 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
+      <header className="sticky top-14 md:top-0 z-10 flex items-center gap-3 px-3 h-14 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
         <button onClick={() => setActiveChat(null)} className="p-2 hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-full transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </button>
@@ -704,7 +699,7 @@ export function MessagesClient({ conversations, currentUserId, allMessages, init
               <X className="w-4 h-4" />
             </button>
             {selectedProduct.image_url ? (
-              <img src={selectedProduct.image_url} alt="" className="w-12 h-12 rounded-lg object-cover" />
+              <img loading="lazy" src={selectedProduct.image_url} alt="" className="w-12 h-12 rounded-lg object-cover" />
             ) : <Package className="w-8 h-8 text-gray-400" />}
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold truncate">{selectedProduct.title}</p>

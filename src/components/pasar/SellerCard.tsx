@@ -39,8 +39,7 @@ export function SellerCard({ seller }: SellerCardProps) {
         {/* Avatar */}
         <div className="relative flex-shrink-0">
           {seller.avatar_url ? (
-            <img
-              src={seller.avatar_url}
+            <img loading="lazy" src={seller.avatar_url}
               alt={seller.full_name}
               className="w-12 h-12 rounded-full object-cover ring-2 ring-gray-100 dark:ring-neutral-800 group-hover:ring-blue-500 dark:group-hover:ring-blue-400 transition-all duration-200"
             />

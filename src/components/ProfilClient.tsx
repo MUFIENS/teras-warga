@@ -13,7 +13,10 @@ import { useRouter } from "next/navigation";
 import { showError, showWarning } from "@/lib/toast";
 import { useConfirmDialog } from "@/components/ui/confirm-dialog";
 import { usePresence } from "@/components/providers/PresenceProvider";
-import { WalletProfileCard } from "@/components/crypto/WalletProfileCard";
+import dynamic from "next/dynamic";
+import Image from "next/image";
+const WalletProfileCard = dynamic(() => import("@/components/crypto/WalletProfileCard").then(mod => mod.WalletProfileCard), { ssr: false });
+import { Avatar } from "@/components/ui/avatar";
 
 interface Profile {
   id: string;
@@ -129,7 +132,7 @@ export function ProfilClient({ profile, isOwnProfile, currentUserId, relationshi
       {/* Cover */}
       <div className="relative h-40 md:h-52 bg-gradient-to-br from-[#1D9BF0]/20 to-blue-600/10 overflow-hidden">
         {profile.cover_url ? (
-          <img src={profile.cover_url} alt="cover" className="w-full h-full object-cover" />
+          <Image src={profile.cover_url} alt="cover" fill className="object-cover" />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-[#1D9BF0]/30 via-blue-500/10 to-transparent" />
         )}
@@ -146,13 +149,7 @@ export function ProfilClient({ profile, isOwnProfile, currentUserId, relationshi
           <div className="flex items-end justify-between -mt-12 md:-mt-16 mb-4">
             {/* Avatar */}
             <div className="relative">
-              <div className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-white dark:border-black overflow-hidden bg-gray-100 dark:bg-neutral-800 flex-shrink-0 relative">
-                {profile.avatar_url ? (
-                  <img src={profile.avatar_url} alt={profile.full_name} className="w-full h-full object-cover" />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-gray-400">{profile.full_name?.charAt(0) || "?"}</div>
-                )}
-              </div>
+              <Avatar src={profile.avatar_url} alt={profile.full_name} className="w-24 h-24 md:w-32 md:h-32 border-4 border-white dark:border-black" />
               {/* Activity dot */}
               <span className={`absolute bottom-2 right-2 md:bottom-3 md:right-3 w-4 h-4 rounded-full ${activity.color} border-[3px] border-white dark:border-black shadow-sm`} title={activity.label} />
             </div>
@@ -265,11 +262,7 @@ export function ProfilClient({ profile, isOwnProfile, currentUserId, relationshi
             ) : posts.map(post => (
               <Link key={post.id} href={`/post/${post.id}`} className="flex gap-3 p-4 border-b border-gray-100 dark:border-neutral-800 hover:bg-gray-50 dark:hover:bg-neutral-900/50 transition-colors">
                 <div className="flex-shrink-0">
-                  {post.profiles?.avatar_url ? (
-                    <img src={post.profiles.avatar_url} alt="" className="w-10 h-10 rounded-full object-cover border border-gray-100 dark:border-neutral-800" />
-                  ) : (
-                    <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-neutral-800 flex items-center justify-center font-bold text-gray-400">{post.profiles?.full_name?.charAt(0) || "?"}</div>
-                  )}
+                  <Avatar src={post.profiles?.avatar_url} alt={post.profiles?.full_name} className="w-10 h-10 border border-gray-100 dark:border-neutral-800" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5 mb-0.5">
@@ -280,8 +273,8 @@ export function ProfilClient({ profile, isOwnProfile, currentUserId, relationshi
                   </div>
                   <p className="text-[15px] leading-relaxed text-gray-900 dark:text-white whitespace-pre-wrap">{post.content}</p>
                   {post.image_url && (
-                    <div className="mt-3 overflow-hidden rounded-2xl border border-gray-100 dark:border-neutral-800">
-                      <img src={post.image_url} alt="" className="w-full max-h-[400px] object-cover" />
+                    <div className="mt-3 overflow-hidden rounded-2xl border border-gray-100 dark:border-neutral-800 relative">
+                      <Image src={post.image_url} alt="" width={800} height={400} className="w-full h-auto max-h-[400px] object-cover" />
                     </div>
                   )}
                   <div className="flex items-center gap-6 mt-3 text-gray-500">
@@ -326,7 +319,7 @@ export function ProfilClient({ profile, isOwnProfile, currentUserId, relationshi
               <Link key={item.id} href={`/pasar/${item.id}`} className="flex flex-col group rounded-2xl overflow-hidden hover:bg-gray-50 dark:hover:bg-neutral-900/50 transition-colors p-2 -m-2">
                 <div className="aspect-[4/5] bg-gray-100 dark:bg-neutral-800 rounded-xl overflow-hidden border border-gray-100 dark:border-neutral-800 relative">
                   {item.image_url ? (
-                    <img src={item.image_url} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                    <Image src={item.image_url} alt={item.title} fill className="object-cover group-hover:scale-105 transition-transform duration-300" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center"><ShoppingBag className="w-8 h-8 text-gray-300 dark:text-neutral-600" /></div>
                   )}
@@ -450,7 +443,7 @@ function ImageUnggah({ label, currentUrl, onUnggahed, uploadFn, shape = "square"
         }`}
       >
         {preview ? (
-          <img src={preview} alt="" className="w-full h-full object-cover" />
+          <Image src={preview} alt="" fill className="object-cover" />
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center text-gray-400">
             <Camera className="w-6 h-6 mb-1" />
@@ -566,11 +559,7 @@ function FriendCard({ friend, currentUserId }: { friend: any, currentUserId: str
     <div className="flex items-center justify-between p-3 rounded-2xl border border-gray-100 dark:border-neutral-800 hover:border-gray-200 dark:hover:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-900/30 transition-all group">
       <Link href={`/profil/${friend.username}`} className="flex items-center gap-3 min-w-0 flex-1">
         <div className="relative">
-          {friend.avatar_url ? (
-            <img src={friend.avatar_url} alt="" className="w-12 h-12 rounded-full object-cover border border-gray-100 dark:border-neutral-800" />
-          ) : (
-            <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-neutral-800 flex items-center justify-center font-bold text-gray-400 text-lg">{friend.full_name?.charAt(0) || "?"}</div>
-          )}
+          <Avatar src={friend.avatar_url} alt={friend.full_name} className="w-12 h-12 border border-gray-100 dark:border-neutral-800" />
           <span className={`absolute bottom-0 right-0 w-3 h-3 rounded-full ${friendActivity.color} border-2 border-white dark:border-black`} title={friendActivity.label} />
         </div>
         <div className="min-w-0 pr-2">

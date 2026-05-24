@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 export default function LaporanDetailLoading() {
   return (
     <div className="flex flex-col min-h-screen border-r border-gray-200 dark:border-neutral-800 animate-pulse">
-      <header className="sticky top-0 z-10 flex items-center gap-4 px-4 h-14 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
+      <header className="sticky top-14 md:top-0 z-10 flex items-center gap-4 px-4 h-14 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
         <Link href="/laporan" className="p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </Link>

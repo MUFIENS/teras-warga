@@ -8,6 +8,7 @@ import { createClient } from "@/lib/supabase/client";
 import { showError } from "@/lib/toast";
 import { useConfirmDialog } from "@/components/ui/confirm-dialog";
 import Link from "next/link";
+import { Avatar } from "@/components/ui/avatar";
 
 interface Profile {
   id: string;
@@ -146,7 +147,7 @@ export function TemanClient({ currentUserId, friendships: initialFriendships, al
     <ConfirmDialog />
     <div className="flex flex-col min-h-screen">
       {/* ─── HEADER ─── */}
-      <header className="sticky top-0 z-10 bg-white/90 dark:bg-black/90 backdrop-blur-lg border-b border-gray-100 dark:border-neutral-800">
+      <header className="sticky top-14 md:top-0 z-10 bg-white/90 dark:bg-black/90 backdrop-blur-lg border-b border-gray-100 dark:border-neutral-800">
         <div className="flex items-center justify-between px-4 h-14">
           <h1 className="text-xl font-bold flex items-center gap-2">
             <Users className="w-5 h-5 text-[#1D9BF0]" /> Teman
@@ -188,11 +189,7 @@ export function TemanClient({ currentUserId, friendships: initialFriendships, al
             {filteredFriends.map((f) => (
               <div key={f.friendshipId} className="flex items-center justify-between p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-neutral-900/50 transition-colors group">
                 <Link href={`/profil/${f.profile.username}`} className="flex items-center gap-3 min-w-0 hover:opacity-80 transition-opacity">
-                  {f.profile.avatar_url ? (
-                    <img src={f.profile.avatar_url} alt="" className="w-12 h-12 rounded-full object-cover flex-shrink-0 border border-gray-100 dark:border-neutral-800" />
-                  ) : (
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-gray-100 to-gray-200 dark:from-neutral-800 dark:to-neutral-700 flex items-center justify-center text-sm font-bold uppercase flex-shrink-0 text-gray-500">{f.profile.full_name?.charAt(0) || "?"}</div>
-                  )}
+                  <Avatar src={f.profile.avatar_url} alt={f.profile.full_name} className="w-12 h-12 border border-gray-100 dark:border-neutral-800" />
                   <div className="min-w-0">
                     <h3 className="font-semibold text-[15px] truncate">{f.profile.full_name}</h3>
                     <p className="text-[13px] text-gray-500 truncate">@{f.profile.username}</p>
@@ -229,11 +226,7 @@ export function TemanClient({ currentUserId, friendships: initialFriendships, al
                   {incomingRequests.map((req) => (
                     <div key={req.id} className="flex items-center justify-between p-3 rounded-2xl bg-white dark:bg-neutral-900 border border-gray-100 dark:border-neutral-800 shadow-sm">
                       <Link href={`/profil/${req.sender.username}`} className="flex items-center gap-3 min-w-0 hover:opacity-80 transition-opacity">
-                        {req.sender.avatar_url ? (
-                          <img src={req.sender.avatar_url} alt="" className="w-12 h-12 rounded-full object-cover flex-shrink-0" />
-                        ) : (
-                          <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-gray-100 to-gray-200 dark:from-neutral-800 dark:to-neutral-700 flex items-center justify-center text-sm font-bold uppercase flex-shrink-0 text-gray-500">{req.sender.full_name?.charAt(0) || "?"}</div>
-                        )}
+                        <Avatar src={req.sender.avatar_url} alt={req.sender.full_name} className="w-12 h-12" />
                         <div className="min-w-0">
                           <h3 className="font-semibold text-[15px] truncate">{req.sender.full_name}</h3>
                           <p className="text-[13px] text-gray-500 truncate">@{req.sender.username}</p>
@@ -257,11 +250,7 @@ export function TemanClient({ currentUserId, friendships: initialFriendships, al
                   {outgoingRequests.map((req) => (
                     <div key={req.id} className="flex items-center justify-between p-3 rounded-2xl bg-gray-50/50 dark:bg-neutral-900/30 border border-gray-100 dark:border-neutral-800/50">
                       <Link href={`/profil/${req.receiver.username}`} className="flex items-center gap-3 min-w-0 opacity-75 hover:opacity-100 transition-opacity">
-                        {req.receiver.avatar_url ? (
-                          <img src={req.receiver.avatar_url} alt="" className="w-10 h-10 rounded-full object-cover flex-shrink-0 grayscale group-hover:grayscale-0" />
-                        ) : (
-                          <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-neutral-800 flex items-center justify-center text-xs font-bold uppercase flex-shrink-0 text-gray-500">{req.receiver.full_name?.charAt(0) || "?"}</div>
-                        )}
+                        <Avatar src={req.receiver.avatar_url} alt={req.receiver.full_name} className="w-10 h-10 grayscale group-hover:grayscale-0" />
                         <div className="min-w-0">
                           <h3 className="font-semibold text-[14px] truncate">{req.receiver.full_name}</h3>
                           <p className="text-[12px] text-gray-500 truncate">Menunggu Persetujuan</p>
@@ -292,11 +281,7 @@ export function TemanClient({ currentUserId, friendships: initialFriendships, al
               return (
                 <div key={p.id} className="flex items-center justify-between p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-neutral-900/50 transition-colors group">
                   <Link href={`/profil/${p.username}`} className="flex items-center gap-3 min-w-0 hover:opacity-80 transition-opacity">
-                    {p.avatar_url ? (
-                      <img src={p.avatar_url} alt="" className="w-12 h-12 rounded-full object-cover flex-shrink-0 border border-gray-100 dark:border-neutral-800" />
-                    ) : (
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-gray-100 to-gray-200 dark:from-neutral-800 dark:to-neutral-700 flex items-center justify-center text-sm font-bold uppercase flex-shrink-0 text-gray-500">{p.full_name?.charAt(0) || "?"}</div>
-                    )}
+                    <Avatar src={p.avatar_url} alt={p.full_name} className="w-12 h-12 border border-gray-100 dark:border-neutral-800" />
                     <div className="min-w-0">
                       <h3 className="font-semibold text-[15px] truncate">{p.full_name}</h3>
                       <p className="text-[13px] text-gray-500 truncate">@{p.username}</p>

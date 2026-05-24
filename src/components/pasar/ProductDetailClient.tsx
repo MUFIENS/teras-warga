@@ -149,6 +149,8 @@ export function ProductDetailClient({ product, currentUserId, relatedProducts = 
                   seller_username={item.seller_username}
                   seller_avatar={item.seller_avatar}
                   seller_crypto_wallet={item.seller_crypto_wallet}
+                  seller_id={item.user_id}
+                  currentUserId={currentUserId}
                   isOwner={currentUserId === item.user_id}
                   timeAgo={item.timeAgo}
                 />

@@ -5,6 +5,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { PresenceProvider } from "@/components/providers/PresenceProvider";
 import { Web3Provider } from "@/components/providers/Web3Provider";
 import { createClient } from "@/lib/supabase/server";
+import { getUserProfile } from "@/lib/data/user";
 import { Toaster } from "sonner";
 import "./globals.css";
 
@@ -48,16 +49,12 @@ export default async function RootLayout({
         .select('*', { count: 'exact', head: true })
         .eq('receiver_id', user.id)
         .eq('is_read', false),
-      supabase
-        .from('profiles')
-        .select('username, full_name, avatar_url, is_seller, last_active')
-        .eq('id', user.id)
-        .single(),
+      getUserProfile(user.id),
     ]);
 
     unreadNotifications = notiResult.count || 0;
     unreadMessages = msgResult.count || 0;
-    profileData = profileResult.data ? { ...profileResult.data, id: user.id, is_seller: profileResult.data.is_seller ?? false } : null;
+    profileData = profileResult ? { ...profileResult, id: user.id, is_seller: profileResult.is_seller ?? false } : null;
   }
 
   return (
@@ -66,12 +63,12 @@ export default async function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body>
+      <body suppressHydrationWarning>
         <ThemeProvider>
           <Web3Provider>
             <PresenceProvider currentUserId={user?.id}>
               {user ? (
-                <div className="max-w-[1440px] mx-auto flex min-h-screen">
+                <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row min-h-screen">
                   <Sidebar unreadNotifications={unreadNotifications} unreadMessages={unreadMessages} profile={profileData ? { ...profileData, id: user.id } : undefined} />
                   <main className="flex-1 flex flex-col relative">
                     <div className="max-w-4xl mx-auto w-full flex-1">

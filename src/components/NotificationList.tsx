@@ -42,7 +42,7 @@ export function NotificationList({ notifications }: { notifications: Notificatio
 
   return (
     <>
-      <header className="sticky top-0 z-10 flex items-center justify-between px-4 h-14 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
+      <header className="sticky top-14 md:top-0 z-10 flex items-center justify-between px-4 h-14 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
         <h1 className="text-xl font-bold">Notifikasi</h1>
         {unreadCount > 0 && (
           <button

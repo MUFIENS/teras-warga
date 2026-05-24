@@ -161,7 +161,7 @@ export function LaporanClient({ reports, currentUserId, userRole }: LaporanClien
     <>
       <ConfirmDialog />
       {/* ─── HEADER ─── */}
-      <header className="sticky top-0 z-10 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
+      <header className="sticky top-14 md:top-0 z-10 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
         <div className="flex items-center justify-between px-4 h-14">
           <div className="flex items-center gap-2.5">
             <h1 className="text-xl font-bold">Laporan Warga</h1>
@@ -234,7 +234,7 @@ export function LaporanClient({ reports, currentUserId, userRole }: LaporanClien
                   {/* Image */}
                   {r.image_url && (
                     <div className="relative h-44 overflow-hidden rounded-t-2xl">
-                      <img src={r.image_url} alt={r.title} className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500" />
+                      <img loading="lazy" src={r.image_url} alt={r.title} className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500" />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                     </div>
                   )}
@@ -268,7 +268,7 @@ export function LaporanClient({ reports, currentUserId, userRole }: LaporanClien
                         {/* Author */}
                         <Link href={`/profil/${r.profiles?.username}`} onClick={e => e.stopPropagation()} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
                           {r.profiles?.avatar_url ? (
-                            <img src={r.profiles.avatar_url} alt="" className="w-5 h-5 rounded-full object-cover" />
+                            <img loading="lazy" src={r.profiles.avatar_url} alt="" className="w-5 h-5 rounded-full object-cover" />
                           ) : (
                             <div className="w-5 h-5 rounded-full bg-gray-200 dark:bg-neutral-700 flex items-center justify-center text-[9px] font-bold uppercase">{r.profiles?.full_name?.charAt(0) || "?"}</div>
                           )}
@@ -344,7 +344,7 @@ export function LaporanClient({ reports, currentUserId, userRole }: LaporanClien
                 <input type="file" accept="image/*" className="hidden" ref={fileRef} onChange={handleImageChange} />
                 {imagePreview ? (
                   <div className="relative rounded-xl overflow-hidden border border-gray-200 dark:border-neutral-700 aspect-video">
-                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                    <img loading="lazy" src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
                     <button onClick={() => { setImage(null); setImagePreview(null); if (fileRef.current) fileRef.current.value = ""; }} className="absolute top-2 right-2 p-1.5 bg-black/50 hover:bg-black/70 rounded-full text-white transition-colors"><X className="w-4 h-4" /></button>
                   </div>
                 ) : (

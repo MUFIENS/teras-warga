@@ -63,12 +63,12 @@ export async function deleteMessageForMe(messageId: string) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
-  const { data: msg } = await supabase.from('messages').select('deleted_for').eq('id', messageId).single()
+  const { data: msg } = await supabase.from('messages').select('deleted_for').eq('id', messageId).single() as { data: { deleted_for: string[] | null } | null }
   if (!msg) return
 
   const currentDeletedFor = msg.deleted_for || []
   if (!currentDeletedFor.includes(user.id)) {
-    await supabase.from('messages').update({ deleted_for: [...currentDeletedFor, user.id] }).eq('id', messageId)
+    await supabase.from('messages').update({ deleted_for: [...currentDeletedFor, user.id] } as any).eq('id', messageId)
   }
   revalidatePath('/pesan', 'layout')
 }
@@ -82,7 +82,7 @@ export async function deleteMessageForEveryone(messageId: string) {
   if (!msg) return
   if (msg.sender_id !== user.id) throw new Error('Hanya bisa menghapus pesan milik sendiri')
   
-  const createdTime = new Date(msg.created_at).getTime()
+  const createdTime = new Date(msg.created_at!).getTime()
   const now = Date.now()
   if (now - createdTime > 2 * 60 * 60 * 1000) {
     throw new Error('Batas waktu 2 jam telah terlewati')

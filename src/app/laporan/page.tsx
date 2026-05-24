@@ -1,7 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { formatDistanceToNow } from "date-fns";
 import { id as localeId } from "date-fns/locale";
-import { RealtimeListener } from "@/components/RealtimeListener";
 import { LaporanClient } from "@/components/LaporanClient";
 import { REPORT_CATEGORIES } from "@/lib/validators";
 
@@ -14,7 +13,7 @@ export default async function Laporan() {
   if (!user) {
     return (
       <div className="flex flex-col min-h-screen border-r border-gray-200 dark:border-neutral-800">
-        <header className="sticky top-0 z-10 flex items-center px-4 h-14 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
+        <header className="sticky top-14 md:top-0 z-10 flex items-center px-4 h-14 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
           <h1 className="text-xl font-bold">Laporan Warga</h1>
         </header>
         <div className="flex flex-1 items-center justify-center p-4">
@@ -83,9 +82,7 @@ export default async function Laporan() {
   }));
 
   return (
-    <div className="flex flex-col min-h-screen border-r border-gray-200 dark:border-neutral-800">
-      <RealtimeListener />
-      <LaporanClient
+    <div className="flex flex-col min-h-screen border-r border-gray-200 dark:border-neutral-800">      <LaporanClient
         reports={formatted}
         currentUserId={user.id}
         userRole={userRole}

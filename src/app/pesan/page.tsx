@@ -9,7 +9,7 @@ export default async function Pesan(props: { searchParams?: Promise<any> | any }
   if (!user) {
     return (
       <div className="flex flex-col min-h-screen border-r border-gray-200 dark:border-neutral-800">
-        <header className="sticky top-0 z-10 flex items-center px-4 h-14 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
+        <header className="sticky top-14 md:top-0 z-10 flex items-center px-4 h-14 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
           <h1 className="text-xl font-bold">Pesan</h1>
         </header>
         <div className="flex flex-1 items-center justify-center p-4">

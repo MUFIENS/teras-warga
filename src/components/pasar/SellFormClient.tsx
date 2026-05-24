@@ -191,7 +191,7 @@ export function SellFormClient({ initialWallet, userId, initialData }: SellFormC
   return (
     <div className="bg-white dark:bg-black min-h-screen lg:min-h-0 lg:my-8 lg:rounded-3xl lg:border border-gray-200 dark:border-neutral-800 lg:shadow-xl overflow-hidden flex flex-col relative">
       {/* Header */}
-      <header className="sticky top-0 z-20 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800 px-4 h-16 flex items-center justify-between">
+      <header className="sticky top-14 md:top-0 z-20 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800 px-4 h-16 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link href="/pasar" className="p-2 -ml-2 hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-full transition-colors">
             <ArrowLeft className="w-5 h-5" />
@@ -213,7 +213,7 @@ export function SellFormClient({ initialWallet, userId, initialData }: SellFormC
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {imagePreviews.map((url, i) => (
               <div key={i} className="relative aspect-square rounded-2xl overflow-hidden border border-gray-200 dark:border-neutral-700 group">
-                <img src={url} alt={`Preview ${i}`} className="w-full h-full object-cover" />
+                <img loading="lazy" src={url} alt={`Preview ${i}`} className="w-full h-full object-cover" />
                 <button
                   onClick={() => removeImage(i)}
                   className="absolute top-2 right-2 p-1.5 bg-black/60 hover:bg-black text-white rounded-full transition-all opacity-100 lg:opacity-0 lg:group-hover:opacity-100"

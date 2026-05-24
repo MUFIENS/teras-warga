@@ -1,103 +1,81 @@
 @import "tailwindcss";
 
-/* ─── shadcn/ui animation keyframes ─── */
-@theme inline {
-  --animate-in: enter 0.2s ease-out;
-  --animate-out: exit 0.15s ease-in;
-
-  @keyframes enter {
-    from {
-      opacity: var(--tw-enter-opacity, 1);
-      transform: translate3d(
-          var(--tw-enter-translate-x, 0),
-          var(--tw-enter-translate-y, 0),
-          0
-        )
-        scale3d(
-          var(--tw-enter-scale, 1),
-          var(--tw-enter-scale, 1),
-          var(--tw-enter-scale, 1)
-        )
-        rotate(var(--tw-enter-rotate, 0));
-    }
-  }
-
-  @keyframes exit {
-    to {
-      opacity: var(--tw-exit-opacity, 1);
-      transform: translate3d(
-          var(--tw-exit-translate-x, 0),
-          var(--tw-exit-translate-y, 0),
-          0
-        )
-        scale3d(
-          var(--tw-exit-scale, 1),
-          var(--tw-exit-scale, 1),
-          var(--tw-exit-scale, 1)
-        )
-        rotate(var(--tw-exit-rotate, 0));
-    }
-  }
-}
-
-/* ─── tailwindcss-animate state utilities for shadcn/ui ─── */
+/* ─── shadcn/ui dialog animations ─── */
 @utility animate-in {
-  animation-name: enter;
-  animation-duration: var(--tw-animate-duration, 150ms);
-  --tw-enter-opacity: initial;
-  --tw-enter-scale: initial;
-  --tw-enter-rotate: initial;
-  --tw-enter-translate-x: initial;
-  --tw-enter-translate-y: initial;
+  animation-name: animateIn;
+  animation-duration: 200ms;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
 }
 
 @utility animate-out {
-  animation-name: exit;
-  animation-duration: var(--tw-animate-duration, 150ms);
-  --tw-exit-opacity: initial;
-  --tw-exit-scale: initial;
-  --tw-exit-rotate: initial;
-  --tw-exit-translate-x: initial;
-  --tw-exit-translate-y: initial;
+  animation-name: animateOut;
+  animation-duration: 150ms;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
 }
 
 @utility fade-in-0 {
   --tw-enter-opacity: 0;
 }
+
 @utility fade-out-0 {
   --tw-exit-opacity: 0;
 }
+
 @utility zoom-in-95 {
   --tw-enter-scale: 0.95;
 }
+
 @utility zoom-out-95 {
   --tw-exit-scale: 0.95;
 }
-@utility slide-in-from-top-\[48\%\] {
-  --tw-enter-translate-y: -48%;
+
+@keyframes animateIn {
+  from {
+    opacity: var(--tw-enter-opacity, 1);
+    transform: translate(var(--tw-enter-translate-x, 0), var(--tw-enter-translate-y, 0))
+      scale(var(--tw-enter-scale, 1));
+  }
 }
-@utility slide-out-to-top-\[48\%\] {
-  --tw-exit-translate-y: -48%;
+
+@keyframes animateOut {
+  to {
+    opacity: var(--tw-exit-opacity, 1);
+    transform: translate(var(--tw-exit-translate-x, 0), var(--tw-exit-translate-y, 0))
+      scale(var(--tw-exit-scale, 1));
+  }
 }
-@utility slide-in-from-left-1\/2 {
-  --tw-enter-translate-x: -50%;
+
+/* Dialog-specific slide animations — applied via component classes */
+@keyframes dialogOverlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
-@utility slide-out-to-left-1\/2 {
-  --tw-exit-translate-x: -50%;
+@keyframes dialogOverlayOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
-@utility slide-in-from-right-full {
-  --tw-enter-translate-x: 100%;
+@keyframes dialogContentIn {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.95); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
-@utility slide-out-to-right-full {
-  --tw-exit-translate-x: 100%;
+@keyframes dialogContentOut {
+  from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  to { opacity: 0; transform: translate(-50%, -50%) scale(0.95); }
 }
-@utility slide-in-from-bottom-full {
-  --tw-enter-translate-x: 0;
-  --tw-enter-translate-y: 100%;
+
+.dialog-overlay-animate-in {
+  animation: dialogOverlayIn 200ms ease-out;
 }
-@utility slide-out-to-bottom-full {
-  --tw-exit-translate-x: 0;
-  --tw-exit-translate-y: 100%;
+.dialog-overlay-animate-out {
+  animation: dialogOverlayOut 150ms ease-in;
+}
+.dialog-content-animate-in {
+  animation: dialogContentIn 200ms ease-out;
+}
+.dialog-content-animate-out {
+  animation: dialogContentOut 150ms ease-in;
 }
 
 @layer base {
@@ -116,8 +94,6 @@
 }
 
 @layer utilities {
-
-
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;

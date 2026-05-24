@@ -1,10 +1,8 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { createNotification } from '@/lib/notifications'
-
-
 
 export async function createPost(formData: FormData) {
   const supabase = await createClient()
@@ -273,4 +271,61 @@ export async function markAllNotificationsRead() {
     .eq('is_read', false)
 
   revalidatePath('/notifikasi', 'layout')
+}
+
+export async function fetchMorePosts(page: number) {
+  const supabase = await createClient()
+  const limit = 10
+  const from = page * limit
+  const to = from + limit - 1
+
+  const { data, error } = await supabase
+    .from('posts')
+    .select(`
+      id,
+      content,
+      image_url,
+      created_at,
+      user_id,
+      profiles:user_id (full_name, username, avatar_url),
+      likes:post_likes(count),
+      reposts:post_reposts(count),
+      replies:posts!parent_id(count)
+    `)
+    .is('parent_id', null)
+    .order('created_at', { ascending: false })
+    .range(from, to)
+
+  if (error) {
+    console.error('Error fetching more posts:', error)
+    return []
+  }
+
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (user && data && data.length > 0) {
+    const postIds = data.map(p => p.id)
+    
+    const [{ data: likes }, { data: reposts }] = await Promise.all([
+      supabase.from('post_likes').select('post_id').eq('user_id', user.id).in('post_id', postIds),
+      supabase.from('post_reposts').select('post_id').eq('user_id', user.id).in('post_id', postIds)
+    ])
+
+    const likedIds = new Set(likes?.map(l => l.post_id))
+    const repostIds = new Set(reposts?.map(r => r.post_id))
+
+    return data.map(post => ({
+      ...post,
+      hasLiked: likedIds.has(post.id),
+      hasReposted: repostIds.has(post.id),
+      isOwnPost: post.user_id === user.id
+    }))
+  }
+
+  return data?.map(post => ({
+    ...post,
+    hasLiked: false,
+    hasReposted: false,
+    isOwnPost: false
+  })) || []
 }

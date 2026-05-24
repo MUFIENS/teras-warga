@@ -4,6 +4,7 @@ import { useState, useRef, useTransition } from "react";
 import { ImagePlus, X } from "lucide-react";
 import { createPost } from "@/app/actions";
 import { useRouter } from "next/navigation";
+import { Avatar } from "@/components/ui/avatar";
 
 export function FeedInput({ 
   avatar, 
@@ -62,13 +63,7 @@ export function FeedInput({
   return (
     <div className="px-4 py-4 border-b border-gray-200 dark:border-neutral-800 flex gap-4">
       <div className="flex-shrink-0">
-        {avatar ? (
-          <img src={avatar} alt={username} className="w-10 h-10 rounded-full object-cover" />
-        ) : (
-          <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-neutral-800 flex items-center justify-center font-bold text-gray-500 uppercase">
-            {username?.charAt(0) || "U"}
-          </div>
-        )}
+        <Avatar src={avatar} alt={username} className="w-10 h-10" />
       </div>
       <div className="flex-1">
         <textarea
@@ -87,7 +82,7 @@ export function FeedInput({
             >
               <X className="w-5 h-5" />
             </button>
-            <img src={imagePreview} alt="Preview" className="w-full h-auto" />
+            <img loading="lazy" src={imagePreview} alt="Preview" className="w-full h-auto" />
           </div>
         )}
 

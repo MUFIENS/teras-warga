@@ -23,8 +23,7 @@ export function MetaMaskErrorModal({ isOpen, onClose }: MetaMaskErrorModalProps)
 
         <div className="p-6 flex flex-col items-center text-center">
           <div className="w-16 h-16 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mb-4">
-            <img 
-              src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" 
+            <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" 
               alt="MetaMask"
               className="w-10 h-10"
             />

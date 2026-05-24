@@ -1,10 +1,15 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Search, Plus, SlidersHorizontal, Package, X } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
+import { id as localeId } from "date-fns/locale";
 import { MarketItemCard } from "@/components/MarketItemCard";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useInView } from "react-intersection-observer";
+import { fetchMoreMarketItems } from "@/app/pasar/actions";
+import { Loader2 } from "lucide-react";
 
 const CATEGORIES = ["Semua", "Elektronik", "Pakaian", "Makanan", "Furnitur", "Kendaraan", "Jasa", "Lainnya"];
 
@@ -36,13 +41,62 @@ interface MarketplaceClientProps {
 
 export function MarketplaceClient({ items, currentUserId }: MarketplaceClientProps) {
   const router = useRouter();
+  const [itemsList, setItemsList] = useState(items || []);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState((items?.length || 0) >= 10);
+  const [loading, setLoading] = useState(false);
+
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Semua");
   const [showSoldItems, setShowSoldItems] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
 
+  const { ref, inView } = useInView({
+    threshold: 0,
+    rootMargin: "400px",
+  });
+
+  // Effect to load more items when scrolled to bottom
+  useEffect(() => {
+    if (inView && hasMore && !loading) {
+      loadMoreItems();
+    }
+  }, [inView, hasMore, loading]);
+
+  const loadMoreItems = async () => {
+    setLoading(true);
+    try {
+      const nextItems = await fetchMoreMarketItems(page);
+      if (nextItems && nextItems.length > 0) {
+        setItemsList((prev) => {
+          const newItems = nextItems.filter(
+            (ni) => !prev.some((p) => p.id === ni.id)
+          ).map(ni => ({
+            ...ni,
+            timeAgo: ni.created_at ? formatDistanceToNow(new Date(ni.created_at), { addSuffix: true, locale: localeId }) : "Baru saja",
+            price_idr: ni.price_idr || 0,
+            category: ni.category || "Lainnya",
+            condition: ni.condition || "Bekas",
+            is_active: ni.is_active !== false,
+          }));
+          return [...prev, ...newItems] as MarketItem[];
+        });
+        setPage((p) => p + 1);
+        if (nextItems.length < 10) {
+          setHasMore(false);
+        }
+      } else {
+        setHasMore(false);
+      }
+    } catch (error) {
+      console.error("Failed to load more items:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const filteredItems = useMemo(() => {
-    return items.filter((item) => {
+    return itemsList.filter((item) => {
       // Filter pencarian
       const matchesSearch =
         !searchQuery ||
@@ -54,23 +108,25 @@ export function MarketplaceClient({ items, currentUserId }: MarketplaceClientPro
         selectedCategory === "Semua" || item.category === selectedCategory;
 
       // Filter terjual (selalu tampilkan barang sendiri)
+      // Jika is_active adalah null, kita anggap true (masih aktif)
+      const isActive = item.is_active !== false;
       const matchesSold =
-        showSoldItems || item.is_active || item.user_id === currentUserId;
+        showSoldItems || isActive || item.user_id === currentUserId;
 
       return matchesSearch && matchesCategory && matchesSold;
     });
-  }, [items, searchQuery, selectedCategory, showSoldItems, currentUserId]);
+  }, [itemsList, searchQuery, selectedCategory, showSoldItems, currentUserId]);
 
   const handleEdit = (id: string) => {
     router.push(`/pasar/jual?edit=${id}`);
   };
 
-  const activeCount = items.filter(i => i.is_active).length;
+  const activeCount = itemsList.filter(i => i.is_active !== false).length;
 
   return (
     <>
       {/* Sticky Header */}
-      <header className="sticky top-0 z-10 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
+      <header className="sticky top-14 md:top-0 z-10 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
         <div className="flex items-center justify-between px-4 h-14">
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold">Pasar Warga</h1>
@@ -212,6 +268,14 @@ export function MarketplaceClient({ items, currentUserId }: MarketplaceClientPro
           )}
         </div>
       )}
+
+      {/* Intersection Observer Target */}
+      <div ref={ref} className="h-20 w-full flex items-center justify-center py-6 mt-4">
+        {loading && <Loader2 className="w-6 h-6 text-[#1D9BF0] animate-spin" />}
+        {!hasMore && itemsList.length > 0 && (
+          <p className="text-gray-500 text-sm">Tidak ada barang lagi di pasar.</p>
+        )}
+      </div>
 
     </>
   );

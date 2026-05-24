@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { MapPin, Tag, Package, MoreVertical, Trash2, Edit, Eye, EyeOff, MessageCircle, X } from "lucide-react";
 import { deleteMarketItem, toggleMarketItemStatus } from "@/app/pasar/actions";
 import { showInfo } from "@/lib/toast";
 import { useConfirmDialog } from "@/components/ui/confirm-dialog";
 import Link from "next/link";
+import Image from "next/image";
 import { CryptoPaymentModal } from "./crypto/CryptoPaymentModal";
 import { PaymentSelector } from "./pasar/PaymentSelector";
 
@@ -55,6 +57,12 @@ export function MarketItemCard({
   const [showPayment, setShowPayment] = useState(false);
   const [showCryptoModal, setShowCryptoModal] = useState(false);
   const { confirm, ConfirmDialog } = useConfirmDialog();
+
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("id-ID", {
@@ -113,10 +121,11 @@ export function MarketItemCard({
       {/* Image */}
       <Link href={`/pasar/${id}`} className="relative aspect-[4/3] bg-gray-100 dark:bg-neutral-800 overflow-hidden block">
         {image_url ? (
-          <img
+          <Image 
             src={image_url}
             alt={title}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
@@ -211,7 +220,7 @@ export function MarketItemCard({
             {/* Seller Info */}
             <Link href={`/profil/${seller_username}`} className="flex items-center gap-2 min-w-0 hover:opacity-80 transition-opacity">
               {seller_avatar ? (
-                <img src={seller_avatar} alt={seller_name} className="w-6 h-6 rounded-full object-cover flex-shrink-0" />
+                <img loading="lazy" src={seller_avatar} alt={seller_name} className="w-6 h-6 rounded-full object-cover flex-shrink-0" />
               ) : (
                 <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-neutral-700 flex items-center justify-center text-[10px] font-bold text-gray-500 uppercase flex-shrink-0">
                   {seller_name.charAt(0)}
@@ -242,10 +251,11 @@ export function MarketItemCard({
           </div>
         </div>
       </div>
-      
+    </div>
+
       {/* Payment Selector Modal */}
-      {showPayment && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setShowPayment(false)}>
+      {mounted && showPayment && createPortal(
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setShowPayment(false)}>
           <div className="bg-white dark:bg-neutral-900 rounded-2xl w-full max-w-sm relative shadow-2xl border border-gray-100 dark:border-neutral-800 animate-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
              <div className="flex items-center justify-between p-4 border-b border-gray-100 dark:border-neutral-800">
                 <h3 className="text-lg font-bold">Pilih Pembayaran</h3>
@@ -267,11 +277,12 @@ export function MarketItemCard({
                />
              </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* Crypto Payment Modal */}
-      {showCryptoModal && (
+      {mounted && showCryptoModal && createPortal(
         <CryptoPaymentModal
           isOpen={showCryptoModal}
           onClose={() => setShowCryptoModal(false)}
@@ -285,9 +296,9 @@ export function MarketItemCard({
             // Optional: send success event
             setShowCryptoModal(false);
           }}
-        />
+        />,
+        document.body
       )}
-    </div>
     </>
   );
 }

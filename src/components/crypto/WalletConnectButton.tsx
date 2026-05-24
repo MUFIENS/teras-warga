@@ -79,8 +79,7 @@ export function WalletConnectButton() {
                         }}
                       >
                         {chain.iconUrl && (
-                          <img
-                            alt={chain.name ?? "Chain icon"}
+                          <img loading="lazy" alt={chain.name ?? "Chain icon"}
                             src={chain.iconUrl}
                             style={{ width: 20, height: 20 }}
                           />

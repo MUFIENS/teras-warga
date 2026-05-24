@@ -149,7 +149,7 @@ export function LaporanDetailClient({ report, comments, hasUpvoted, currentUserI
     <>
       <ConfirmDialog />
       {/* ─── HEADER ─── */}
-      <header className="sticky top-0 z-10 flex items-center gap-3 px-4 h-14 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
+      <header className="sticky top-14 md:top-0 z-10 flex items-center gap-3 px-4 h-14 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
         <Link href="/laporan" className="p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </Link>
@@ -159,7 +159,7 @@ export function LaporanDetailClient({ report, comments, hasUpvoted, currentUserI
       {/* ─── IMAGE ─── */}
       {report.image_url && (
         <div className="relative w-full max-h-80 overflow-hidden bg-gray-100 dark:bg-neutral-800">
-          <img src={report.image_url} alt={report.title} className="w-full h-full object-cover" />
+          <img loading="lazy" src={report.image_url} alt={report.title} className="w-full h-full object-cover" />
         </div>
       )}
 
@@ -194,7 +194,7 @@ export function LaporanDetailClient({ report, comments, hasUpvoted, currentUserI
         {/* Author & Time */}
         <Link href={`/profil/${report.profiles?.username}`} className="flex items-center gap-3 mt-4 pt-4 border-t border-gray-100 dark:border-neutral-800 hover:opacity-80 transition-opacity">
           {report.profiles?.avatar_url ? (
-            <img src={report.profiles.avatar_url} alt="" className="w-8 h-8 rounded-full object-cover" />
+            <img loading="lazy" src={report.profiles.avatar_url} alt="" className="w-8 h-8 rounded-full object-cover" />
           ) : (
             <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-neutral-700 flex items-center justify-center text-xs font-bold uppercase">{report.profiles?.full_name?.charAt(0) || "?"}</div>
           )}
@@ -281,7 +281,7 @@ export function LaporanDetailClient({ report, comments, hasUpvoted, currentUserI
                 <div key={c.id} className="flex gap-3 group">
                   <Link href={`/profil/${c.profiles?.username}`} className="flex-shrink-0 mt-0.5 hover:opacity-80 transition-opacity">
                     {c.profiles?.avatar_url ? (
-                      <img src={c.profiles.avatar_url} alt="" className="w-8 h-8 rounded-full object-cover" />
+                      <img loading="lazy" src={c.profiles.avatar_url} alt="" className="w-8 h-8 rounded-full object-cover" />
                     ) : (
                       <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-neutral-700 flex items-center justify-center text-xs font-bold uppercase">{c.profiles?.full_name?.charAt(0) || "?"}</div>
                     )}

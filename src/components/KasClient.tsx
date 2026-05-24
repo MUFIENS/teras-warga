@@ -130,7 +130,7 @@ export function KasClient({ transactions, currentYear }: KasClientProps) {
   return (
     <>
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
+      <header className="sticky top-14 md:top-0 z-10 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
         <div className="flex items-center justify-between px-4 h-14">
           <h1 className="text-xl font-bold">Iuran Kas</h1>
           <span className="text-xs bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-full font-semibold">
@@ -311,7 +311,7 @@ export function KasClient({ transactions, currentYear }: KasClientProps) {
                 />
                 {proofPreview ? (
                   <div className="relative rounded-xl overflow-hidden border border-gray-200 dark:border-neutral-700">
-                    <img src={proofPreview} alt="Bukti" className="w-full max-h-[300px] object-contain bg-gray-50 dark:bg-neutral-800" />
+                    <img loading="lazy" src={proofPreview} alt="Bukti" className="w-full max-h-[300px] object-contain bg-gray-50 dark:bg-neutral-800" />
                     <button
                       onClick={() => {
                         setProof(null);

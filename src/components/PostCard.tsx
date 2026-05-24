@@ -2,8 +2,10 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { MessageCircle, Repeat2, Heart, Share, MoreHorizontal, Image as ImageIcon } from "lucide-react";
 import { toggleLike, toggleRepost, deletePost, reportPost } from "@/app/actions";
+import { Avatar } from "@/components/ui/avatar";
 import { useTransition, useState, useRef, useEffect } from "react";
 import { showSuccess } from "@/lib/toast";
 import { useConfirmDialog } from "@/components/ui/confirm-dialog";
@@ -137,13 +139,7 @@ export function PostCard({
     >
       <div className="flex-shrink-0">
         <Link href={`/profil/${username}`} onClick={e => e.stopPropagation()} className="block">
-          {avatar ? (
-            <img src={avatar} alt={name} className="w-10 h-10 rounded-full object-cover hover:opacity-80 transition-opacity" />
-          ) : (
-            <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-neutral-800 flex items-center justify-center font-bold text-gray-500 uppercase hover:opacity-80 transition-opacity">
-              {name.charAt(0)}
-            </div>
-          )}
+          <Avatar src={avatar} alt={name} className="w-10 h-10 hover:opacity-80 transition-opacity" />
         </Link>
       </div>
       
@@ -192,7 +188,13 @@ export function PostCard({
 
         {image_url && (
           <div className="mt-3 relative rounded-2xl overflow-hidden border border-gray-200 dark:border-neutral-800">
-            <img src={image_url} alt="Post attachment" className="w-full object-cover max-h-[500px]" />
+            <Image 
+              src={image_url} 
+              alt="Post attachment" 
+              width={800}
+              height={500}
+              className="w-full h-auto object-cover max-h-[500px]" 
+            />
           </div>
         )}
         

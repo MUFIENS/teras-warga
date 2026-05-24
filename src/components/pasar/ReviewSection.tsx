@@ -97,8 +97,7 @@ export function ReviewSection({ reviews }: ReviewSectionProps) {
                   {/* Avatar */}
                   <div className="flex-shrink-0">
                     {rev.reviewer?.avatar_url ? (
-                      <img
-                        src={rev.reviewer.avatar_url}
+                      <img loading="lazy" src={rev.reviewer.avatar_url}
                         alt={rev.reviewer.full_name}
                         className="w-9 h-9 rounded-full object-cover"
                       />

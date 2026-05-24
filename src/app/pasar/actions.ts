@@ -180,3 +180,36 @@ export async function toggleMarketItemStatus(itemId: string) {
 
   revalidatePath('/pasar', 'layout')
 }
+
+export async function fetchMoreMarketItems(page: number) {
+  const supabase = await createClient()
+  const limit = 10
+  const from = page * limit
+  const to = from + limit - 1
+
+  const { data, error } = await supabase
+    .from('market_items')
+    .select(`
+      id,
+      title,
+      description,
+      price_idr,
+      image_url,
+      category,
+      condition,
+      location,
+      is_active,
+      created_at,
+      user_id,
+      profiles:user_id (full_name, username, avatar_url, crypto_wallet)
+    `)
+    .order('created_at', { ascending: false })
+    .range(from, to)
+
+  if (error) {
+    console.error('Error fetching more market items:', error)
+    return []
+  }
+
+  return data
+}

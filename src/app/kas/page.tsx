@@ -1,7 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { formatDistanceToNow } from "date-fns";
 import { id as localeId } from "date-fns/locale";
-import { RealtimeListener } from "@/components/RealtimeListener";
 import { KasClient } from "@/components/KasClient";
 
 export default async function Kas() {
@@ -11,7 +10,7 @@ export default async function Kas() {
   if (!user) {
     return (
       <div className="flex flex-col min-h-screen border-r border-gray-200 dark:border-neutral-800">
-        <header className="sticky top-0 z-10 flex items-center px-4 h-14 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
+        <header className="sticky top-14 md:top-0 z-10 flex items-center px-4 h-14 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
           <h1 className="text-xl font-bold">Iuran Kas</h1>
         </header>
         <div className="flex flex-1 items-center justify-center p-4">
@@ -37,9 +36,7 @@ export default async function Kas() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <div className="flex flex-col min-h-screen border-r border-gray-200 dark:border-neutral-800">
-      <RealtimeListener />
-      <KasClient
+    <div className="flex flex-col min-h-screen border-r border-gray-200 dark:border-neutral-800">      <KasClient
         transactions={formattedTransactions}
         currentYear={currentYear}
       />
