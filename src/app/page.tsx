@@ -51,8 +51,11 @@ export default async function Home() {
           username={currentUserProfile.username} 
         />
       ) : (
-        <div className="px-4 py-8 border-b border-gray-200 dark:border-neutral-800 text-center text-gray-500">
-          Silakan login untuk memposting
+        <div className="px-4 py-8 border-b border-gray-200 dark:border-neutral-800 flex flex-col items-center justify-center gap-4 text-center">
+          <p className="text-gray-500">Silakan login untuk memposting dan berinteraksi</p>
+          <a href="/login" className="px-6 py-2 bg-[#1D9BF0] text-white rounded-full font-bold hover:bg-[#1A8CD8] transition-colors">
+            Login Sekarang
+          </a>
         </div>
       )}
 

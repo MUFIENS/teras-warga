@@ -67,18 +67,14 @@ export default async function RootLayout({
         <ThemeProvider>
           <Web3Provider>
             <PresenceProvider currentUserId={user?.id}>
-              {user ? (
-                <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row min-h-screen">
-                  <Sidebar unreadNotifications={unreadNotifications} unreadMessages={unreadMessages} profile={profileData ? { ...profileData, id: user.id } : undefined} />
-                  <main className="flex-1 flex flex-col relative">
-                    <div className="max-w-4xl mx-auto w-full flex-1">
-                      {children}
-                    </div>
-                  </main>
-                </div>
-              ) : (
-                children
-              )}
+              <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row min-h-screen">
+                <Sidebar unreadNotifications={unreadNotifications} unreadMessages={unreadMessages} profile={profileData && user?.id ? { ...profileData, id: user.id } : undefined} />
+                <main className="flex-1 flex flex-col relative">
+                  <div className="max-w-4xl mx-auto w-full flex-1">
+                    {children}
+                  </div>
+                </main>
+              </div>
             </PresenceProvider>
           </Web3Provider>
           <Toaster

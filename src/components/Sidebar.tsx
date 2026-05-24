@@ -47,7 +47,7 @@ export function Sidebar({ unreadNotifications = 0, unreadMessages = 0, profile }
   const [isOpen, setIsOpen] = React.useState(false);
   const showPostingButton = pathname === "/" || pathname === "/profil";
 
-  const navItems: NavItem[] = [
+  const navItems: NavItem[] = profile ? [
     { label: "Beranda", href: "/", icon: Home },
     { label: "Pasar", href: "/pasar", icon: Store },
     { label: "Kas", href: "/kas", icon: Wallet },
@@ -57,6 +57,9 @@ export function Sidebar({ unreadNotifications = 0, unreadMessages = 0, profile }
     { label: "Notifikasi", href: "/notifikasi", icon: Bell, badge: unreadNotifications },
     { label: "Pesan", href: "/pesan", icon: Mail, badge: unreadMessages },
     { label: "Profil", href: "/profil", icon: User },
+  ] : [
+    { label: "Beranda", href: "/", icon: Home },
+    { label: "Pasar", href: "/pasar", icon: Store },
   ];
 
   const handleLogout = async () => {
@@ -171,13 +174,23 @@ export function Sidebar({ unreadNotifications = 0, unreadMessages = 0, profile }
           
 
 
-          <button 
-            onClick={handleLogout}
-            className="flex items-center gap-4 rounded-full px-4 py-3 font-medium text-gray-500 hover:text-red-500 hover:bg-gray-100 dark:hover:bg-neutral-800/50 transition-colors duration-200 group"
-          >
-            <LogOut className="h-6 w-6 group-hover:text-red-500 transition-colors duration-200" />
-            <span className="text-lg">Logout</span>
-          </button>
+          {profile ? (
+            <button 
+              onClick={handleLogout}
+              className="flex items-center gap-4 rounded-full px-4 py-3 font-medium text-gray-500 hover:text-red-500 hover:bg-gray-100 dark:hover:bg-neutral-800/50 transition-colors duration-200 group"
+            >
+              <LogOut className="h-6 w-6 group-hover:text-red-500 transition-colors duration-200" />
+              <span className="text-lg">Logout</span>
+            </button>
+          ) : (
+            <Link 
+              href="/login"
+              className="flex items-center gap-4 rounded-full px-4 py-3 font-medium text-[#1D9BF0] hover:bg-[#1D9BF0]/10 transition-colors duration-200 group"
+            >
+              <User className="h-6 w-6" />
+              <span className="text-lg">Login / Daftar</span>
+            </Link>
+          )}
         </div>
       </aside>
 
@@ -319,16 +332,27 @@ export function Sidebar({ unreadNotifications = 0, unreadMessages = 0, profile }
 
 
 
-          <button 
-            onClick={() => {
-              setIsOpen(false);
-              handleLogout();
-            }}
-            className="flex items-center gap-4 rounded-full px-4 py-2.5 font-medium text-gray-500 hover:text-red-500 hover:bg-gray-100 dark:hover:bg-neutral-800/50 transition-colors duration-200 group cursor-pointer"
-          >
-            <LogOut className="h-6 w-6 group-hover:text-red-500 transition-colors duration-200" />
-            <span className="text-[16px]">Logout</span>
-          </button>
+          {profile ? (
+            <button 
+              onClick={() => {
+                setIsOpen(false);
+                handleLogout();
+              }}
+              className="flex items-center gap-4 rounded-full px-4 py-2.5 font-medium text-gray-500 hover:text-red-500 hover:bg-gray-100 dark:hover:bg-neutral-800/50 transition-colors duration-200 group cursor-pointer"
+            >
+              <LogOut className="h-6 w-6 group-hover:text-red-500 transition-colors duration-200" />
+              <span className="text-[16px]">Logout</span>
+            </button>
+          ) : (
+            <Link 
+              href="/login"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center gap-4 rounded-full px-4 py-2.5 font-medium text-[#1D9BF0] hover:bg-[#1D9BF0]/10 transition-colors duration-200 group cursor-pointer"
+            >
+              <User className="h-6 w-6" />
+              <span className="text-[16px]">Login / Daftar</span>
+            </Link>
+          )}
         </div>
       </div>
     </>
