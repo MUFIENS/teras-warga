@@ -15,8 +15,27 @@ export default async function Home() {
     currentUserProfile = await getUserProfile(user.id);
   }
 
-  // Ambil postingan dengan cache
-  const postsData = await getCachedPosts();
+  // Fetch posts directly using authenticated client to prevent RLS hiding profile info
+  const { data: postsData, error: postsError } = await supabase
+    .from('posts')
+    .select(`
+      id,
+      content,
+      image_url,
+      created_at,
+      user_id,
+      profiles:user_id (full_name, username, avatar_url),
+      likes:post_likes(count),
+      reposts:post_reposts(count),
+      replies:posts!parent_id(count)
+    `)
+    .is('parent_id', null)
+    .order('created_at', { ascending: false })
+    .range(0, 9);
+    
+  if (postsError) {
+    console.error('Error fetching posts:', postsError);
+  }
 
   // Ambil interaksi pengguna saat ini
   const { data: userLikesData } = user 
