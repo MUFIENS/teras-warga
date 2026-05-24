@@ -7,6 +7,7 @@ import { Web3Provider } from "@/components/providers/Web3Provider";
 import { createClient } from "@/lib/supabase/server";
 import { getUserProfile } from "@/lib/data/user";
 import { Toaster } from "sonner";
+import { headers } from "next/headers";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -57,6 +58,10 @@ export default async function RootLayout({
     profileData = profileResult ? { ...profileResult, id: user.id, is_seller: profileResult.is_seller ?? false } : null;
   }
 
+  const headersList = await headers();
+  const pathname = headersList.get('x-pathname') || '';
+  const isPublicRoute = pathname.startsWith('/welcome') || pathname.startsWith('/login') || pathname.startsWith('/register');
+
   return (
     <html
       lang="en"
@@ -67,14 +72,20 @@ export default async function RootLayout({
         <ThemeProvider>
           <Web3Provider>
             <PresenceProvider currentUserId={user?.id}>
-              <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row min-h-screen">
-                <Sidebar unreadNotifications={unreadNotifications} unreadMessages={unreadMessages} profile={profileData && user?.id ? { ...profileData, id: user.id } : undefined} />
-                <main className="flex-1 flex flex-col relative">
-                  <div className="max-w-4xl mx-auto w-full flex-1">
-                    {children}
-                  </div>
+              {isPublicRoute ? (
+                <main className="min-h-screen w-full flex flex-col relative bg-white dark:bg-black">
+                  {children}
                 </main>
-              </div>
+              ) : (
+                <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row min-h-screen">
+                  <Sidebar unreadNotifications={unreadNotifications} unreadMessages={unreadMessages} profile={profileData && user?.id ? { ...profileData, id: user.id } : undefined} />
+                  <main className="flex-1 flex flex-col relative">
+                    <div className="max-w-4xl mx-auto w-full flex-1">
+                      {children}
+                    </div>
+                  </main>
+                </div>
+              )}
             </PresenceProvider>
           </Web3Provider>
           <Toaster
