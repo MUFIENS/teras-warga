@@ -3,28 +3,32 @@
 import Link from "next/link";
 import { BadgeCheck, Star, ShoppingBag, Clock } from "lucide-react";
 import { SellerProfile } from "@/types/marketplace";
+import { usePresence } from "@/components/providers/PresenceProvider";
 
 interface SellerCardProps {
   seller: SellerProfile;
 }
 
-function getOnlineStatus(lastActive: string | null): {
-  label: string;
-  color: string;
-  dotClass: string;
-} {
-  if (!lastActive) return { label: "Offline", color: "text-gray-400", dotClass: "bg-gray-400" };
-  const diff = Date.now() - new Date(lastActive).getTime();
-  const minutes = diff / 60000;
-  if (minutes < 5)
-    return { label: "Online", color: "text-emerald-500", dotClass: "bg-emerald-500" };
-  if (minutes < 60)
-    return { label: `${Math.floor(minutes)}m lalu`, color: "text-amber-500", dotClass: "bg-amber-500" };
-  return { label: "Offline", color: "text-gray-400", dotClass: "bg-gray-400" };
-}
-
 export function SellerCard({ seller }: SellerCardProps) {
-  const status = getOnlineStatus(seller.last_active);
+  const { isOnline, lastActive } = usePresence(seller.id, seller.last_active || null);
+
+  const getStatusDisplay = () => {
+    if (isOnline) {
+      return { label: "Online", color: "text-emerald-500", dotClass: "bg-emerald-500" };
+    }
+    if (!lastActive) {
+      return { label: "Offline", color: "text-gray-400", dotClass: "bg-gray-400" };
+    }
+    
+    const diff = Date.now() - new Date(lastActive).getTime();
+    const minutes = diff / 60000;
+    
+    if (minutes < 5) return { label: "Online", color: "text-emerald-500", dotClass: "bg-emerald-500" };
+    if (minutes < 60) return { label: `${Math.floor(minutes)}m lalu`, color: "text-amber-500", dotClass: "bg-amber-500" };
+    return { label: "Offline", color: "text-gray-400", dotClass: "bg-gray-400" };
+  };
+
+  const status = getStatusDisplay();
 
   return (
     <div className="bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 rounded-2xl p-5">
