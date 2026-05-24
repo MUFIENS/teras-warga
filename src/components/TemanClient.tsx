@@ -9,6 +9,8 @@ import { showError } from "@/lib/toast";
 import { useConfirmDialog } from "@/components/ui/confirm-dialog";
 import Link from "next/link";
 import { Avatar } from "@/components/ui/avatar";
+import { usePresence } from "@/components/providers/PresenceProvider";
+import { Tooltip } from "@/components/ui/tooltip";
 
 interface Profile {
   id: string;
@@ -31,6 +33,35 @@ interface TemanClientProps {
   currentUserId: string;
   friendships: Friendship[];
   allProfiles: Profile[];
+}
+
+// Komponen Pembantu untuk menampilkan teman beserta status onlinenya secara realtime
+function FriendItem({ f, handleRemoveFriend }: { f: any, handleRemoveFriend: (id: string, name: string) => void }) {
+  const { isOnline } = usePresence(f.profile.id, null); // last_active is not provided by this query so we rely solely on presence
+  
+  return (
+    <div className="flex items-center justify-between p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-neutral-900/50 transition-colors group">
+      <Link href={`/profil/${f.profile.username}`} className="flex items-center gap-3 min-w-0 hover:opacity-80 transition-opacity">
+        <div className="relative flex-shrink-0">
+          <Avatar src={f.profile.avatar_url} alt={f.profile.full_name} className="w-12 h-12 border border-gray-100 dark:border-neutral-800" />
+          {/* Indikator Online/Offline */}
+          <span className={`absolute bottom-[2px] right-[2px] w-3.5 h-3.5 rounded-full ring-2 ring-white dark:ring-black ${isOnline ? 'bg-green-500' : 'bg-gray-400'}`} />
+        </div>
+        <div className="min-w-0">
+          <h3 className="font-semibold text-[15px] truncate">{f.profile.full_name}</h3>
+          <p className="text-[13px] text-gray-500 truncate">@{f.profile.username}</p>
+        </div>
+      </Link>
+      <div className="flex items-center gap-2">
+        <Link href={`/pesan?user=${f.profile.id}`} className="p-2.5 bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-gray-300 rounded-full hover:bg-[#1D9BF0] hover:text-white dark:hover:bg-[#1D9BF0] transition-colors">
+          <MessageCircle className="w-4 h-4" />
+        </Link>
+        <button onClick={() => handleRemoveFriend(f.friendshipId, f.profile.full_name)} className="p-2.5 bg-gray-100 dark:bg-neutral-800 text-gray-400 rounded-full hover:bg-red-500 hover:text-white transition-colors">
+          <UserMinus className="w-4 h-4" />
+        </button>
+      </div>
+    </div>
+  );
 }
 
 export function TemanClient({ currentUserId, friendships: initialFriendships, allProfiles }: TemanClientProps) {
@@ -187,23 +218,7 @@ export function TemanClient({ currentUserId, friendships: initialFriendships, al
         {viewTab === "semua" && (
           <div className="space-y-2">
             {filteredFriends.map((f) => (
-              <div key={f.friendshipId} className="flex items-center justify-between p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-neutral-900/50 transition-colors group">
-                <Link href={`/profil/${f.profile.username}`} className="flex items-center gap-3 min-w-0 hover:opacity-80 transition-opacity">
-                  <Avatar src={f.profile.avatar_url} alt={f.profile.full_name} className="w-12 h-12 border border-gray-100 dark:border-neutral-800" />
-                  <div className="min-w-0">
-                    <h3 className="font-semibold text-[15px] truncate">{f.profile.full_name}</h3>
-                    <p className="text-[13px] text-gray-500 truncate">@{f.profile.username}</p>
-                  </div>
-                </Link>
-                <div className="flex items-center gap-2">
-                  <Link href={`/pesan?user=${f.profile.id}`} className="p-2.5 bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-gray-300 rounded-full hover:bg-[#1D9BF0] hover:text-white dark:hover:bg-[#1D9BF0] transition-colors">
-                    <MessageCircle className="w-4 h-4" />
-                  </Link>
-                  <button onClick={() => handleRemoveFriend(f.friendshipId, f.profile.full_name)} className="p-2.5 bg-gray-100 dark:bg-neutral-800 text-gray-400 rounded-full hover:bg-red-500 hover:text-white transition-colors">
-                    <UserMinus className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
+              <FriendItem key={f.friendshipId} f={f} handleRemoveFriend={handleRemoveFriend} />
             ))}
             {filteredFriends.length === 0 && (
               <div className="py-20 text-center flex flex-col items-center">
