@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Home, Twitter, Github, Linkedin } from "lucide-react";
+import { Home, Mail, MessageSquare, Globe } from "lucide-react";
 
 export function Footer() {
   return (
@@ -18,9 +18,9 @@ export function Footer() {
               Membangun ekosistem warga digital yang modern, aman, dan terintegrasi untuk masa depan yang lebih baik.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="text-gray-400 hover:text-[#1D9BF0] transition-colors"><Twitter className="w-5 h-5" /></a>
-              <a href="#" className="text-gray-400 hover:text-[#1D9BF0] transition-colors"><Github className="w-5 h-5" /></a>
-              <a href="#" className="text-gray-400 hover:text-[#1D9BF0] transition-colors"><Linkedin className="w-5 h-5" /></a>
+              <a href="#" className="text-gray-400 hover:text-[#1D9BF0] transition-colors"><Globe className="w-5 h-5" /></a>
+              <a href="#" className="text-gray-400 hover:text-[#1D9BF0] transition-colors"><MessageSquare className="w-5 h-5" /></a>
+              <a href="#" className="text-gray-400 hover:text-[#1D9BF0] transition-colors"><Mail className="w-5 h-5" /></a>
             </div>
           </div>
 
