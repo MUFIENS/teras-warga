@@ -10,7 +10,8 @@ import {
 import { toggleUpvote, addComment, deleteComment, updateReportStatus } from "@/app/laporan/actions";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { CustomSwal as Swal } from "@/lib/swal";
+import { showSuccess, showError } from "@/lib/toast";
+import { useConfirmDialog } from "@/components/ui/confirm-dialog";
 import Link from "next/link";
 
 const STATUS_CFG: Record<string, { label: string; icon: any; color: string; bg: string; border: string; dot: string }> = {
@@ -80,6 +81,7 @@ export function LaporanDetailClient({ report, comments, hasUpvoted, currentUserI
   const [commentMenuId, setCommentMenuId] = useState<string | null>(null);
   const commentInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const { confirm, ConfirmDialog } = useConfirmDialog();
 
   // Waktu-nyata untuk laporan ini
   useEffect(() => {
@@ -111,20 +113,20 @@ export function LaporanDetailClient({ report, comments, hasUpvoted, currentUserI
         await addComment(report.id, text);
         router.refresh();
       } catch (err: any) {
-        Swal.fire({ title: "Gagal!", text: err.message, icon: "error", confirmButtonColor: "#d33" });
+        showError("Gagal!", err.message);
       }
     });
   };
 
-  const handleDeleteComment = (commentId: string) => {
+  const handleDeleteComment = async (commentId: string) => {
     setCommentMenuId(null);
-    Swal.fire({
-      title: "Hapus Komentar?", icon: "warning", showCancelButton: true,
-      confirmButtonColor: "#d33", cancelButtonColor: "#3085d6",
-      confirmButtonText: "Hapus", cancelButtonText: "Batal",
-    }).then((res) => {
-      if (res.isConfirmed) startTransition(async () => { await deleteComment(commentId); router.refresh(); });
+    const ok = await confirm({
+      title: "Hapus Komentar?",
+      confirmText: "Hapus",
+      cancelText: "Batal",
+      variant: "danger",
     });
+    if (ok) startTransition(async () => { await deleteComment(commentId); router.refresh(); });
   };
 
   const handleStatusUpdate = () => {
@@ -133,9 +135,9 @@ export function LaporanDetailClient({ report, comments, hasUpvoted, currentUserI
         await updateReportStatus(report.id, adminStatus, adminNotes || undefined);
         router.refresh();
         setShowAdminPanel(false);
-        Swal.fire({ title: "Status Diperbarui!", icon: "success", timer: 1500, showConfirmButton: false });
+        showSuccess("Status Diperbarui!");
       } catch (err: any) {
-        Swal.fire({ title: "Gagal!", text: err.message, icon: "error", confirmButtonColor: "#d33" });
+        showError("Gagal!", err.message);
       }
     });
   };
@@ -145,6 +147,7 @@ export function LaporanDetailClient({ report, comments, hasUpvoted, currentUserI
 
   return (
     <>
+      <ConfirmDialog />
       {/* ─── HEADER ─── */}
       <header className="sticky top-0 z-10 flex items-center gap-3 px-4 h-14 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
         <Link href="/laporan" className="p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors">

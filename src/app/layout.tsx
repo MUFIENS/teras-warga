@@ -5,6 +5,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { PresenceProvider } from "@/components/providers/PresenceProvider";
 import { Web3Provider } from "@/components/providers/Web3Provider";
 import { createClient } from "@/lib/supabase/server";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -83,6 +84,13 @@ export default async function RootLayout({
               )}
             </PresenceProvider>
           </Web3Provider>
+          <Toaster
+            position="top-center"
+            richColors
+            toastOptions={{
+              className: "!rounded-xl !font-[family-name:var(--font-geist-sans)] !shadow-lg",
+            }}
+          />
         </ThemeProvider>
       </body>
     </html>

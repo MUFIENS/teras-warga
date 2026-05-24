@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { submitKasPayment } from "@/app/kas/actions";
 import { useRouter } from "next/navigation";
-import { CustomSwal as Swal } from "@/lib/swal";
+import { showSuccess, showError } from "@/lib/toast";
 
 const MONTHS = [
   "Januari", "Februari", "Maret", "April", "Mei", "Juni",
@@ -96,23 +96,9 @@ export function KasClient({ transactions, currentYear }: KasClientProps) {
         setSelectedMonth(null);
         router.refresh();
 
-        Swal.fire({
-          title: "Pembayaran Dikirim!",
-          text: "Bukti pembayaran Anda sedang ditinjau admin.",
-          icon: "success",
-          confirmButtonColor: "#1D9BF0",
-          background: document.documentElement.classList.contains("dark") ? "#171717" : "#ffffff",
-          color: document.documentElement.classList.contains("dark") ? "#ffffff" : "#000000",
-        });
+        showSuccess("Pembayaran Dikirim!", "Bukti pembayaran Anda sedang ditinjau admin.");
       } catch (err: any) {
-        Swal.fire({
-          title: "Gagal!",
-          text: err.message || "Terjadi kesalahan.",
-          icon: "error",
-          confirmButtonColor: "#d33",
-          background: document.documentElement.classList.contains("dark") ? "#171717" : "#ffffff",
-          color: document.documentElement.classList.contains("dark") ? "#ffffff" : "#000000",
-        });
+        showError("Gagal!", err.message || "Terjadi kesalahan.");
       }
     });
   };

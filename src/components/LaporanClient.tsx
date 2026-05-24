@@ -9,7 +9,8 @@ import {
 } from "lucide-react";
 import { createReport, deleteReport, toggleUpvote } from "@/app/laporan/actions";
 import { useRouter } from "next/navigation";
-import { CustomSwal as Swal } from "@/lib/swal";
+import { showSuccess, showError } from "@/lib/toast";
+import { useConfirmDialog } from "@/components/ui/confirm-dialog";
 import Link from "next/link";
 import { REPORT_CATEGORIES } from "@/lib/validators";
 
@@ -72,6 +73,7 @@ export function LaporanClient({ reports, currentUserId, userRole }: LaporanClien
   const [menuOpen, setMenuOpen] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const { confirm, ConfirmDialog } = useConfirmDialog();
 
   // Status formulir
   const [title, setTitle] = useState("");
@@ -131,22 +133,23 @@ export function LaporanClient({ reports, currentUserId, userRole }: LaporanClien
         if (image) fd.append("image", image);
         await createReport(fd);
         resetForm(); setShowForm(false); router.refresh();
-        Swal.fire({ title: "Laporan Terkirim!", text: "Laporan Anda akan ditinjau oleh admin.", icon: "success", confirmButtonColor: "#1D9BF0" });
+        showSuccess("Laporan Terkirim!", "Laporan Anda akan ditinjau oleh admin.");
       } catch (err: unknown) {
-        Swal.fire({ title: "Gagal!", text: err instanceof Error ? err.message : 'Terjadi kesalahan', icon: "error", confirmButtonColor: "#d33" });
+        showError("Gagal!", err instanceof Error ? err.message : 'Terjadi kesalahan');
       }
     });
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     setMenuOpen(null);
-    Swal.fire({
-      title: "Hapus Laporan?", text: "Laporan akan dihapus permanen.", icon: "warning",
-      showCancelButton: true, confirmButtonColor: "#d33", cancelButtonColor: "#3085d6",
-      confirmButtonText: "Ya, hapus!", cancelButtonText: "Batal",
-    }).then((res) => {
-      if (res.isConfirmed) startTransition(async () => { await deleteReport(id); router.refresh(); });
+    const ok = await confirm({
+      title: "Hapus Laporan?",
+      description: "Laporan akan dihapus permanen.",
+      confirmText: "Ya, hapus!",
+      cancelText: "Batal",
+      variant: "danger",
     });
+    if (ok) startTransition(async () => { await deleteReport(id); router.refresh(); });
   };
 
   const handleUpvote = (e: React.MouseEvent, reportId: string) => {
@@ -156,6 +159,7 @@ export function LaporanClient({ reports, currentUserId, userRole }: LaporanClien
 
   return (
     <>
+      <ConfirmDialog />
       {/* ─── HEADER ─── */}
       <header className="sticky top-0 z-10 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
         <div className="flex items-center justify-between px-4 h-14">

@@ -5,7 +5,8 @@ import { Search, UserPlus, UserCheck, X, Users, UserMinus, Check, MessageCircle,
 import { sendFriendRequest, acceptFriendRequest, rejectFriendRequest, cancelFriendRequest, removeFriend } from "@/app/teman/actions";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { CustomSwal as Swal } from "@/lib/swal";
+import { showError } from "@/lib/toast";
+import { useConfirmDialog } from "@/components/ui/confirm-dialog";
 import Link from "next/link";
 
 interface Profile {
@@ -37,6 +38,7 @@ export function TemanClient({ currentUserId, friendships: initialFriendships, al
   const [friendships, setFriendships] = useState<Friendship[]>(initialFriendships);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const { confirm, ConfirmDialog } = useConfirmDialog();
 
   // Pembaruan waktu-nyata
   useEffect(() => {
@@ -87,7 +89,7 @@ export function TemanClient({ currentUserId, friendships: initialFriendships, al
       try {
         await sendFriendRequest(targetId);
       } catch (err: any) {
-        Swal.fire({ title: "Gagal!", text: err.message, icon: "error" });
+        showError("Gagal!", err.message);
       }
     });
   };
@@ -95,32 +97,33 @@ export function TemanClient({ currentUserId, friendships: initialFriendships, al
   const handleAcceptRequest = (requestId: string) => {
     startTransition(async () => {
       try { await acceptFriendRequest(requestId); } 
-      catch (err: any) { Swal.fire({ title: "Gagal!", text: err.message, icon: "error" }); }
+      catch (err: any) { showError("Gagal!", err.message); }
     });
   };
 
   const handleRejectRequest = (requestId: string) => {
     startTransition(async () => {
       try { await rejectFriendRequest(requestId); } 
-      catch (err: any) { Swal.fire({ title: "Gagal!", text: err.message, icon: "error" }); }
+      catch (err: any) { showError("Gagal!", err.message); }
     });
   };
 
   const handleCancelRequest = (requestId: string) => {
     startTransition(async () => {
       try { await cancelFriendRequest(requestId); } 
-      catch (err: any) { Swal.fire({ title: "Gagal!", text: err.message, icon: "error" }); }
+      catch (err: any) { showError("Gagal!", err.message); }
     });
   };
 
-  const handleRemoveFriend = (friendshipId: string, name: string) => {
-    Swal.fire({
-      title: "Hapus Pertemanan?", text: `Anda akan menghapus ${name} dari daftar teman.`, icon: "warning",
-      showCancelButton: true, confirmButtonColor: "#d33", cancelButtonColor: "#3085d6",
-      confirmButtonText: "Hapus", cancelButtonText: "Batal",
-    }).then((res) => {
-      if (res.isConfirmed) startTransition(async () => { await removeFriend(friendshipId); });
+  const handleRemoveFriend = async (friendshipId: string, name: string) => {
+    const ok = await confirm({
+      title: "Hapus Pertemanan?",
+      description: `Anda akan menghapus ${name} dari daftar teman.`,
+      confirmText: "Hapus",
+      cancelText: "Batal",
+      variant: "danger",
     });
+    if (ok) startTransition(async () => { await removeFriend(friendshipId); });
   };
 
   // Pembantu untuk memeriksa status hubungan untuk tab Pencarian
@@ -139,6 +142,8 @@ export function TemanClient({ currentUserId, friendships: initialFriendships, al
   };
 
   return (
+    <>
+    <ConfirmDialog />
     <div className="flex flex-col min-h-screen">
       {/* ─── HEADER ─── */}
       <header className="sticky top-0 z-10 bg-white/90 dark:bg-black/90 backdrop-blur-lg border-b border-gray-100 dark:border-neutral-800">
@@ -322,5 +327,6 @@ export function TemanClient({ currentUserId, friendships: initialFriendships, al
         )}
       </div>
     </div>
+    </>
   );
 }

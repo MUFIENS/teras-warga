@@ -5,7 +5,7 @@ import { X, UploadCloud, Loader2, ArrowLeft, ImagePlus, ShieldCheck } from "luci
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
-import { CustomSwal as Swal } from "@/lib/swal";
+import { showSuccess, showError, showWarning } from "@/lib/toast";
 
 const CATEGORIES = ["Elektronik", "Pakaian", "Makanan", "Furnitur", "Kendaraan", "Jasa", "Lainnya"];
 const CONDITIONS = ["Baru", "Bekas - Seperti Baru", "Bekas - Baik", "Bekas"];
@@ -80,7 +80,7 @@ export function SellFormClient({ initialWallet, userId, initialData }: SellFormC
       const totalFiles = images.length + newFiles.length;
       
       if (totalFiles > 4) {
-        Swal.fire("Maksimal 4 Foto", "Anda hanya dapat mengunggah maksimal 4 foto.", "warning");
+        showWarning("Maksimal 4 Foto", "Anda hanya dapat mengunggah maksimal 4 foto.");
         return;
       }
 
@@ -106,12 +106,12 @@ export function SellFormClient({ initialWallet, userId, initialData }: SellFormC
   const handleSubmit = async () => {
     // If we're editing and have existing image previews but no new images, that's okay.
     if (!title.trim() || !priceEth || !category || (!images.length && !imagePreviews.length) || !wallet.trim()) {
-      Swal.fire("Data Belum Lengkap", "Harap isi semua field wajib dan unggah minimal 1 foto.", "warning");
+      showWarning("Data Belum Lengkap", "Harap isi semua field wajib dan unggah minimal 1 foto.");
       return;
     }
 
     if (!validateWallet(wallet)) {
-      Swal.fire("Wallet Tidak Valid", "Pastikan alamat MetaMask valid (dimulai dengan 0x).", "error");
+      showError("Wallet Tidak Valid", "Pastikan alamat MetaMask valid (dimulai dengan 0x).");
       return;
     }
 
@@ -176,19 +176,13 @@ export function SellFormClient({ initialWallet, userId, initialData }: SellFormC
 
       if (error) throw error;
 
-      Swal.fire({
-        icon: "success",
-        title: "Berhasil!",
-        text: "Barang Anda telah terbit di pasar.",
-        confirmButtonColor: "#1D9BF0"
-      }).then(() => {
-        router.push(`/pasar/${data.id}`);
-        router.refresh();
-      });
+      showSuccess("Berhasil!", "Barang Anda telah terbit di pasar.");
+      router.push(`/pasar/${data.id}`);
+      router.refresh();
 
     } catch (err: any) {
       console.error(err);
-      Swal.fire("Gagal", err.message || "Gagal menerbitkan barang.", "error");
+      showError("Gagal", err.message || "Gagal menerbitkan barang.");
     } finally {
       setIsUploading(false);
     }

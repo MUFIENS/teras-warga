@@ -3,7 +3,8 @@
 import { useState, useTransition } from "react";
 import { MapPin, Tag, Package, MoreVertical, Trash2, Edit, Eye, EyeOff, MessageCircle, X } from "lucide-react";
 import { deleteMarketItem, toggleMarketItemStatus } from "@/app/pasar/actions";
-import { CustomSwal as Swal } from "@/lib/swal";
+import { showInfo } from "@/lib/toast";
+import { useConfirmDialog } from "@/components/ui/confirm-dialog";
 import Link from "next/link";
 import { CryptoPaymentModal } from "./crypto/CryptoPaymentModal";
 import { PaymentSelector } from "./pasar/PaymentSelector";
@@ -53,6 +54,7 @@ export function MarketItemCard({
   const [showMenu, setShowMenu] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
   const [showCryptoModal, setShowCryptoModal] = useState(false);
+  const { confirm, ConfirmDialog } = useConfirmDialog();
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("id-ID", {
@@ -63,26 +65,20 @@ export function MarketItemCard({
     }).format(price);
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     setShowMenu(false);
-    Swal.fire({
+    const ok = await confirm({
       title: "Hapus Barang?",
-      text: "Barang ini akan dihapus permanen dari pasar.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Ya, hapus!",
-      cancelButtonText: "Batal",
-      background: document.documentElement.classList.contains("dark") ? "#171717" : "#ffffff",
-      color: document.documentElement.classList.contains("dark") ? "#ffffff" : "#000000",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        startTransition(async () => {
-          await deleteMarketItem(id);
-        });
-      }
+      description: "Barang ini akan dihapus permanen dari pasar.",
+      confirmText: "Ya, hapus!",
+      cancelText: "Batal",
+      variant: "danger",
     });
+    if (ok) {
+      startTransition(async () => {
+        await deleteMarketItem(id);
+      });
+    }
   };
 
   const handleToggleStatus = () => {
@@ -93,21 +89,7 @@ export function MarketItemCard({
   };
 
   const handleContact = () => {
-    Swal.fire({
-      title: "Hubungi Penjual",
-      html: `
-        <div style="text-align:left; padding: 8px 0;">
-          <p style="margin-bottom: 8px;"><strong>Penjual:</strong> ${seller_name}</p>
-          <p style="margin-bottom: 8px;"><strong>Username:</strong> @${seller_username}</p>
-          <p style="font-size: 14px; color: #666;">Fitur chat langsung akan segera hadir. Untuk saat ini, Anda dapat menghubungi penjual melalui halaman profil.</p>
-        </div>
-      `,
-      icon: "info",
-      confirmButtonColor: "#1D9BF0",
-      confirmButtonText: "OK",
-      background: document.documentElement.classList.contains("dark") ? "#171717" : "#ffffff",
-      color: document.documentElement.classList.contains("dark") ? "#ffffff" : "#000000",
-    });
+    showInfo("Hubungi Penjual", `Chat @${seller_username} melalui halaman pesan.`);
   };
 
   const categoryColor: Record<string, string> = {
@@ -121,6 +103,8 @@ export function MarketItemCard({
   };
 
   return (
+    <>
+    <ConfirmDialog />
     <div
       className={`group relative flex flex-col h-full bg-white dark:bg-neutral-900 rounded-2xl border border-gray-200 dark:border-neutral-800 overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 hover:-translate-y-0.5 ${
         isPending ? "opacity-50 pointer-events-none" : ""
@@ -304,5 +288,6 @@ export function MarketItemCard({
         />
       )}
     </div>
+    </>
   );
 }

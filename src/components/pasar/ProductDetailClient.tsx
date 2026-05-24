@@ -5,7 +5,7 @@ import { ProductItem } from "@/types/marketplace";
 import { ChevronLeft, ShoppingBag } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { CustomSwal as Swal } from "@/lib/swal";
+import { showSuccess } from "@/lib/toast";
 
 import { ProductGallery } from "./ProductGallery";
 import { ProductInfo } from "./ProductInfo";
@@ -45,12 +45,7 @@ export function ProductDetailClient({ product, currentUserId, relatedProducts = 
         crypto_tx_hash: hash,
       });
 
-      Swal.fire({
-        icon: "success",
-        title: "Pembayaran Berhasil!",
-        text: "Pesanan Anda terverifikasi secara on-chain.",
-        confirmButtonColor: "#1D9BF0",
-      });
+      showSuccess("Pembayaran Berhasil!", "Pesanan Anda terverifikasi secara on-chain.");
     } catch (err) {
       console.error("Failed to log crypto order:", err);
     }

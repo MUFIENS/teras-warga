@@ -8,7 +8,8 @@ import {
 } from "lucide-react";
 import { createBorrowRequest, updateBorrowStatus, deleteBorrowRequest } from "@/app/peminjaman/actions";
 import { useRouter } from "next/navigation";
-import { CustomSwal as Swal } from "@/lib/swal";
+import { showSuccess, showError } from "@/lib/toast";
+import { useConfirmDialog } from "@/components/ui/confirm-dialog";
 import Link from "next/link";
 import { BORROW_CATEGORIES } from "@/lib/validators";
 import { format } from "date-fns";
@@ -68,6 +69,7 @@ export function PeminjamanClient({ items, requests, currentUserId, userRole }: P
   const [selectedStatus, setSelectedStatus] = useState("Semua");
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const { confirm, ConfirmDialog } = useConfirmDialog();
 
   // Status Formulir
   const [showBorrowForm, setShowBorrowForm] = useState(false);
@@ -111,21 +113,22 @@ export function PeminjamanClient({ items, requests, currentUserId, userRole }: P
         setSelectedItem(null);
         setPurpose(""); setStartDate(""); setEndDate("");
         setViewTab("riwayat");
-        Swal.fire({ title: "Berhasil!", text: "Permintaan peminjaman berhasil diajukan.", icon: "success", confirmButtonColor: "#1D9BF0" });
+        showSuccess("Berhasil!", "Permintaan peminjaman berhasil diajukan.");
       } catch (err: any) {
-        Swal.fire({ title: "Gagal!", text: err.message, icon: "error", confirmButtonColor: "#d33" });
+        showError("Gagal!", err.message);
       }
     });
   };
 
-  const handleDeleteRequest = (id: string) => {
-    Swal.fire({
-      title: "Batalkan Permintaan?", text: "Permintaan peminjaman akan dibatalkan.", icon: "warning",
-      showCancelButton: true, confirmButtonColor: "#d33", cancelButtonColor: "#3085d6",
-      confirmButtonText: "Ya, batalkan!", cancelButtonText: "Tidak",
-    }).then((res) => {
-      if (res.isConfirmed) startTransition(async () => { await deleteBorrowRequest(id); router.refresh(); });
+  const handleDeleteRequest = async (id: string) => {
+    const ok = await confirm({
+      title: "Batalkan Permintaan?",
+      description: "Permintaan peminjaman akan dibatalkan.",
+      confirmText: "Ya, batalkan!",
+      cancelText: "Tidak",
+      variant: "danger",
     });
+    if (ok) startTransition(async () => { await deleteBorrowRequest(id); router.refresh(); });
   };
 
   const handleAdminUpdate = () => {
@@ -135,14 +138,16 @@ export function PeminjamanClient({ items, requests, currentUserId, userRole }: P
         await updateBorrowStatus(adminRequest.id, adminStatus, adminNotes);
         setShowAdminModal(false);
         setAdminRequest(null);
-        Swal.fire({ title: "Berhasil!", text: "Status diperbarui.", icon: "success", confirmButtonColor: "#1D9BF0" });
+        showSuccess("Berhasil!", "Status diperbarui.");
       } catch (err: any) {
-        Swal.fire({ title: "Gagal!", text: err.message, icon: "error", confirmButtonColor: "#d33" });
+        showError("Gagal!", err.message);
       }
     });
   };
 
   return (
+    <>
+    <ConfirmDialog />
     <div className="flex flex-col min-h-screen">
       {/* ─── HEADER ─── */}
       <header className="sticky top-0 z-10 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
@@ -379,5 +384,6 @@ export function PeminjamanClient({ items, requests, currentUserId, userRole }: P
         </div>
       )}
     </div>
+    </>
   );
 }

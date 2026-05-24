@@ -5,7 +5,8 @@ import Link from "next/link";
 import { MessageCircle, Repeat2, Heart, Share, MoreHorizontal, Image as ImageIcon } from "lucide-react";
 import { toggleLike, toggleRepost, deletePost, reportPost } from "@/app/actions";
 import { useTransition, useState, useRef, useEffect } from "react";
-import { CustomSwal as Swal } from "@/lib/swal";
+import { showSuccess } from "@/lib/toast";
+import { useConfirmDialog } from "@/components/ui/confirm-dialog";
 import { useRouter } from "next/navigation";
 
 interface PostCardProps {
@@ -45,6 +46,7 @@ export function PostCard({
   const [optimisticReposts, setOptimisticReposts] = useState({ count: reposts, reposted: hasReposted });
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const { confirm, ConfirmDialog } = useConfirmDialog();
 
   // Sinkronkan state optimistik ketika props berubah dari server refresh
   useEffect(() => {
@@ -65,58 +67,39 @@ export function PostCard({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleDelete = (e: React.MouseEvent) => {
+  const handleDelete = async (e: React.MouseEvent) => {
     e.stopPropagation();
     setShowMenu(false);
-    Swal.fire({
-      title: 'Hapus Postingan?',
-      text: "Postingan ini tidak dapat dikembalikan setelah dihapus!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Ya, hapus!',
-      cancelButtonText: 'Batal',
-      background: document.documentElement.classList.contains('dark') ? '#171717' : '#ffffff',
-      color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#000000',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        startTransition(async () => {
-          await deletePost(id);
-        });
-      }
+    const ok = await confirm({
+      title: "Hapus Postingan?",
+      description: "Postingan ini tidak dapat dikembalikan setelah dihapus!",
+      confirmText: "Ya, hapus!",
+      cancelText: "Batal",
+      variant: "danger",
     });
+    if (ok) {
+      startTransition(async () => {
+        await deletePost(id);
+      });
+    }
   };
 
-  const handleReport = (e: React.MouseEvent) => {
+  const handleReport = async (e: React.MouseEvent) => {
     e.stopPropagation();
     setShowMenu(false);
-    Swal.fire({
-      title: 'Laporkan Postingan?',
-      text: "Admin akan meninjau laporan Anda.",
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#1D9BF0',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Ya, laporkan!',
-      cancelButtonText: 'Batal',
-      background: document.documentElement.classList.contains('dark') ? '#171717' : '#ffffff',
-      color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#000000',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        startTransition(async () => {
-          await reportPost(id);
-          Swal.fire({
-            title: 'Dilaporkan!',
-            text: 'Terima kasih atas laporannya.',
-            icon: 'success',
-            confirmButtonColor: '#1D9BF0',
-            background: document.documentElement.classList.contains('dark') ? '#171717' : '#ffffff',
-            color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#000000',
-          });
-        });
-      }
+    const ok = await confirm({
+      title: "Laporkan Postingan?",
+      description: "Admin akan meninjau laporan Anda.",
+      confirmText: "Ya, laporkan!",
+      cancelText: "Batal",
+      variant: "default",
     });
+    if (ok) {
+      startTransition(async () => {
+        await reportPost(id);
+        showSuccess("Dilaporkan!", "Terima kasih atas laporannya.");
+      });
+    }
   };
 
   const handleLike = (e: React.MouseEvent) => {
@@ -146,6 +129,8 @@ export function PostCard({
   };
 
   return (
+    <>
+    <ConfirmDialog />
     <article 
       onClick={navigateToPost}
       className={`flex gap-4 px-4 py-4 border-b border-gray-200 dark:border-neutral-800 hover:bg-gray-50 dark:hover:bg-neutral-900/50 transition-colors duration-200 cursor-pointer ${isPending ? 'opacity-50 pointer-events-none' : ''}`}
@@ -260,17 +245,7 @@ export function PostCard({
                 }).catch(() => {});
               } else {
                 navigator.clipboard.writeText(postUrl).then(() => {
-                  Swal.fire({
-                    title: 'Link Disalin!',
-                    text: 'Link postingan telah disalin ke clipboard.',
-                    icon: 'success',
-                    timer: 2000,
-                    showConfirmButton: false,
-                    toast: true,
-                    position: 'bottom-end',
-                    background: document.documentElement.classList.contains('dark') ? '#171717' : '#ffffff',
-                    color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#000000',
-                  });
+                  showSuccess("Link Disalin!", "Link postingan telah disalin ke clipboard.");
                 });
               }
             }}
@@ -283,5 +258,6 @@ export function PostCard({
         </div>
       </div>
     </article>
+    </>
   );
 }

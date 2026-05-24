@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { Wallet, Save, Loader2 } from "lucide-react";
 import { updateCryptoWallet } from "@/app/profil/actions";
-import { CustomSwal as Swal } from "@/lib/swal";
+import { showSuccess, showError } from "@/lib/toast";
 
 export function WalletProfileCard({ initialWallet }: { initialWallet: string | null }) {
   const [wallet, setWallet] = useState(initialWallet || "");
@@ -11,30 +11,16 @@ export function WalletProfileCard({ initialWallet }: { initialWallet: string | n
 
   const handleSave = () => {
     if (wallet && !/^0x[a-fA-F0-9]{40}$/.test(wallet)) {
-      Swal.fire({
-        icon: "error",
-        title: "Format Salah",
-        text: "Pastikan alamat wallet EVM dimulai dengan 0x dan berjumlah 42 karakter.",
-      });
+      showError("Format Salah", "Pastikan alamat wallet EVM dimulai dengan 0x dan berjumlah 42 karakter.");
       return;
     }
 
     startTransition(async () => {
       try {
         await updateCryptoWallet(wallet);
-        Swal.fire({
-          icon: "success",
-          title: "Tersimpan!",
-          text: "Alamat wallet crypto berhasil diperbarui.",
-          timer: 1500,
-          showConfirmButton: false,
-        });
+        showSuccess("Tersimpan!", "Alamat wallet crypto berhasil diperbarui.");
       } catch (e: any) {
-        Swal.fire({
-          icon: "error",
-          title: "Gagal",
-          text: e.message || "Gagal menyimpan wallet.",
-        });
+        showError("Gagal", e.message || "Gagal menyimpan wallet.");
       }
     });
   };

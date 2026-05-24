@@ -10,7 +10,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { usePresence } from "./providers/PresenceProvider";
-import { CustomSwal as Swal } from "@/lib/swal";
+import { showError } from "@/lib/toast";
+import { useConfirmDialog } from "@/components/ui/confirm-dialog";
 
 interface Message {
   id: string;
@@ -92,6 +93,7 @@ export function MessagesClient({ conversations, currentUserId, allMessages, init
   // Reply & Delete State
   const [replyingTo, setReplyingTo] = useState<any | null>(null);
   const [messageMenuOpenId, setMessageMenuOpenId] = useState<string | null>(null);
+  const { confirm, ConfirmDialog } = useConfirmDialog();
 
   // Dapatkan pesan untuk obrolan aktif
   const chatMessages = activeChat
@@ -192,32 +194,30 @@ export function MessagesClient({ conversations, currentUserId, allMessages, init
     });
   };
 
-  const handleDeleteForEveryone = (id: string, createdAt: string) => {
+  const handleDeleteForEveryone = async (id: string, createdAt: string) => {
     setMessageMenuOpenId(null);
     const timeDiff = Date.now() - new Date(createdAt).getTime();
     if (timeDiff > 2 * 60 * 60 * 1000) {
-      Swal.fire("Gagal", "Pesan ini tidak bisa dihapus karena sudah lebih dari 2 jam", "error");
+      showError("Gagal", "Pesan ini tidak bisa dihapus karena sudah lebih dari 2 jam");
       return;
     }
-    Swal.fire({
+    const ok = await confirm({
       title: "Hapus untuk semua orang?",
-      text: "Pesan ini akan dihapus untuk Anda dan lawan bicara Anda.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Hapus",
-      cancelButtonText: "Batal"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        startTransition(async () => {
-          try {
-            await deleteMessageForEveryone(id);
-            router.refresh();
-          } catch (e: any) {
-            Swal.fire("Gagal", e.message, "error");
-          }
-        });
-      }
+      description: "Pesan ini akan dihapus untuk Anda dan lawan bicara Anda.",
+      confirmText: "Hapus",
+      cancelText: "Batal",
+      variant: "danger",
     });
+    if (ok) {
+      startTransition(async () => {
+        try {
+          await deleteMessageForEveryone(id);
+          router.refresh();
+        } catch (e: any) {
+          showError("Gagal", e.message);
+        }
+      });
+    }
   };
 
   const uploadToStorage = async (file: File | Blob, ext: string): Promise<string | null> => {
@@ -239,7 +239,7 @@ export function MessagesClient({ conversations, currentUserId, allMessages, init
       return publicUrl;
     } catch (error) {
       console.error("Upload error:", error);
-      Swal.fire("Gagal", "Gagal mengunggah file", "error");
+      showError("Gagal", "Gagal mengunggah file");
       return null;
     }
   };
@@ -277,7 +277,7 @@ export function MessagesClient({ conversations, currentUserId, allMessages, init
   const handleLocation = () => {
     setShowAttachmentMenu(false);
     if (!navigator.geolocation) {
-      Swal.fire("Error", "Browser Anda tidak mendukung lokasi", "error");
+      showError("Error", "Browser Anda tidak mendukung lokasi");
       return;
     }
     
@@ -300,7 +300,7 @@ export function MessagesClient({ conversations, currentUserId, allMessages, init
       },
       (err) => {
         setIsUploading(false);
-        Swal.fire("Gagal", "Gagal mendapatkan lokasi", "error");
+        showError("Gagal", "Gagal mendapatkan lokasi");
       }
     );
   };
@@ -326,7 +326,7 @@ export function MessagesClient({ conversations, currentUserId, allMessages, init
         setRecordingDuration((prev) => prev + 1);
       }, 1000);
     } catch (err) {
-      Swal.fire("Error", "Izin mikrofon ditolak", "error");
+      showError("Error", "Izin mikrofon ditolak");
     }
   };
 
@@ -830,9 +830,12 @@ export function MessagesClient({ conversations, currentUserId, allMessages, init
   );
 
   return (
-    <div className="flex flex-col min-h-screen border-r border-gray-200 dark:border-neutral-800">
-      {activeChat ? renderChatView() : renderConversationList()}
-      {showNewChat && renderNewChatModal()}
-    </div>
+    <>
+      <ConfirmDialog />
+      <div className="flex flex-col min-h-screen border-r border-gray-200 dark:border-neutral-800">
+        {activeChat ? renderChatView() : renderConversationList()}
+        {showNewChat && renderNewChatModal()}
+      </div>
+    </>
   );
 }

@@ -10,7 +10,8 @@ import {
 import { sendFriendRequest, acceptFriendRequest, cancelFriendRequest, removeFriend } from "@/app/teman/actions";
 import { updateProfile, uploadAvatar, uploadCover } from "@/app/profil/actions";
 import { useRouter } from "next/navigation";
-import { CustomSwal as Swal } from "@/lib/swal";
+import { showError, showWarning } from "@/lib/toast";
+import { useConfirmDialog } from "@/components/ui/confirm-dialog";
 import { usePresence } from "@/components/providers/PresenceProvider";
 import { WalletProfileCard } from "@/components/crypto/WalletProfileCard";
 
@@ -92,7 +93,7 @@ export function ProfilClient({ profile, isOwnProfile, currentUserId, relationshi
   const [showEditModal, setShowEditModal] = useState(false);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
-  
+  const { confirm, ConfirmDialog } = useConfirmDialog();
   const { isOnline, lastActive } = usePresence(profile.id, profile.last_active);
   const activity = getActivityStatus(isOnline, lastActive);
 
@@ -100,13 +101,18 @@ export function ProfilClient({ profile, isOwnProfile, currentUserId, relationshi
 
   const handleSendRequest = () => startTransition(async () => {
     try { await sendFriendRequest(profile.id); }
-    catch (e: any) { Swal.fire({ title: "Gagal", text: e.message, icon: "error" }); }
+    catch (e: any) { showError("Gagal", e.message); }
   });
   const handleAccept = () => startTransition(async () => { if (relationship) await acceptFriendRequest(relationship.id); });
   const handleCancel = () => startTransition(async () => { if (relationship) await cancelFriendRequest(relationship.id); });
-  const handleRemove = () => {
-    Swal.fire({ title: "Hapus Pertemanan?", showCancelButton: true, confirmButtonText: "Hapus", cancelButtonText: "Batal", confirmButtonColor: "#d33" })
-      .then(r => { if (r.isConfirmed && relationship) startTransition(async () => { await removeFriend(relationship.id); }); });
+  const handleRemove = async () => {
+    const ok = await confirm({
+      title: "Hapus Pertemanan?",
+      confirmText: "Hapus",
+      cancelText: "Batal",
+      variant: "danger",
+    });
+    if (ok && relationship) startTransition(async () => { await removeFriend(relationship.id); });
   };
 
   const tabs = [
@@ -117,6 +123,8 @@ export function ProfilClient({ profile, isOwnProfile, currentUserId, relationshi
   ] as const;
 
   return (
+    <>
+    <ConfirmDialog />
     <div className="flex flex-col min-h-screen">
       {/* Cover */}
       <div className="relative h-40 md:h-52 bg-gradient-to-br from-[#1D9BF0]/20 to-blue-600/10 overflow-hidden">
@@ -358,6 +366,7 @@ export function ProfilClient({ profile, isOwnProfile, currentUserId, relationshi
       {/* Edit Modal */}
       {showEditModal && <EditProfilModal profile={profile} onClose={() => setShowEditModal(false)} onSaved={() => { setShowEditModal(false); router.refresh(); }} />}
     </div>
+    </>
   );
 }
 
@@ -398,27 +407,13 @@ function ImageUnggah({ label, currentUrl, onUnggahed, uploadFn, shape = "square"
     if (!file) return;
 
     if (file.size > MAX_FILE_SIZE) {
-      Swal.fire({
-        icon: "warning",
-        title: "File Terlalu Besar",
-        text: `Ukuran file melebihi ${MAX_FILE_MB} MB. Silakan pilih file yang lebih kecil.`,
-        confirmButtonColor: "#1D9BF0",
-        background: document.documentElement.classList.contains("dark") ? "#171717" : "#fff",
-        color: document.documentElement.classList.contains("dark") ? "#fff" : "#000",
-      });
+      showWarning("File Terlalu Besar", `Ukuran file melebihi ${MAX_FILE_MB} MB. Silakan pilih file yang lebih kecil.`);
       if (inputRef.current) inputRef.current.value = "";
       return;
     }
 
     if (!file.type.startsWith("image/")) {
-      Swal.fire({
-        icon: "error",
-        title: "Format Salah",
-        text: "File harus berupa gambar (JPG, PNG, WebP, dll).",
-        confirmButtonColor: "#1D9BF0",
-        background: document.documentElement.classList.contains("dark") ? "#171717" : "#fff",
-        color: document.documentElement.classList.contains("dark") ? "#fff" : "#000",
-      });
+      showError("Format Salah", "File harus berupa gambar (JPG, PNG, WebP, dll).");
       if (inputRef.current) inputRef.current.value = "";
       return;
     }
@@ -436,14 +431,7 @@ function ImageUnggah({ label, currentUrl, onUnggahed, uploadFn, shape = "square"
       setPreview(result.url);
       onUnggahed(result.url);
     } catch (err: any) {
-      Swal.fire({
-        icon: "error",
-        title: "Gagal Unggah",
-        text: err.message || "Terjadi kesalahan saat mengunggah.",
-        confirmButtonColor: "#1D9BF0",
-        background: document.documentElement.classList.contains("dark") ? "#171717" : "#fff",
-        color: document.documentElement.classList.contains("dark") ? "#fff" : "#000",
-      });
+      showError("Gagal Unggah", err.message || "Terjadi kesalahan saat mengunggah.");
       setPreview(currentUrl);
     } finally {
       setUnggahing(false);
