@@ -46,6 +46,7 @@ export function ProductDetailClient({ product, currentUserId, relatedProducts = 
       });
 
       showSuccess("Pembayaran Berhasil!", "Pesanan Anda terverifikasi secara on-chain.");
+      router.refresh();
     } catch (err) {
       console.error("Failed to log crypto order:", err);
     }
