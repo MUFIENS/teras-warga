@@ -1,101 +1,196 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, ShieldCheck, Users, Zap } from "lucide-react";
+import { ArrowRight, LayoutDashboard, Search, Bell, Settings, MessageCircle, ShoppingBag, ShieldCheck } from "lucide-react";
 
 export function HeroSection() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  });
+
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  
+  // The App Window flattens out as you scroll down
+  const rotateX = useTransform(scrollYProgress, [0, 1], [15, 0]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-16">
-      {/* Background Gradients & Glow */}
-      <div className="absolute inset-0 bg-white dark:bg-black w-full h-full" />
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-[#1D9BF0]/20 dark:bg-[#1D9BF0]/10 blur-[120px]" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-500/20 dark:bg-indigo-500/10 blur-[120px]" />
+    <section ref={containerRef} className="relative min-h-[150vh] pt-32 pb-16 overflow-hidden bg-white dark:bg-black">
+      {/* Cinematic Background */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(29,155,240,0.15),rgba(255,255,255,0))] dark:bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(29,155,240,0.15),rgba(0,0,0,0))]" />
+      <div className="absolute top-0 w-full h-[500px] bg-gradient-to-b from-white to-transparent dark:from-black/80 dark:to-transparent z-10 pointer-events-none" />
       
-      {/* Grid Overlay for futuristic look */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
-
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10 flex flex-col items-center text-center">
-        {/* Animated Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="mb-8"
-        >
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/50 text-[#1D9BF0] font-medium text-sm shadow-sm backdrop-blur-sm">
-            <span className="relative flex h-2.5 w-2.5">
+      <div className="sticky top-32 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center">
+        
+        {/* Text Content */}
+        <motion.div style={{ y, opacity }} className="text-center z-20 flex flex-col items-center w-full">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50/80 dark:bg-blue-900/20 border border-blue-200/50 dark:border-blue-800/50 text-[#1D9BF0] font-medium text-xs md:text-sm shadow-sm backdrop-blur-md mb-8 tracking-tight"
+          >
+            <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#1D9BF0] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#1D9BF0]"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#1D9BF0]"></span>
             </span>
-            Platform Ekosistem Warga Generasi Baru
-          </span>
-        </motion.div>
+            Teras Warga 2.0 Kini Tersedia
+          </motion.div>
 
-        {/* Main Headline */}
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-5xl md:text-7xl font-extrabold tracking-tight text-gray-900 dark:text-white max-w-4xl leading-tight"
-        >
-          Bangun Lingkungan <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1D9BF0] to-indigo-500">Lebih Cerdas & Terhubung</span>
-        </motion.h1>
-
-        {/* Subheadline */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-6 text-xl md:text-2xl text-gray-600 dark:text-neutral-400 max-w-2xl font-medium"
-        >
-          Satu aplikasi untuk berdiskusi, bertransaksi di pasar warga, hingga pembayaran kripto. Ekosistem digital perumahan masa depan ada di tangan Anda.
-        </motion.p>
-
-        {/* CTA Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="mt-10 flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
-        >
-          <Link
-            href="/register"
-            className="flex items-center justify-center gap-2 bg-[#1D9BF0] text-white px-8 py-4 rounded-full font-semibold text-lg transition-all hover:bg-[#1A8CD8] hover:shadow-lg hover:shadow-blue-500/25 hover:-translate-y-1"
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="text-5xl md:text-7xl lg:text-[5rem] font-black tracking-tighter text-gray-900 dark:text-white max-w-5xl leading-[1.1] md:leading-[1.05]"
           >
-            Gabung Sekarang
-            <ArrowRight className="w-5 h-5" />
-          </Link>
-          <Link
-            href="#features"
-            className="flex items-center justify-center gap-2 bg-white dark:bg-neutral-900 text-gray-900 dark:text-white px-8 py-4 rounded-full font-semibold text-lg border border-gray-200 dark:border-neutral-800 transition-all hover:bg-gray-50 dark:hover:bg-neutral-800 hover:-translate-y-1 shadow-sm"
-          >
-            Pelajari Fitur
-          </Link>
-        </motion.div>
+            Sistem Operasi untuk <br className="hidden md:block" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-700 to-gray-500 dark:from-white dark:via-gray-200 dark:to-gray-500">
+              Perumahan Modern.
+            </span>
+          </motion.h1>
 
-        {/* Floating Feature Cards */}
-        <div className="mt-20 w-full grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl">
-          {[
-            { icon: Users, title: "Komunitas Real-time", desc: "Berinteraksi layaknya media sosial modern" },
-            { icon: Zap, title: "Marketplace Terintegrasi", desc: "Jual beli antar warga dengan pembayaran Web3" },
-            { icon: ShieldCheck, title: "Keamanan Terjamin", desc: "Infrastruktur aman & identitas terverifikasi" },
-          ].map((feature, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.6 + i * 0.1 }}
-              className="bg-white/60 dark:bg-neutral-900/60 backdrop-blur-md border border-gray-200/50 dark:border-neutral-800/50 p-6 rounded-3xl shadow-xl shadow-black/5 flex flex-col items-center text-center"
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-6 text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl tracking-tight leading-relaxed"
+          >
+            Dari laporan keamanan, pasar komunitas dengan pembayaran Web3, hingga obrolan warga secara real-time. Semua dalam satu ekosistem terpadu.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-10 flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
+          >
+            <Link
+              href="/register"
+              className="group relative flex items-center justify-center gap-2 bg-gray-900 dark:bg-white text-white dark:text-black px-8 py-4 rounded-full font-bold text-[15px] transition-all hover:scale-[1.02] overflow-hidden"
             >
-              <div className="h-12 w-12 bg-blue-50 dark:bg-blue-900/20 text-[#1D9BF0] rounded-2xl flex items-center justify-center mb-4">
-                <feature.icon className="h-6 w-6" />
+              <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 dark:via-black/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
+              <span className="relative">Mulai Ekosistem Anda</span>
+              <ArrowRight className="w-4 h-4 relative group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <Link
+              href="#features"
+              className="flex items-center justify-center gap-2 bg-transparent text-gray-900 dark:text-white px-8 py-4 rounded-full font-bold text-[15px] border border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors tracking-tight"
+            >
+              Pelajari Lebih Lanjut
+            </Link>
+          </motion.div>
+        </motion.div>
+
+        {/* 3D App Mockup */}
+        <motion.div
+          style={{ rotateX, scale, perspective: 1000 }}
+          initial={{ opacity: 0, y: 100, rotateX: 30 }}
+          animate={{ opacity: 1, y: 0, rotateX: 15 }}
+          transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-20 w-full max-w-6xl z-30 transform-gpu origin-top"
+        >
+          <div className="relative rounded-2xl md:rounded-[2rem] bg-gray-100/50 dark:bg-neutral-900/50 p-2 md:p-4 backdrop-blur-2xl border border-gray-200/50 dark:border-white/10 shadow-2xl dark:shadow-[0_0_100px_rgba(29,155,240,0.15)] overflow-hidden">
+            
+            {/* Top Glow */}
+            <div className="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-[#1D9BF0] to-transparent opacity-50" />
+            
+            {/* Inner Mockup Container */}
+            <div className="bg-white dark:bg-black rounded-xl md:rounded-2xl border border-gray-200/80 dark:border-white/10 overflow-hidden flex flex-col h-[400px] md:h-[600px] shadow-inner relative">
+              
+              {/* App Header */}
+              <div className="h-14 border-b border-gray-100 dark:border-white/5 flex items-center justify-between px-4 md:px-6 bg-gray-50/80 dark:bg-[#0a0a0a]/80 backdrop-blur-md">
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-400/80" />
+                  <div className="w-3 h-3 rounded-full bg-amber-400/80" />
+                  <div className="w-3 h-3 rounded-full bg-green-400/80" />
+                </div>
+                <div className="hidden md:flex w-96 h-8 bg-gray-200/50 dark:bg-white/5 rounded-full items-center px-4">
+                  <Search className="w-4 h-4 text-gray-400" />
+                  <span className="ml-2 text-xs text-gray-400 font-medium">Cari warga, laporan, atau barang...</span>
+                </div>
+                <div className="flex gap-4">
+                  <Bell className="w-5 h-5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors" />
+                  <Settings className="w-5 h-5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors" />
+                </div>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{feature.title}</h3>
-              <p className="text-gray-500 dark:text-neutral-400 text-sm leading-relaxed">{feature.desc}</p>
-            </motion.div>
-          ))}
-        </div>
+
+              {/* App Body */}
+              <div className="flex-1 flex overflow-hidden">
+                {/* Sidebar */}
+                <div className="w-64 border-r border-gray-100 dark:border-white/5 hidden lg:flex flex-col p-4 bg-gray-50/30 dark:bg-neutral-950/30">
+                  <div className="flex items-center gap-3 mb-8 px-2">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#1D9BF0] to-indigo-600 flex items-center justify-center text-white font-bold text-xs shadow-sm">TW</div>
+                    <div className="font-semibold text-sm tracking-tight text-gray-900 dark:text-white">Cluster Asri</div>
+                  </div>
+                  <div className="space-y-1">
+                    {[
+                      { icon: LayoutDashboard, label: "Beranda", active: true },
+                      { icon: MessageCircle, label: "Obrolan Warga", badge: "3" },
+                      { icon: ShoppingBag, label: "Pasar Warga" },
+                      { icon: ShieldCheck, label: "Laporan" },
+                    ].map((item, i) => (
+                      <div key={i} className={`flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${item.active ? 'bg-blue-50 dark:bg-blue-500/10 text-[#1D9BF0] dark:text-[#1D9BF0]' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5'}`}>
+                        <div className="flex items-center gap-3">
+                          <item.icon className="w-4 h-4" />
+                          {item.label}
+                        </div>
+                        {item.badge && (
+                          <span className="bg-[#1D9BF0] text-white text-[10px] px-2 py-0.5 rounded-full font-bold">{item.badge}</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Main Feed Content */}
+                <div className="flex-1 p-4 md:p-8 overflow-hidden bg-gray-50/10 dark:bg-black/50 relative">
+                   <div className="max-w-2xl mx-auto space-y-6">
+                      {/* Post Mockup */}
+                      <div className="bg-white dark:bg-[#0c0c0c] p-5 rounded-2xl border border-gray-100 dark:border-white/5 shadow-sm">
+                        <div className="flex gap-4">
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-200 to-blue-200 dark:from-neutral-800 dark:to-neutral-700 flex-shrink-0" />
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="font-bold text-sm text-gray-900 dark:text-white">Budi Santoso</span>
+                              <span className="text-xs text-gray-500">@budi_rt01 · 2j</span>
+                            </div>
+                            <p className="mt-1 text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                              Kerja bakti pembersihan saluran air akan dilaksanakan hari Minggu jam 08:00 pagi. Mohon partisipasi bapak-bapak sekalian 🙏
+                            </p>
+                            <div className="mt-4 h-40 rounded-xl bg-gray-100 dark:bg-neutral-900/50 border border-gray-200/50 dark:border-white/5 overflow-hidden flex items-center justify-center">
+                              <span className="text-gray-400 text-xs font-medium">Gambar Lampiran</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Marketplace Mockup inline */}
+                      <div className="bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 p-5 rounded-2xl border border-orange-100 dark:border-orange-900/30">
+                        <div className="flex gap-4">
+                          <div className="w-16 h-16 rounded-xl bg-orange-200 dark:bg-orange-900/50 flex-shrink-0" />
+                          <div>
+                            <span className="text-[10px] font-bold text-orange-600 dark:text-orange-400 uppercase tracking-widest mb-1 block">Pasar Warga</span>
+                            <h4 className="font-bold text-sm text-gray-900 dark:text-white">Sepeda Lipat Anak (Preloved)</h4>
+                            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Kondisi 90%, jarang dipakai. Dijual karena anak sudah besar.</p>
+                            <div className="mt-2 font-bold text-orange-600 dark:text-orange-400 text-sm">Rp 450.000 <span className="text-[10px] font-normal text-orange-500/60 ml-1">~0.0001 BTC</span></div>
+                          </div>
+                        </div>
+                      </div>
+                   </div>
+
+                   {/* Fade Out Bottom */}
+                   <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-white dark:from-[#0a0a0a] to-transparent pointer-events-none" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
