@@ -97,7 +97,7 @@ export function FeedClient({ initialPosts, currentUserId }: FeedClientProps) {
 
   return (
     <div className="flex flex-col">
-      {posts.map((post: any) => (
+      {posts.map((post: any, index: number) => (
         <PostCard
           key={post.id}
           id={post.id}
@@ -113,6 +113,7 @@ export function FeedClient({ initialPosts, currentUserId }: FeedClientProps) {
           hasLiked={post.hasLiked}
           hasReposted={post.hasReposted}
           isOwnPost={currentUserId ? post.user_id === currentUserId : false}
+          priority={index < 3}
         />
       ))}
       

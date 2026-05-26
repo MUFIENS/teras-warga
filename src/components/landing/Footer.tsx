@@ -67,7 +67,7 @@ export function Footer() {
             &copy; {new Date().getFullYear()} Teras Warga. Hak Cipta Dilindungi.
           </p>
           <div className="flex gap-4">
-            <span className="text-sm text-gray-500 dark:text-neutral-500">Dibuat dengan ❤️ di Indonesia</span>
+            <span className="text-sm text-gray-500 dark:text-neutral-500">Dibuat oleh MUFIEN</span>
           </div>
         </div>
       </div>

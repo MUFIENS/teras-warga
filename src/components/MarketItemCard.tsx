@@ -30,6 +30,9 @@ interface MarketItemCardProps {
   isOwner: boolean;
   timeAgo: string;
   onEdit?: (id: string) => void;
+  onDelete?: (id: string) => void;
+  onToggleStatus?: (id: string, newStatus: boolean) => void;
+  priority?: boolean;
 }
 
 export function MarketItemCard({
@@ -51,6 +54,9 @@ export function MarketItemCard({
   isOwner,
   timeAgo,
   onEdit,
+  onDelete,
+  onToggleStatus,
+  priority = false,
 }: MarketItemCardProps) {
   const [isPending, startTransition] = useTransition();
   const [showMenu, setShowMenu] = useState(false);
@@ -83,6 +89,7 @@ export function MarketItemCard({
       variant: "danger",
     });
     if (ok) {
+      onDelete?.(id);
       startTransition(async () => {
         await deleteMarketItem(id);
       });
@@ -91,6 +98,7 @@ export function MarketItemCard({
 
   const handleToggleStatus = () => {
     setShowMenu(false);
+    onToggleStatus?.(id, !is_active);
     startTransition(async () => {
       await toggleMarketItemStatus(id);
     });
@@ -125,6 +133,7 @@ export function MarketItemCard({
             src={image_url}
             alt={title}
             fill
+            priority={priority}
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (

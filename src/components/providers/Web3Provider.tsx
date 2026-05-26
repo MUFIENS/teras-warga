@@ -11,7 +11,8 @@ import { useEffect, useState } from "react";
 
 const config = getDefaultConfig({
   appName: "Teras Warga",
-  projectId: "YOUR_PROJECT_ID", // TODO: Move to .env
+  // Gunakan ID public test dari dokumentasi Wagmi jika tidak ada di .env
+  projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "61cc7386d34b46c6eb0d0bb56d2b5689", 
   chains: [polygon, bsc, mainnet],
   ssr: true, // If your dApp uses server side rendering (SSR)
 });

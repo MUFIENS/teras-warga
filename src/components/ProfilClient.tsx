@@ -132,7 +132,7 @@ export function ProfilClient({ profile, isOwnProfile, currentUserId, relationshi
       {/* Cover */}
       <div className="relative h-40 md:h-52 bg-gradient-to-br from-[#1D9BF0]/20 to-blue-600/10 overflow-hidden">
         {profile.cover_url ? (
-          <Image src={profile.cover_url} alt="cover" fill className="object-cover" />
+          <Image src={profile.cover_url} alt="cover" fill priority={true} className="object-cover" />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-[#1D9BF0]/30 via-blue-500/10 to-transparent" />
         )}
@@ -350,7 +350,6 @@ export function ProfilClient({ profile, isOwnProfile, currentUserId, relationshi
               <InfoRow label="Poin" value={`${profile.points || 0} poin`} />
               <InfoRow label="Bergabung" value={formatJoinDate(profile.created_at)} />
               {profile.is_seller && <InfoRow label="Status Seller" value="Aktif sebagai Penjual ✓" />}
-              {profile.crypto_wallet && !isOwnProfile && <InfoRow label="Crypto Wallet" value={profile.crypto_wallet} />}
             </div>
           </div>
         )}

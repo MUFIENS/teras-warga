@@ -21,8 +21,62 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Teras Warga",
-  description: "Modern community platform",
+  metadataBase: new URL("https://teraswarga.com"),
+  title: {
+    default: "Teras Warga - Digitalisasi Komunitas Lingkungan",
+    template: "%s | Teras Warga",
+  },
+  description:
+    "Teras Warga adalah platform komunitas modern untuk RT/RW yang mengintegrasikan komunikasi real-time, pasar warga (Web3), dan administrasi lingkungan cerdas.",
+  keywords: [
+    "RT",
+    "RW",
+    "Komunitas",
+    "Smart Neighborhood",
+    "Warga",
+    "Perumahan",
+    "Sosial",
+    "Pasar Warga",
+  ],
+  authors: [{ name: "Teras Warga Team", url: "https://teraswarga.com" }],
+  creator: "Teras Warga",
+  publisher: "Teras Warga",
+  openGraph: {
+    type: "website",
+    locale: "id_ID",
+    url: "https://teraswarga.com",
+    siteName: "Teras Warga",
+    title: "Teras Warga - Digitalisasi Komunitas Lingkungan",
+    description:
+      "Teras Warga adalah platform komunitas modern untuk RT/RW yang mengintegrasikan komunikasi real-time, pasar warga (Web3), dan administrasi lingkungan cerdas.",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Teras Warga Open Graph Image",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Teras Warga - Digitalisasi Komunitas Lingkungan",
+    description:
+      "Teras Warga adalah platform komunitas modern untuk RT/RW yang mengintegrasikan komunikasi real-time, pasar warga (Web3), dan administrasi lingkungan cerdas.",
+    images: ["/og-image.jpg"],
+    creator: "@teraswarga",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default async function RootLayout({

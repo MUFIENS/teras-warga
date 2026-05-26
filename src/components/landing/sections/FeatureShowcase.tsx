@@ -1,147 +1,201 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MessageCircle, Store, Wallet, ShieldAlert, Bell, Users, ArrowUpRight } from "lucide-react";
+import { MessageCircle, Store, Wallet, ShieldAlert, ShoppingBag, ChevronRight, Bell } from "lucide-react";
 
 export function FeatureShowcase() {
   return (
-    <section id="features" className="py-32 relative bg-gray-50 dark:bg-[#050505] overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-20">
-          <motion.h2 
+    <section id="features" className="py-32 relative bg-white dark:bg-black overflow-hidden border-t border-gray-100 dark:border-neutral-900">
+      <div className="max-w-[1200px] mx-auto px-6 sm:px-8 relative z-10">
+        
+        {/* Section Header */}
+        <div className="flex flex-col items-center justify-center text-center max-w-3xl mx-auto mb-20">
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.5 }}
-            className="text-4xl md:text-6xl font-black text-gray-900 dark:text-white tracking-tighter mb-6"
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-100 dark:bg-neutral-900 text-gray-900 dark:text-white font-medium text-xs mb-6"
           >
-            Satu Ekosistem, <br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1D9BF0] to-indigo-500">Beragam Solusi.</span>
+            Infrastruktur Lengkap
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="text-4xl md:text-5xl font-medium tracking-tight mb-6 text-gray-900 dark:text-white"
+          >
+            Modul Inti Teras Warga.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-lg md:text-xl text-gray-600 dark:text-gray-400 tracking-tight"
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="text-lg text-gray-500 dark:text-neutral-400 tracking-tight font-light max-w-2xl leading-relaxed"
           >
-            Tinggalkan cara lama. Kelola interaksi sosial, ekonomi warga, hingga pelaporan keamanan melalui satu platform yang cerdas dan terintegrasi.
+            Sistem perumahan yang cerdas dibangun dalam satu ekosistem yang terintegrasi. Mulai dari komunikasi hingga ekonomi sirkular.
           </motion.p>
         </div>
 
-        {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        {/* Premium Bento Grid - Row 1 */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
           
-          {/* Bento Item 1: Large Marketplace */}
+          {/* Bento Item 1: Marketplace (Large: 2 cols) */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6 }}
-            className="md:col-span-2 relative group bg-white dark:bg-[#0c0c0c] rounded-[2rem] p-8 md:p-10 border border-gray-200/60 dark:border-white/10 shadow-xl overflow-hidden"
+            className="lg:col-span-2 group bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 overflow-hidden relative flex flex-col justify-between min-h-[420px]"
           >
-            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-orange-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-[80px] pointer-events-none" />
-            <div className="relative z-10 h-full flex flex-col justify-between">
-              <div>
-                <div className="w-14 h-14 rounded-2xl bg-orange-50 dark:bg-orange-950/50 flex items-center justify-center mb-6 border border-orange-100 dark:border-orange-900/50 shadow-inner">
-                  <Store className="w-7 h-7 text-orange-600 dark:text-orange-400" />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3 tracking-tight">Marketplace Internal</h3>
-                <p className="text-gray-600 dark:text-gray-400 max-w-md text-lg leading-relaxed">Jual beli barang bekas atau baru dengan warga sekitar tanpa biaya admin. Bangun sirkulasi ekonomi lingkungan yang sehat.</p>
+            <div className="relative z-10 max-w-sm">
+              <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
+                <Store className="w-5 h-5 text-gray-900 dark:text-white" />
               </div>
-              <div className="mt-10 relative h-48 bg-gray-50 dark:bg-neutral-900/50 rounded-2xl border border-gray-100 dark:border-white/5 overflow-hidden flex items-center justify-center group-hover:scale-[1.02] transition-transform duration-500 shadow-inner">
-                {/* Visual mockup inside */}
-                <div className="absolute -bottom-8 -right-8 w-64 h-64 bg-orange-100 dark:bg-orange-900/20 rounded-full blur-[60px]" />
-                <div className="bg-white dark:bg-black p-4 rounded-xl shadow-lg border border-gray-100 dark:border-white/10 flex items-center gap-4 z-10 -rotate-3 hover:rotate-0 transition-transform duration-500">
-                   <div className="w-16 h-16 rounded-lg bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center">
-                     <Store className="w-8 h-8 text-orange-500" />
+              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2 tracking-tight">Marketplace Internal</h3>
+              <p className="text-gray-500 dark:text-neutral-400 text-sm leading-relaxed font-light">Jual beli barang dengan warga sekitar tanpa biaya admin. Bangun sirkulasi ekonomi lingkungan yang transparan.</p>
+            </div>
+            
+            {/* Architectural UI Miniature */}
+            <div className="absolute right-0 bottom-0 w-[90%] max-w-[400px] h-[240px] bg-white dark:bg-[#0a0a0a] rounded-tl-3xl border-t border-l border-gray-200/80 dark:border-white/10 shadow-2xl transition-transform duration-500 group-hover:scale-[1.02] origin-bottom-right flex flex-col">
+               <div className="p-5 border-b border-gray-100 dark:border-white/5 flex items-center justify-between">
+                 <span className="text-xs font-semibold text-gray-900 dark:text-white uppercase tracking-wider">Produk Warga Terbaru</span>
+                 <ChevronRight className="w-4 h-4 text-gray-400" />
+               </div>
+               <div className="p-5 flex flex-col gap-4">
+                 <div className="flex items-center gap-4">
+                   <div className="w-12 h-12 rounded-xl bg-orange-50 dark:bg-orange-500/10 flex items-center justify-center border border-orange-100 dark:border-orange-500/20">
+                     <ShoppingBag className="w-5 h-5 text-orange-500" />
                    </div>
-                   <div>
-                     <div className="font-bold text-sm text-gray-900 dark:text-white">Kue Kering Lebaran</div>
-                     <div className="text-xs text-orange-500 font-bold mt-1">Rp 85.000</div>
+                   <div className="flex-1">
+                     <div className="text-sm font-medium text-gray-900 dark:text-white">Kue Kering Nastar (Wysman)</div>
+                     <div className="text-[11px] text-gray-500 mt-0.5">Ibu Sari • Blok A1</div>
                    </div>
-                </div>
-              </div>
+                   <div className="text-sm font-semibold text-gray-900 dark:text-white">Rp 120.000</div>
+                 </div>
+                 <div className="flex items-center gap-4">
+                   <div className="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center border border-blue-100 dark:border-blue-500/20">
+                     <Store className="w-5 h-5 text-blue-500" />
+                   </div>
+                   <div className="flex-1">
+                     <div className="text-sm font-medium text-gray-900 dark:text-white">Jasa Cuci AC & Perbaikan</div>
+                     <div className="text-[11px] text-gray-500 mt-0.5">Pak Budi • Blok C3</div>
+                   </div>
+                   <div className="text-sm font-semibold text-gray-900 dark:text-white">Rp 75.000</div>
+                 </div>
+               </div>
             </div>
           </motion.div>
 
-          {/* Bento Item 2: Small Web3 */}
+          {/* Bento Item 2: Web3 (Small: 1 col) */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="md:col-span-1 relative group bg-white dark:bg-[#0c0c0c] rounded-[2rem] p-8 border border-gray-200/60 dark:border-white/10 shadow-xl overflow-hidden"
+            className="lg:col-span-1 group bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 overflow-hidden relative flex flex-col h-[420px]"
           >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-blue-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-[60px] pointer-events-none" />
-            <div className="relative z-10 h-full flex flex-col">
-              <div className="w-14 h-14 rounded-2xl bg-blue-50 dark:bg-blue-950/50 flex items-center justify-center mb-6 border border-blue-100 dark:border-blue-900/50 shadow-inner">
-                <Wallet className="w-7 h-7 text-blue-600 dark:text-blue-400" />
+            <div className="relative z-10">
+              <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
+                <Wallet className="w-5 h-5 text-gray-900 dark:text-white" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 tracking-tight">Pembayaran Web3</h3>
-              <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-8">Mendukung transaksi aman menggunakan Cryptocurrency langsung dari dompet Anda.</p>
-              
-              <div className="mt-auto h-32 bg-gray-50 dark:bg-neutral-900/50 rounded-2xl border border-gray-100 dark:border-white/5 flex items-center justify-center overflow-hidden relative shadow-inner">
-                <div className="flex -space-x-4 z-10 group-hover:scale-110 transition-transform duration-500">
-                  <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center border-2 border-white dark:border-black shadow-md"><span className="text-white text-[10px] font-bold">ETH</span></div>
-                  <div className="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center border-2 border-white dark:border-black shadow-md"><span className="text-white text-[10px] font-bold">BTC</span></div>
-                  <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center border-2 border-white dark:border-black shadow-md"><span className="text-white text-[10px] font-bold">USDT</span></div>
-                </div>
+              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2 tracking-tight">Pembayaran Web3</h3>
+              <p className="text-gray-500 dark:text-neutral-400 text-sm leading-relaxed font-light">Mendukung transaksi crypto terdesentralisasi yang aman dan cepat.</p>
+            </div>
+            
+            <div className="absolute inset-x-8 bottom-12 flex justify-center transition-transform duration-500 group-hover:scale-[1.03]">
+              <div className="w-full bg-white dark:bg-[#0a0a0a] rounded-2xl border border-gray-200/80 dark:border-white/10 shadow-xl p-6 flex flex-col items-center">
+                 <div className="flex -space-x-3 mb-5">
+                   <div className="w-12 h-12 rounded-full bg-[#627EEA] border-2 border-white dark:border-[#0a0a0a] flex items-center justify-center z-30 shadow-sm">
+                      <svg className="w-5 h-5 text-white" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15.925 23.969L15.875 24v7.5l.05.147 7.15-10.082z" fill="#fff" fillOpacity=".6"/>
+                        <path d="M15.925 23.969L8.75 14.065l7.125 10.051z" fill="#fff"/>
+                        <path d="M15.925 1.5l-.05.17v16.14l.05.05 7.15-3.19z" fill="#fff" fillOpacity=".6"/>
+                        <path d="M15.925 1.5L8.75 14.67l7.175 3.19z" fill="#fff"/>
+                        <path d="M15.925 17.86l7.15-3.19-7.15-3.216z" fill="#fff" fillOpacity=".2"/>
+                        <path d="M8.75 14.67l7.175 3.19v-6.406z" fill="#fff" fillOpacity=".6"/>
+                      </svg>
+                   </div>
+                   <div className="w-12 h-12 rounded-full bg-[#2775CA] border-2 border-white dark:border-[#0a0a0a] flex items-center justify-center z-20 shadow-sm">
+                      <svg className="w-7 h-7 text-white" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12zm-1.89-16.71c2.19-.54 4.79-.16 6.35 1.57.94.99 1.45 2.37 1.45 3.84 0 1.95-.91 3.75-2.48 4.77-2.09 1.34-4.73 1.53-7.14 1.13-1.04-.17-1.87-1.01-2-2.06-.11-1.05.62-2.01 1.63-2.14 1.15-.14 2.31-.05 3.39.31 1.25.4 2.22-.38 2.22-1.39 0-1.12-1.01-1.57-2.31-1.85-.75-.16-1.55-.22-2.32-.42-1.29-.35-2.3-1.15-2.61-2.52-.3-1.31.25-2.65 1.35-3.32 1.05-.62 2.34-.82 3.48-.96l-1.01 2.04z"/>
+                      </svg>
+                   </div>
+                 </div>
+                 <div className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold mb-1">Total Balance</div>
+                 <div className="text-2xl font-mono font-medium text-gray-900 dark:text-white">$1,240.50</div>
               </div>
             </div>
           </motion.div>
+        </div>
 
-          {/* Bento Item 3: Small Chat */}
+        {/* Premium Bento Grid - Row 2 */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          {/* Bento Item 3: Chat (Small: 1 col) */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="lg:col-span-1 group bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 overflow-hidden relative flex flex-col h-[400px]"
+          >
+            <div className="relative z-10">
+              <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
+                <MessageCircle className="w-5 h-5 text-gray-900 dark:text-white" />
+              </div>
+              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2 tracking-tight">Real-time Chat</h3>
+              <p className="text-gray-500 dark:text-neutral-400 text-sm leading-relaxed font-light">Pesan instan antar warga tanpa delay.</p>
+            </div>
+            
+            <div className="absolute inset-x-8 bottom-0 h-[180px] bg-white dark:bg-[#0a0a0a] rounded-t-3xl border-t border-x border-gray-200/80 dark:border-white/10 shadow-2xl p-5 flex flex-col gap-3 justify-end transition-transform duration-500 group-hover:translate-y-[-8px]">
+               <div className="bg-gray-100 dark:bg-white/5 rounded-2xl rounded-bl-sm p-3 w-[85%] self-start">
+                 <div className="text-xs text-gray-600 dark:text-gray-300 leading-snug">Jadwal siskamling malam ini kumpul jam berapa pak?</div>
+               </div>
+               <div className="bg-black dark:bg-white rounded-2xl rounded-br-sm p-3 w-[75%] self-end">
+                 <div className="text-xs text-white dark:text-black leading-snug">Sesuai jadwal jam 21:00 ya.</div>
+               </div>
+            </div>
+          </motion.div>
+
+          {/* Bento Item 4: Security (Large: 2 cols) */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="md:col-span-1 relative group bg-white dark:bg-[#0c0c0c] rounded-[2rem] p-8 border border-gray-200/60 dark:border-white/10 shadow-xl overflow-hidden"
+            className="lg:col-span-2 group bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 overflow-hidden relative flex flex-col justify-between h-[400px]"
           >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-emerald-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-[60px] pointer-events-none" />
-            <div className="relative z-10 h-full flex flex-col">
-              <div className="w-14 h-14 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 flex items-center justify-center mb-6 border border-emerald-100 dark:border-emerald-900/50 shadow-inner">
-                <MessageCircle className="w-7 h-7 text-emerald-600 dark:text-emerald-400" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 tracking-tight">Real-time Chat</h3>
-              <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-8">Pesan instan tanpa delay. Diskusi lebih hidup dengan fitur modern layaknya aplikasi chat premium.</p>
-              
-              <div className="mt-auto h-32 bg-gray-50 dark:bg-neutral-900/50 rounded-2xl border border-gray-100 dark:border-white/5 flex flex-col justify-center px-4 gap-3 overflow-hidden shadow-inner relative group-hover:scale-[1.02] transition-transform duration-500">
-                <div className="h-8 bg-white dark:bg-black border border-gray-100 dark:border-white/5 rounded-full w-3/4 self-end shadow-sm flex items-center px-3 justify-end"><div className="w-12 h-2 bg-gray-200 dark:bg-white/10 rounded-full" /></div>
-                <div className="h-8 bg-emerald-500 rounded-full w-2/3 self-start shadow-sm flex items-center px-3"><div className="w-16 h-2 bg-emerald-300 rounded-full" /></div>
-              </div>
+            <div className="relative z-10 max-w-sm">
+               <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
+                 <ShieldAlert className="w-5 h-5 text-gray-900 dark:text-white" />
+               </div>
+               <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2 tracking-tight">Keamanan Terpusat</h3>
+               <p className="text-gray-500 dark:text-neutral-400 text-sm leading-relaxed font-light">Laporkan kejadian darurat atau fasilitas rusak langsung ke pengurus. Notifikasi tersebar seketika ke seluruh warga yang berkepentingan.</p>
             </div>
-          </motion.div>
-
-          {/* Bento Item 4: Large Security */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="md:col-span-2 relative group bg-white dark:bg-[#0c0c0c] rounded-[2rem] p-8 md:p-10 border border-gray-200/60 dark:border-white/10 shadow-xl overflow-hidden"
-          >
-            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-red-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-[80px] pointer-events-none" />
-            <div className="relative z-10 h-full flex flex-col justify-between">
-              <div>
-                <div className="w-14 h-14 rounded-2xl bg-red-50 dark:bg-red-950/50 flex items-center justify-center mb-6 border border-red-100 dark:border-red-900/50 shadow-inner">
-                  <ShieldAlert className="w-7 h-7 text-red-600 dark:text-red-400" />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3 tracking-tight">Keamanan Terpusat</h3>
-                <p className="text-gray-600 dark:text-gray-400 max-w-md text-lg leading-relaxed">Laporkan kejadian darurat atau fasilitas rusak langsung ke pengurus. Notifikasi tersebar seketika.</p>
-              </div>
-              <div className="mt-10 relative h-48 bg-gray-50 dark:bg-neutral-900/50 rounded-2xl border border-gray-100 dark:border-white/5 overflow-hidden flex items-center justify-center group-hover:scale-[1.02] transition-transform duration-500 shadow-inner">
-                 <div className="bg-white dark:bg-black p-4 rounded-xl shadow-xl border border-red-100 dark:border-red-900/30 flex items-center gap-4 rotate-2 hover:rotate-0 transition-transform duration-500 z-10">
-                   <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center shadow-inner">
-                     <ShieldAlert className="w-6 h-6 text-red-500" />
+            
+            <div className="absolute right-8 bottom-8 left-8 lg:left-auto lg:w-[420px] bg-white dark:bg-[#0a0a0a] rounded-2xl border border-gray-200/80 dark:border-white/10 shadow-2xl p-6 transition-transform duration-500 group-hover:scale-[1.02]">
+               <div className="flex items-center justify-between mb-5">
+                 <div className="flex items-center gap-2">
+                   <div className="relative flex h-2 w-2">
+                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                     <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
                    </div>
-                   <div>
-                     <div className="font-bold text-sm text-gray-900 dark:text-white tracking-tight">Laporan Baru: Lampu PJU Mati</div>
-                     <div className="text-xs text-gray-500 mt-0.5">Blok A2 - Dilaporkan 2 menit yang lalu</div>
-                   </div>
+                   <span className="text-[10px] font-bold uppercase tracking-widest text-red-600 dark:text-red-500">Emergency Alert</span>
                  </div>
-              </div>
+                 <span className="text-xs text-gray-400 font-mono">Baru saja</span>
+               </div>
+               <div className="flex items-start gap-4">
+                 <div className="w-12 h-12 rounded-xl bg-red-50 dark:bg-red-500/10 flex items-center justify-center flex-shrink-0 border border-red-100 dark:border-red-500/20">
+                    <Bell className="w-5 h-5 text-red-600 dark:text-red-500" />
+                 </div>
+                 <div>
+                   <div className="text-base font-semibold text-gray-900 dark:text-white mb-1.5 leading-tight">Laporan PJU Mati</div>
+                   <div className="text-xs text-gray-500 leading-relaxed">Blok A2 - Depan Taman. Kondisi jalan sangat gelap dan berpotensi membahayakan keamanan.</div>
+                 </div>
+               </div>
             </div>
           </motion.div>
 

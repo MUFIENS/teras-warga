@@ -14,9 +14,10 @@ import {
   Mail,
   User,
   LogOut,
-  Menu,
   X,
-  LucideIcon
+  LucideIcon,
+  Vote,
+  Menu
 } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { createClient } from "@/lib/supabase/client";
@@ -53,6 +54,7 @@ export function Sidebar({ unreadNotifications = 0, unreadMessages = 0, profile }
     { label: "Kas", href: "/kas", icon: Wallet },
     { label: "Laporan", href: "/laporan", icon: ShieldAlert },
     { label: "Peminjaman", href: "/peminjaman", icon: Wrench },
+    { label: "Voting DAO", href: "/voting", icon: Vote },
     { label: "Teman", href: "/teman", icon: Users },
     { label: "Notifikasi", href: "/notifikasi", icon: Bell, badge: unreadNotifications },
     { label: "Pesan", href: "/pesan", icon: Mail, badge: unreadMessages },
@@ -172,8 +174,6 @@ export function Sidebar({ unreadNotifications = 0, unreadMessages = 0, profile }
             </button>
           )}
           
-
-
           {profile ? (
             <button 
               onClick={handleLogout}
@@ -215,7 +215,7 @@ export function Sidebar({ unreadNotifications = 0, unreadMessages = 0, profile }
         <div className="flex items-center gap-2">
           <ThemeToggle />
           {profile && (
-            <Link href="/profil" className="relative flex-shrink-0">
+            <Link href="/profil" className="relative flex-shrink-0 ml-1">
               <Avatar src={profile.avatar_url} alt={profile.full_name} className="h-7 w-7 hover:opacity-85 transition-opacity" />
             </Link>
           )}
@@ -329,8 +329,6 @@ export function Sidebar({ unreadNotifications = 0, unreadMessages = 0, profile }
               Posting
             </button>
           )}
-
-
 
           {profile ? (
             <button 

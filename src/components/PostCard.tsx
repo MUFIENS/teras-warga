@@ -25,6 +25,7 @@ interface PostCardProps {
   hasLiked?: boolean;
   hasReposted?: boolean;
   isOwnPost?: boolean;
+  priority?: boolean;
 }
 
 export function PostCard({
@@ -41,6 +42,7 @@ export function PostCard({
   hasLiked = false,
   hasReposted = false,
   isOwnPost = false,
+  priority = false,
 }: PostCardProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -193,6 +195,7 @@ export function PostCard({
               alt="Post attachment" 
               width={800}
               height={500}
+              priority={priority}
               className="w-full h-auto object-cover max-h-[500px]" 
             />
           </div>

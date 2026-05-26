@@ -7,9 +7,12 @@ import { id as localeId } from "date-fns/locale";
 import { MarketItemCard } from "@/components/MarketItemCard";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useInView } from "react-intersection-observer";
 import { fetchMoreMarketItems } from "@/app/pasar/actions";
 import { Loader2 } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAccount } from "wagmi";
+import { useInView } from "react-intersection-observer";
 
 const CATEGORIES = ["Semua", "Elektronik", "Pakaian", "Makanan", "Furnitur", "Kendaraan", "Jasa", "Lainnya"];
 
@@ -41,6 +44,7 @@ interface MarketplaceClientProps {
 
 export function MarketplaceClient({ items, currentUserId }: MarketplaceClientProps) {
   const router = useRouter();
+  const { isConnected } = useAccount();
   const [itemsList, setItemsList] = useState(items || []);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState((items?.length || 0) >= 10);
@@ -62,6 +66,36 @@ export function MarketplaceClient({ items, currentUserId }: MarketplaceClientPro
       loadMoreItems();
     }
   }, [inView, hasMore, loading]);
+
+  // Supabase Realtime Subscription
+  useEffect(() => {
+    const supabase = createClient();
+    const channel = supabase
+      .channel('market_public_changes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'market_items' },
+        (payload) => {
+          if (payload.eventType === 'DELETE') {
+            setItemsList(prev => prev.filter(item => item.id !== payload.old.id));
+          } else if (payload.eventType === 'UPDATE') {
+            setItemsList(prev => prev.map(item => 
+              item.id === payload.new.id ? { ...item, ...payload.new } : item
+            ));
+          } else if (payload.eventType === 'INSERT') {
+            // Kita mungkin tidak memiliki relasi 'profiles' pada raw insert payload,
+            // jadi lebih baik biarkan user me-refresh, atau tambahkan dengan info kosong sementara.
+            // Untuk mempermudah, kita biarkan saja (pengguna yang membuat akan dapat redirect, 
+            // pengguna lain harus load more / refresh).
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   const loadMoreItems = async () => {
     setLoading(true);
@@ -121,6 +155,14 @@ export function MarketplaceClient({ items, currentUserId }: MarketplaceClientPro
     router.push(`/pasar/jual?edit=${id}`);
   };
 
+  const handleItemDeleted = (id: string) => {
+    setItemsList(prev => prev.filter(item => item.id !== id));
+  };
+
+  const handleItemStatusToggled = (id: string, newStatus: boolean) => {
+    setItemsList(prev => prev.map(item => item.id === id ? { ...item, is_active: newStatus } : item));
+  };
+
   const activeCount = itemsList.filter(i => i.is_active !== false).length;
 
   return (
@@ -134,13 +176,16 @@ export function MarketplaceClient({ items, currentUserId }: MarketplaceClientPro
               {activeCount} barang
             </span>
           </div>
-          <Link
-            href="/pasar/jual"
-            className="flex items-center gap-1.5 bg-[#1D9BF0] text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-[#1A8CD8] transition-colors"
-          >
-            <Plus className="w-4 h-4" />
-            Jual
-          </Link>
+          <div className="flex items-center gap-2">
+            {!isConnected && <ConnectButton />}
+            <Link
+              href="/pasar/jual"
+              className="flex items-center gap-1.5 bg-[#1D9BF0] text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-[#1A8CD8] transition-colors"
+            >
+              <Plus className="w-4 h-4" />
+              <span className="hidden sm:inline">Jual</span>
+            </Link>
+          </div>
         </div>
 
         {/* Search Bar */}
@@ -213,7 +258,7 @@ export function MarketplaceClient({ items, currentUserId }: MarketplaceClientPro
       {/* Items Grid */}
       {filteredItems.length > 0 ? (
         <div className="grid grid-cols-2 gap-4 p-4">
-          {filteredItems.map((item) => (
+          {filteredItems.map((item, index) => (
             <MarketItemCard
               key={item.id}
               id={item.id}
@@ -234,6 +279,9 @@ export function MarketplaceClient({ items, currentUserId }: MarketplaceClientPro
               isOwner={currentUserId === item.user_id}
               timeAgo={item.timeAgo}
               onEdit={handleEdit}
+              onDelete={handleItemDeleted}
+              onToggleStatus={handleItemStatusToggled}
+              priority={index < 4}
             />
           ))}
         </div>
