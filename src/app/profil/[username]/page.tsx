@@ -26,7 +26,8 @@ export default async function ProfilUserPage({ params }: PageProps) {
   const { count: postCount } = await supabase
     .from("posts")
     .select("*", { count: "exact", head: true })
-    .eq("user_id", profile.id);
+    .eq("user_id", profile.id)
+    .is("parent_id", null);
 
   // Statistik: jumlah teman
   const { count: friendCount } = await supabase

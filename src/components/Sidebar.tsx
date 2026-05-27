@@ -58,7 +58,7 @@ export function Sidebar({ unreadNotifications = 0, unreadMessages = 0, profile }
     { label: "Teman", href: "/teman", icon: Users },
     { label: "Notifikasi", href: "/notifikasi", icon: Bell, badge: unreadNotifications },
     { label: "Pesan", href: "/pesan", icon: Mail, badge: unreadMessages },
-    { label: "Profil", href: "/profil", icon: User },
+    { label: "Profil", href: `/profil/${profile.username}`, icon: User },
   ] : [
     { label: "Beranda", href: "/", icon: Home },
     { label: "Pasar", href: "/pasar", icon: Store },
@@ -101,7 +101,7 @@ export function Sidebar({ unreadNotifications = 0, unreadMessages = 0, profile }
 
         {/* Profile */}
         {profile && (
-          <Link href="/profil" className="group flex items-center gap-3 p-3 mb-6 rounded-2xl hover:bg-gray-100 dark:hover:bg-neutral-900 transition-colors duration-200 border border-transparent hover:border-gray-200 dark:hover:border-neutral-800">
+          <Link href={`/profil/${profile.username}`} className="group flex items-center gap-3 p-3 mb-6 rounded-2xl hover:bg-gray-100 dark:hover:bg-neutral-900 transition-colors duration-200 border border-transparent hover:border-gray-200 dark:hover:border-neutral-800">
             <Tooltip content={isOnline ? "Online" : "Offline"} side="right">
               <div className="relative flex-shrink-0">
                 <Avatar src={profile.avatar_url} alt={profile.full_name} className="h-12 w-12" />
@@ -215,7 +215,7 @@ export function Sidebar({ unreadNotifications = 0, unreadMessages = 0, profile }
         <div className="flex items-center gap-2">
           <ThemeToggle />
           {profile && (
-            <Link href="/profil" className="relative flex-shrink-0 ml-1">
+            <Link href={`/profil/${profile.username}`} className="relative flex-shrink-0 ml-1">
               <Avatar src={profile.avatar_url} alt={profile.full_name} className="h-7 w-7 hover:opacity-85 transition-opacity" />
             </Link>
           )}
@@ -256,7 +256,7 @@ export function Sidebar({ unreadNotifications = 0, unreadMessages = 0, profile }
 
         {/* Profile (Drawer) */}
         {profile && (
-          <Link href="/profil" onClick={() => setIsOpen(false)} className="group flex items-center gap-3 p-3 mb-6 rounded-2xl hover:bg-gray-100 dark:hover:bg-neutral-900 transition-colors duration-200 border border-transparent hover:border-gray-200 dark:hover:border-neutral-800">
+          <Link href={`/profil/${profile.username}`} onClick={() => setIsOpen(false)} className="group flex items-center gap-3 p-3 mb-6 rounded-2xl hover:bg-gray-100 dark:hover:bg-neutral-900 transition-colors duration-200 border border-transparent hover:border-gray-200 dark:hover:border-neutral-800">
             <Tooltip content={isOnline ? "Online" : "Offline"} side="right">
               <div className="relative flex-shrink-0">
                 <Avatar src={profile.avatar_url} alt={profile.full_name} className="h-10 w-10" />

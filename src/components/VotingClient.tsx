@@ -2,6 +2,9 @@
 
 import { useState, useEffect, useTransition } from "react";
 import { CheckCircle2, Vote, Plus, Loader2, X } from "lucide-react";
+import { castVote, createProposal } from "@/app/voting/actions";
+import { createClient } from "@/lib/supabase/client";
+
 export interface Proposal {
   id: string;
   title: string;
@@ -10,9 +13,6 @@ export interface Proposal {
   status: "active" | "closed";
   votes: Record<string, number>;
 }
-
-import { castVote, createProposal } from "@/app/voting/actions";
-import { createClient } from "@/lib/supabase/client";
 
 export function VotingClient({ 
   initialProposals, 

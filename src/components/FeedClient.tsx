@@ -104,6 +104,9 @@ export function FeedClient({ initialPosts, currentUserId }: FeedClientProps) {
           });
         }
       })
+      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'posts' }, (payload) => {
+        setPosts(prev => prev.filter(p => p.id !== payload.old.id));
+      })
       .subscribe();
 
     return () => {
