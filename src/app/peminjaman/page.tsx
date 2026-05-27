@@ -7,7 +7,7 @@ export default async function PeminjamanPage() {
 
   const { data: { user }, error: authError } = await supabase.auth.getUser();
   if (authError || !user) {
-    redirect("/auth");
+    redirect("/login");
   }
 
   // Dapatkan profil pengguna (untuk peran)

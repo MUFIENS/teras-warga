@@ -7,7 +7,7 @@ export default async function TemanPage() {
 
   const { data: { user }, error: authError } = await supabase.auth.getUser();
   if (authError || !user) {
-    redirect("/auth");
+    redirect("/login");
   }
 
   // Ambil semua pertemanan – gunakan cast karena tipe Supabase tidak bisa menyelesaikan penggabungan FK yang dialiaskan

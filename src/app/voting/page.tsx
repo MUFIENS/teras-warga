@@ -7,7 +7,7 @@ export default async function VotingPage() {
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/welcome");
+    redirect("/login");
   }
 
   // Fetch proposals
@@ -40,6 +40,7 @@ export default async function VotingPage() {
       description: p.description,
       options: p.options,
       status: p.status,
+      creator_id: p.creator_id,
       votes: voteCounts
     };
   });

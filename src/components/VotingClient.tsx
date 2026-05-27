@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect, useTransition } from "react";
-import { CheckCircle2, Vote, Plus, Loader2, X } from "lucide-react";
-import { castVote, createProposal } from "@/app/voting/actions";
+import { CheckCircle2, Vote, Plus, Loader2, X, Trash2 } from "lucide-react";
+import { castVote, createProposal, deleteProposal } from "@/app/voting/actions";
 import { createClient } from "@/lib/supabase/client";
+import { toast } from "sonner";
+import { useConfirmDialog } from "@/components/ui/confirm-dialog";
 
 export interface Proposal {
   id: string;
@@ -11,6 +13,7 @@ export interface Proposal {
   description: string;
   options: string[];
   status: "active" | "closed";
+  creator_id: string;
   votes: Record<string, number>;
 }
 
@@ -26,6 +29,7 @@ export function VotingClient({
   const [proposals, setProposals] = useState<Proposal[]>(initialProposals);
   const [userVotes, setUserVotes] = useState<Record<string, string>>(initialUserVotes);
   const [isPending, startTransition] = useTransition();
+  const { confirm, ConfirmDialog } = useConfirmDialog();
   
   const [showCreate, setShowCreate] = useState(false);
   const [newTitle, setNewTitle] = useState("");
@@ -86,6 +90,7 @@ export function VotingClient({
             description: newP.description,
             options: newP.options,
             status: newP.status,
+            creator_id: newP.creator_id,
             votes: {}
           }, ...prev];
         });
@@ -124,11 +129,34 @@ export function VotingClient({
     });
   };
 
+  const handleDelete = async (proposalId: string) => {
+    const ok = await confirm({
+      title: "Hapus Proposal?",
+      description: "Proposal ini akan dihapus secara permanen beserta semua suara di dalamnya.",
+      confirmText: "Hapus",
+      variant: "danger",
+    });
+    if (!ok) return;
+    
+    // Optimistic UI update
+    setProposals(prev => prev.filter(p => p.id !== proposalId));
+
+    startTransition(async () => {
+      try {
+        await deleteProposal(proposalId);
+        toast.success("Proposal berhasil dihapus!");
+      } catch (e) {
+        toast.error("Gagal menghapus proposal.");
+        console.error("Failed to delete proposal:", e);
+      }
+    });
+  };
+
   const handleCreate = (e: React.FormEvent) => {
     e.preventDefault();
     const validOptions = newOptions.filter(o => o.trim() !== "");
     if (newTitle.trim() === "" || newDesc.trim() === "" || validOptions.length < 2) {
-      alert("Harap isi semua kolom dan minimal 2 opsi.");
+      toast.error("Harap isi semua kolom dan minimal 2 opsi.");
       return;
     }
 
@@ -139,7 +167,9 @@ export function VotingClient({
         setNewTitle("");
         setNewDesc("");
         setNewOptions(["", ""]);
+        toast.success("Proposal baru berhasil dibuat!");
       } catch (e) {
+        toast.error("Gagal membuat proposal.");
         console.error(e);
       }
     });
@@ -147,6 +177,7 @@ export function VotingClient({
 
   return (
     <div className="max-w-4xl mx-auto p-4 md:p-8 space-y-8 w-full">
+      <ConfirmDialog />
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-200 dark:border-neutral-800 pb-6">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Sistem Tata Kelola Warga</h1>
@@ -261,20 +292,32 @@ export function VotingClient({
                   <h2 className="text-xl font-semibold">{proposal.title}</h2>
                   <p className="text-gray-500 mt-1 text-sm whitespace-pre-wrap">{proposal.description}</p>
                 </div>
-                <span className="px-3 py-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-semibold rounded-full flex items-center gap-1 shrink-0 ml-4">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                  Aktif
-                </span>
+                <div className="flex items-center gap-3 shrink-0 ml-4">
+                  <span className="px-3 py-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-semibold rounded-full flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Aktif
+                  </span>
+                  {currentUserId === proposal.creator_id && (
+                    <button
+                      onClick={() => handleDelete(proposal.id)}
+                      disabled={isPending}
+                      className="p-1.5 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors disabled:opacity-50"
+                      title="Hapus Proposal"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div className="space-y-3 mt-6">
-                {proposal.options.map(option => {
+                {proposal.options.map((option, i) => {
                   const voteCount = proposal.votes[option] || 0;
                   const percentage = totalVotes === 0 ? 0 : Math.round((voteCount / totalVotes) * 100);
                   const isVotedByMe = userVotes[proposal.id] === option;
                   
                   return (
-                    <div key={option} className="relative group">
+                    <div key={`${proposal.id}-${option}-${i}`} className="relative group">
                       <div className="absolute inset-0 bg-gray-100 dark:bg-neutral-800 rounded-xl overflow-hidden">
                         <div 
                           className="h-full bg-[#1D9BF0]/20 transition-all duration-1000 ease-out" 
