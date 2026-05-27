@@ -168,7 +168,7 @@ export function MarketplaceClient({ items, currentUserId }: MarketplaceClientPro
   return (
     <>
       {/* Sticky Header */}
-      <header className="sticky top-14 md:top-0 z-10 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
+      <header className="sticky top-14 md:top-0 z-40 bg-white dark:bg-[#050505] border-b border-gray-200 dark:border-neutral-800 shadow-sm">
         <div className="flex items-center justify-between px-4 h-14">
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold">Pasar Warga</h1>

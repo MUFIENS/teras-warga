@@ -32,7 +32,7 @@ describe('VotingClient — Permission System', () => {
   it('renders proposals correctly', () => {
     vi.mocked(useAccount).mockReturnValue({ isConnected: false } as any);
 
-    render(<VotingClient proposals={mockProposals} />);
+    render(<VotingClient initialProposals={mockProposals} initialUserVotes={{}} currentUserId="test-user-id" />);
     
     expect(screen.getByText('Perbaikan Jalan Blok A')).toBeInTheDocument();
     expect(screen.getByText('Setuju')).toBeInTheDocument();
@@ -44,7 +44,7 @@ describe('VotingClient — Permission System', () => {
   it('enables voting for authenticated users WITHOUT wallet connection', () => {
     vi.mocked(useAccount).mockReturnValue({ isConnected: false } as any);
 
-    render(<VotingClient proposals={mockProposals} />);
+    render(<VotingClient initialProposals={mockProposals} initialUserVotes={{}} currentUserId="test-user-id" />);
     
     // Vote buttons should be ENABLED even without wallet
     // because auth is handled at page level (redirect in page.tsx)
@@ -57,7 +57,7 @@ describe('VotingClient — Permission System', () => {
   it('does NOT show Lock icon when wallet is disconnected', () => {
     vi.mocked(useAccount).mockReturnValue({ isConnected: false } as any);
 
-    render(<VotingClient proposals={mockProposals} />);
+    render(<VotingClient initialProposals={mockProposals} initialUserVotes={{}} currentUserId="test-user-id" />);
     
     // Should NOT show "Kunci" (Lock) text
     expect(screen.queryByText('Kunci')).not.toBeInTheDocument();
@@ -66,7 +66,7 @@ describe('VotingClient — Permission System', () => {
   it('allows voting and marks as voted', () => {
     vi.mocked(useAccount).mockReturnValue({ isConnected: false } as any);
 
-    render(<VotingClient proposals={mockProposals} />);
+    render(<VotingClient initialProposals={mockProposals} initialUserVotes={{}} currentUserId="test-user-id" />);
     
     const voteButtons = screen.getAllByRole('button', { name: /Vote/i });
     
@@ -80,7 +80,7 @@ describe('VotingClient — Permission System', () => {
   it('disables buttons after user has voted on a proposal', () => {
     vi.mocked(useAccount).mockReturnValue({ isConnected: false } as any);
 
-    render(<VotingClient proposals={mockProposals} />);
+    render(<VotingClient initialProposals={mockProposals} initialUserVotes={{}} currentUserId="test-user-id" />);
     
     const voteButtons = screen.getAllByRole('button', { name: /Vote/i });
     
@@ -97,7 +97,7 @@ describe('VotingClient — Permission System', () => {
   it('still enables voting when wallet IS connected', () => {
     vi.mocked(useAccount).mockReturnValue({ isConnected: true, address: '0x123' } as any);
 
-    render(<VotingClient proposals={mockProposals} />);
+    render(<VotingClient initialProposals={mockProposals} initialUserVotes={{}} currentUserId="test-user-id" />);
     
     const voteButtons = screen.getAllByRole('button', { name: /Vote/i });
     voteButtons.forEach(btn => {

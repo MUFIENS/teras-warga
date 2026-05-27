@@ -133,7 +133,7 @@ describe('Image Optimization — PostCard', () => {
       />
     );
 
-    const img = screen.getByAlt('Post attachment');
+    const img = screen.getByAltText('Post attachment');
     // Should have inline style for width/height to prevent aspect ratio warning
     expect(img.style.width).toBe('100%');
     expect(img.style.height).toBe('auto');
@@ -154,7 +154,7 @@ describe('Image Optimization — PostCard', () => {
       />
     );
 
-    const img = screen.getByAlt('Post attachment');
+    const img = screen.getByAltText('Post attachment');
     expect(img.getAttribute('fetchpriority')).toBe('high');
   });
 });

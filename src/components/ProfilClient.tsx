@@ -15,7 +15,7 @@ import { useConfirmDialog } from "@/components/ui/confirm-dialog";
 import { usePresence } from "@/components/providers/PresenceProvider";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-const WalletProfileCard = dynamic(() => import("@/components/crypto/WalletProfileCard").then(mod => mod.WalletProfileCard), { ssr: false });
+
 import { Avatar } from "@/components/ui/avatar";
 
 interface Profile {
@@ -339,15 +339,9 @@ export function ProfilClient({ profile, isOwnProfile, currentUserId, relationshi
         {/* TENTANG */}
         {activeTab === "tentang" && (
           <div className="space-y-4">
-            {isOwnProfile && profile.is_seller && (
-              <WalletProfileCard initialWallet={profile.crypto_wallet || null} />
-            )}
             <div className="bg-white dark:bg-neutral-900 rounded-2xl border border-gray-200 dark:border-neutral-800 p-4 sm:p-6 space-y-4">
-              <InfoRow label="Nama Lengkap" value={profile.full_name} />
               <InfoRow label="Username" value={`@${profile.username}`} />
               <InfoRow label="Bio" value={profile.bio || "Belum ada bio."} />
-              <InfoRow label="Status Akun" value={profile.account_status === "verified" ? "Terverifikasi ✓" : "Belum Diverifikasi"} />
-              <InfoRow label="Poin" value={`${profile.points || 0} poin`} />
               <InfoRow label="Bergabung" value={formatJoinDate(profile.created_at)} />
               {profile.is_seller && <InfoRow label="Status Seller" value="Aktif sebagai Penjual ✓" />}
             </div>

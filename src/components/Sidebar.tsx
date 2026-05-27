@@ -46,7 +46,7 @@ export function Sidebar({ unreadNotifications = 0, unreadMessages = 0, profile }
   const pathname = usePathname();
   const router = useRouter();
   const [isOpen, setIsOpen] = React.useState(false);
-  const showPostingButton = pathname === "/" || pathname === "/profil";
+  const showPostingButton = pathname === "/" || (profile && pathname === `/profil/${profile.username}`);
 
   const navItems: NavItem[] = profile ? [
     { label: "Beranda", href: "/", icon: Home },

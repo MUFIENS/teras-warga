@@ -7,8 +7,8 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Memungkinkan instansiasi createClient otomatis dengan opsi yang benar
-  // alih-alih createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "14.5"
   }
@@ -183,6 +183,7 @@ export type Database = {
           description: string | null
           id: string
           image_url: string | null
+          image_urls: string[] | null
           is_active: boolean | null
           location: string | null
           price_crypto: number | null
@@ -197,6 +198,7 @@ export type Database = {
           description?: string | null
           id?: string
           image_url?: string | null
+          image_urls?: string[] | null
           is_active?: boolean | null
           location?: string | null
           price_crypto?: number | null
@@ -211,6 +213,7 @@ export type Database = {
           description?: string | null
           id?: string
           image_url?: string | null
+          image_urls?: string[] | null
           is_active?: boolean | null
           location?: string | null
           price_crypto?: number | null
@@ -228,10 +231,120 @@ export type Database = {
           },
         ]
       }
+      market_orders: {
+        Row: {
+          buyer_id: string
+          created_at: string
+          crypto_tx_hash: string | null
+          fiat_proof_url: string | null
+          id: string
+          item_id: string
+          payment_amount: number
+          payment_currency: string
+          payment_method: string
+          seller_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          buyer_id: string
+          created_at?: string
+          crypto_tx_hash?: string | null
+          fiat_proof_url?: string | null
+          id?: string
+          item_id: string
+          payment_amount: number
+          payment_currency: string
+          payment_method: string
+          seller_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          buyer_id?: string
+          created_at?: string
+          crypto_tx_hash?: string | null
+          fiat_proof_url?: string | null
+          id?: string
+          item_id?: string
+          payment_amount?: number
+          payment_currency?: string
+          payment_method?: string
+          seller_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "market_orders_buyer_id_fkey"
+            columns: ["buyer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "market_orders_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "market_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "market_orders_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      market_reviews: {
+        Row: {
+          comment: string | null
+          created_at: string
+          id: string
+          item_id: string
+          rating: number
+          reviewer_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          item_id: string
+          rating: number
+          reviewer_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          item_id?: string
+          rating?: number
+          reviewer_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "market_reviews_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "market_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "market_reviews_reviewer_id_fkey"
+            columns: ["reviewer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       messages: {
         Row: {
           content: string
           created_at: string | null
+          deleted_for: string[] | null
           id: string
           is_read: boolean | null
           receiver_id: string | null
@@ -240,6 +353,7 @@ export type Database = {
         Insert: {
           content: string
           created_at?: string | null
+          deleted_for?: string[] | null
           id?: string
           is_read?: boolean | null
           receiver_id?: string | null
@@ -248,6 +362,7 @@ export type Database = {
         Update: {
           content?: string
           created_at?: string | null
+          deleted_for?: string[] | null
           id?: string
           is_read?: boolean | null
           receiver_id?: string | null
@@ -467,6 +582,44 @@ export type Database = {
         }
         Relationships: []
       }
+      proposals: {
+        Row: {
+          created_at: string | null
+          creator_id: string | null
+          description: string
+          id: string
+          options: Json
+          status: string
+          title: string
+        }
+        Insert: {
+          created_at?: string | null
+          creator_id?: string | null
+          description: string
+          id?: string
+          options: Json
+          status?: string
+          title: string
+        }
+        Update: {
+          created_at?: string | null
+          creator_id?: string | null
+          description?: string
+          id?: string
+          options?: Json
+          status?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "proposals_creator_id_fkey"
+            columns: ["creator_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       report_comments: {
         Row: {
           content: string
@@ -588,6 +741,45 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "reports_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      votes: {
+        Row: {
+          created_at: string | null
+          id: string
+          option: string
+          proposal_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          option: string
+          proposal_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          option?: string
+          proposal_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "votes_proposal_id_fkey"
+            columns: ["proposal_id"]
+            isOneToOne: false
+            referencedRelation: "proposals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "votes_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"

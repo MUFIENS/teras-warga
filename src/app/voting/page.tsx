@@ -1,4 +1,4 @@
-import { VotingClient, Proposal } from "@/components/VotingClient";
+import { VotingClient, type Proposal } from "@/components/VotingClient";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -10,48 +10,43 @@ export default async function VotingPage() {
     redirect("/welcome");
   }
 
-  // Simulasi data DAO (Di masa depan akan diambil dari blockchain atau Supabase)
-  const mockProposals: Proposal[] = [
-    {
-      id: "prop_1",
-      title: "Perbaikan Jalan Blok A & B",
-      description: "Anggaran Rp 5.000.000 untuk menambal jalan yang berlubang di sepanjang blok A dan B yang berbahaya saat musim hujan.",
-      options: ["Setuju", "Tidak Setuju", "Tunda Bulan Depan"],
-      status: "active" as const,
-      votes: {
-        "Setuju": 34,
-        "Tidak Setuju": 5,
-        "Tunda Bulan Depan": 12,
-      },
-    },
-    {
-      id: "prop_2",
-      title: "Kenaikan Iuran Keamanan Bulanan",
-      description: "Menaikkan iuran dari Rp 50.000 menjadi Rp 75.000 untuk menambah satu personel keamanan di gerbang utama.",
-      options: ["Setuju", "Tidak Setuju"],
-      status: "active" as const,
-      votes: {
-        "Setuju": 15,
-        "Tidak Setuju": 42,
-      },
-    },
-    {
-      id: "prop_3",
-      title: "Pemilihan Vendor Sampah Baru",
-      description: "Memilih vendor pengangkutan sampah untuk periode 2026-2027.",
-      options: ["Vendor A (CV Bersih)", "Vendor B (PT Hijau)", "Vendor C (BUMDes)"],
-      status: "active" as const,
-      votes: {
-        "Vendor A (CV Bersih)": 20,
-        "Vendor B (PT Hijau)": 45,
-        "Vendor C (BUMDes)": 10,
-      },
-    }
-  ];
+  // Fetch proposals
+  const { data: proposalsData } = await supabase
+    .from('proposals')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  // Fetch all votes
+  const { data: votesData } = await supabase
+    .from('votes')
+    .select('proposal_id, option, user_id');
+
+  // Compile votes and check if current user has voted
+  const userVotes: Record<string, string> = {}; // proposalId -> votedOption
+  const proposals: Proposal[] = (proposalsData || []).map((p: any) => {
+    const pVotes = (votesData || []).filter((v: any) => v.proposal_id === p.id);
+    const voteCounts: Record<string, number> = {};
+    
+    pVotes.forEach((v: any) => {
+      voteCounts[v.option] = (voteCounts[v.option] || 0) + 1;
+      if (v.user_id === user.id) {
+        userVotes[p.id] = v.option;
+      }
+    });
+
+    return {
+      id: p.id,
+      title: p.title,
+      description: p.description,
+      options: p.options,
+      status: p.status,
+      votes: voteCounts
+    };
+  });
 
   return (
     <div className="flex flex-col min-h-screen">
-      <VotingClient proposals={mockProposals} />
+      <VotingClient initialProposals={proposals} initialUserVotes={userVotes} currentUserId={user.id} />
     </div>
   );
 }
