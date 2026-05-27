@@ -208,7 +208,7 @@ export function PeminjamanClient({ items, requests, currentUserId, userRole }: P
               <div key={item.id} className="bg-white dark:bg-neutral-900 rounded-2xl border border-gray-200 dark:border-neutral-800 overflow-hidden flex flex-col hover:border-[#1D9BF0] transition-colors">
                 <div className="relative aspect-[4/3] bg-gray-100 dark:bg-neutral-800">
                   {item.image_url ? (
-                    <Image src={item.image_url} alt={item.name} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" />
+                    <Image src={item.image_url} alt={item.name} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" unoptimized={true} />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-gray-400"><Box className="w-8 h-8 opacity-50" /></div>
                   )}
@@ -245,7 +245,7 @@ export function PeminjamanClient({ items, requests, currentUserId, userRole }: P
                     {/* Item Image */}
                     <div className="w-20 h-20 rounded-xl bg-gray-100 dark:bg-neutral-800 overflow-hidden flex-shrink-0">
                       {req.inventory?.image_url ? (
-                        <Image src={req.inventory.image_url} alt="" fill sizes="80px" className="object-cover" />
+                        <Image src={req.inventory.image_url} alt="" fill sizes="80px" className="object-cover" unoptimized={true} />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center"><Box className="w-6 h-6 text-gray-400" /></div>
                       )}
