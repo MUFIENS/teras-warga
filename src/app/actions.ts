@@ -271,8 +271,41 @@ export async function markAllNotificationsRead() {
     .eq('is_read', false)
 
   revalidatePath('/notifikasi', 'layout')
+  revalidatePath('/notifikasi', 'layout')
 }
 
+export async function deleteNotification(notificationId: string) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) {
+    throw new Error('You must be logged in')
+  }
+
+  await supabase
+    .from('notifications')
+    .delete()
+    .eq('id', notificationId)
+    .eq('user_id', user.id)
+
+  revalidatePath('/notifikasi', 'layout')
+}
+
+export async function deleteAllNotifications() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) {
+    throw new Error('You must be logged in')
+  }
+
+  await supabase
+    .from('notifications')
+    .delete()
+    .eq('user_id', user.id)
+
+  revalidatePath('/notifikasi', 'layout')
+}
 export async function fetchMorePosts(page: number) {
   const supabase = await createClient()
   const limit = 10
