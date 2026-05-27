@@ -157,7 +157,7 @@ export function ProfilClient({ profile, isOwnProfile, currentUserId, relationshi
       {/* Cover */}
       <div className="relative h-40 md:h-52 bg-gradient-to-br from-[#1D9BF0]/20 to-blue-600/10 overflow-hidden">
         {profile.cover_url ? (
-          <Image src={profile.cover_url} alt="cover" fill priority={true} sizes="100vw" unoptimized={true} className="object-cover" />
+          <Image src={profile.cover_url} alt="cover" fill priority={true} sizes="100vw" className="object-cover" />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-[#1D9BF0]/30 via-blue-500/10 to-transparent" />
         )}
@@ -344,7 +344,7 @@ export function ProfilClient({ profile, isOwnProfile, currentUserId, relationshi
               <Link key={item.id} href={`/pasar/${item.id}`} className="flex flex-col group rounded-2xl overflow-hidden hover:bg-gray-50 dark:hover:bg-neutral-900/50 transition-colors p-2 -m-2">
                 <div className="aspect-[4/5] bg-gray-100 dark:bg-neutral-800 rounded-xl overflow-hidden border border-gray-100 dark:border-neutral-800 relative">
                   {item.image_url ? (
-                    <Image src={item.image_url} alt={item.title} fill sizes="(max-width: 640px) 50vw, 33vw" unoptimized={true} className="object-cover group-hover:scale-105 transition-transform duration-300" />
+                    <Image src={item.image_url} alt={item.title} fill sizes="(max-width: 640px) 50vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-300" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center"><ShoppingBag className="w-8 h-8 text-gray-300 dark:text-neutral-600" /></div>
                   )}
@@ -461,7 +461,7 @@ function ImageUnggah({ label, currentUrl, onUnggahed, uploadFn, shape = "square"
         }`}
       >
         {preview ? (
-          <Image src={preview} alt="" fill sizes="(max-width: 768px) 100vw, 400px" unoptimized={true} className="object-cover" />
+          <Image src={preview} alt="" fill sizes="(max-width: 768px) 100vw, 400px" className="object-cover" />
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center text-gray-400">
             <Camera className="w-6 h-6 mb-1" />

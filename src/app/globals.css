@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* ─── shadcn/ui dialog animations ─── */
 @utility animate-in {
@@ -84,12 +85,6 @@
   }
   html {
     @apply scroll-smooth;
-  }
-  body {
-    @apply bg-white text-gray-900 antialiased;
-  }
-  .dark body {
-    @apply bg-black text-white;
   }
 }
 

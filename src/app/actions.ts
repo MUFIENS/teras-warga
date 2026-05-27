@@ -3,6 +3,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath, revalidateTag } from 'next/cache'
 import { createNotification } from '@/lib/notifications'
+import { createPostSchema } from '@/lib/validators'
 
 export async function createPost(formData: FormData) {
   const supabase = await createClient()
@@ -12,11 +13,18 @@ export async function createPost(formData: FormData) {
     throw new Error('You must be logged in to post')
   }
 
-  const content = (formData.get('content') as string) || ''
-  const image = formData.get('image') as File | null
-  const parentId = formData.get('parent_id') as string | null
+  const rawContent = (formData.get('content') as string) || ''
+  const parentIdRaw = formData.get('parent_id') as string | null
 
-  if (!content.trim() && !image) {
+  const validatedData = createPostSchema.parse({
+    content: rawContent,
+    parent_id: parentIdRaw,
+  })
+
+  const { content, parent_id: parentId } = validatedData
+  const image = formData.get('image') as File | null
+
+  if (!content && !image) {
     throw new Error('Post must have content or an image')
   }
 
@@ -204,14 +212,18 @@ export async function deletePost(postId: string) {
   }
 
   // Hapus postingan (RLS memastikan pengguna hanya dapat menghapus postingan mereka sendiri)
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('posts')
     .delete()
     .eq('id', postId)
     .eq('user_id', user.id)
+    .select()
 
   if (error) {
     throw error
+  }
+  if (!data || data.length === 0) {
+    throw new Error('Gagal menghapus postingan (akses ditolak atau data tidak ada)')
   }
 
   revalidatePath('/', 'layout')
@@ -282,11 +294,19 @@ export async function deleteNotification(notificationId: string) {
     throw new Error('You must be logged in')
   }
 
-  await supabase
+  const { data, error } = await supabase
     .from('notifications')
     .delete()
     .eq('id', notificationId)
     .eq('user_id', user.id)
+    .select()
+
+  if (error) {
+    throw error
+  }
+  if (!data || data.length === 0) {
+    throw new Error('Gagal menghapus notifikasi (akses ditolak atau data tidak ada)')
+  }
 
   revalidatePath('/notifikasi', 'layout')
 }

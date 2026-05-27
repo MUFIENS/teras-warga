@@ -14,6 +14,7 @@ import Link from "next/link";
 import { BORROW_CATEGORIES } from "@/lib/validators";
 import { format } from "date-fns";
 import { id as localeId } from "date-fns/locale";
+import Image from "next/image";
 
 const CATEGORY_META: Record<string, { icon: any; color: string }> = {
   Semua: { icon: Filter, color: "bg-gray-100 text-gray-600 dark:bg-neutral-800 dark:text-neutral-400" },
@@ -207,7 +208,7 @@ export function PeminjamanClient({ items, requests, currentUserId, userRole }: P
               <div key={item.id} className="bg-white dark:bg-neutral-900 rounded-2xl border border-gray-200 dark:border-neutral-800 overflow-hidden flex flex-col hover:border-[#1D9BF0] transition-colors">
                 <div className="relative aspect-[4/3] bg-gray-100 dark:bg-neutral-800">
                   {item.image_url ? (
-                    <img loading="lazy" src={item.image_url} alt={item.name} className="w-full h-full object-cover" />
+                    <Image src={item.image_url} alt={item.name} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-gray-400"><Box className="w-8 h-8 opacity-50" /></div>
                   )}
@@ -244,7 +245,7 @@ export function PeminjamanClient({ items, requests, currentUserId, userRole }: P
                     {/* Item Image */}
                     <div className="w-20 h-20 rounded-xl bg-gray-100 dark:bg-neutral-800 overflow-hidden flex-shrink-0">
                       {req.inventory?.image_url ? (
-                        <img loading="lazy" src={req.inventory.image_url} alt="" className="w-full h-full object-cover" />
+                        <Image src={req.inventory.image_url} alt="" fill sizes="80px" className="object-cover" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center"><Box className="w-6 h-6 text-gray-400" /></div>
                       )}
@@ -316,8 +317,8 @@ export function PeminjamanClient({ items, requests, currentUserId, userRole }: P
             </div>
             <div className="p-5 space-y-4">
               <div className="flex gap-3 items-center p-3 rounded-xl bg-gray-50 dark:bg-neutral-800/50 border border-gray-100 dark:border-neutral-800">
-                <div className="w-12 h-12 rounded-lg bg-gray-200 dark:bg-neutral-700 overflow-hidden flex-shrink-0">
-                  {selectedItem.image_url ? <img loading="lazy" src={selectedItem.image_url} alt="" className="w-full h-full object-cover" /> : <Box className="w-6 h-6 m-auto mt-3 text-gray-400" />}
+                <div className="relative w-12 h-12 rounded-lg bg-gray-200 dark:bg-neutral-700 overflow-hidden flex-shrink-0">
+                  {selectedItem.image_url ? <Image src={selectedItem.image_url} alt="" fill sizes="48px" className="object-cover" /> : <Box className="w-6 h-6 m-auto mt-3 text-gray-400" />}
                 </div>
                 <div>
                   <h3 className="font-semibold text-sm">{selectedItem.name}</h3>

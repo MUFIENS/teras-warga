@@ -199,7 +199,6 @@ export function PostCard({
               sizes="(max-width: 768px) 100vw, 800px"
               style={{ width: '100%', height: 'auto' }}
               className="object-cover max-h-[500px]" 
-              unoptimized={true}
             />
           </div>
         )}

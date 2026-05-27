@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { createMarketItemSchema } from '@/lib/validators'
 
 export async function createMarketItem(formData: FormData) {
   const supabase = await createClient()
@@ -11,21 +12,17 @@ export async function createMarketItem(formData: FormData) {
     throw new Error('Anda harus login untuk menjual barang')
   }
 
-  const title = formData.get('title') as string
-  const description = formData.get('description') as string
-  const price_idr = parseFloat(formData.get('price_idr') as string) || 0
-  const category = formData.get('category') as string || 'Lainnya'
-  const condition = formData.get('condition') as string || 'Bekas'
-  const location = formData.get('location') as string || ''
+  const validatedData = createMarketItemSchema.parse({
+    title: formData.get('title') as string,
+    description: formData.get('description') as string,
+    price_idr: parseFloat(formData.get('price_idr') as string) || 0,
+    category: formData.get('category') as string,
+    condition: formData.get('condition') as string,
+    location: formData.get('location') as string,
+  })
+
+  const { title, description, price_idr, category, condition, location } = validatedData
   const image = formData.get('image') as File | null
-
-  if (!title.trim()) {
-    throw new Error('Judul barang harus diisi')
-  }
-
-  if (price_idr <= 0) {
-    throw new Error('Harga harus lebih dari 0')
-  }
 
   let image_url = null
 
@@ -136,14 +133,18 @@ export async function deleteMarketItem(itemId: string) {
     throw new Error('Anda harus login')
   }
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('market_items')
     .delete()
     .eq('id', itemId)
     .eq('user_id', user.id)
+    .select()
 
   if (error) {
     throw error
+  }
+  if (!data || data.length === 0) {
+    throw new Error('Gagal menghapus barang (akses ditolak atau data tidak ada)')
   }
 
   revalidatePath('/pasar', 'layout')

@@ -21,6 +21,7 @@ describe('VotingClient — Permission System', () => {
       description: 'Proposal untuk mengaspal ulang jalan di Blok A.',
       options: ['Setuju', 'Tidak Setuju'],
       status: 'active' as const,
+      creator_id: 'test-creator',
       votes: { 'Setuju': 45, 'Tidak Setuju': 12 }
     }
   ];

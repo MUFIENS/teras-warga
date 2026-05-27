@@ -120,12 +120,14 @@ export async function deleteBorrowRequest(requestId: string) {
     throw new Error('Unauthorized')
   }
 
-  const { error } = await supabase
+  const { data: deletedData, error } = await supabase
     .from('borrow_requests')
     .delete()
     .eq('id', requestId)
+    .select()
 
   if (error) throw new Error('Gagal menghapus permintaan')
+  if (!deletedData || deletedData.length === 0) throw new Error('Akses ditolak atau data tidak ditemukan')
 
   revalidatePath('/peminjaman')
   return { success: true }

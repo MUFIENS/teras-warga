@@ -122,7 +122,7 @@ export default async function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body suppressHydrationWarning>
+      <body suppressHydrationWarning className="bg-white dark:bg-black text-gray-900 dark:text-white antialiased">
         <ThemeProvider>
           <Web3Provider>
             <PresenceProvider currentUserId={user?.id}>
