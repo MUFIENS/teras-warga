@@ -30,7 +30,7 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
         {...props}
       >
         {src && !hasError ? (
-          <img loading="lazy" src={src}
+          <img src={src}
             alt={alt}
             onError={() => setHasError(true)}
             className="h-full w-full object-cover"

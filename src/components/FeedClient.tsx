@@ -5,6 +5,7 @@ import { PostCard } from "@/components/PostCard";
 import { fetchMorePosts } from "@/app/actions";
 import { useInView } from "react-intersection-observer";
 import { Loader2 } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
 import { formatDistanceToNow } from "date-fns";
 import { id as idLocale } from "date-fns/locale";
@@ -20,38 +21,99 @@ export function FeedClient({ initialPosts, currentUserId }: FeedClientProps) {
   const [hasMore, setHasMore] = useState((initialPosts?.length || 0) >= 10);
   const [loading, setLoading] = useState(false);
 
-  // Sinkronisasi data server terbaru (misal saat post baru dibuat atau dilike) dengan state lokal
-  // tanpa menghilangkan postingan yang sudah di-load (halaman > 1)
+  // Sync with incoming server data
   useEffect(() => {
     if (!initialPosts || initialPosts.length === 0) return;
 
-    setPosts(prev => {
-      const newPosts = [...prev];
-      const completelyNew: any[] = [];
-      
+    setPosts((prev) => {
+      const prevMap = new Map(prev.map(p => [p.id, p]));
+      let hasChanges = false;
+
       initialPosts.forEach(serverPost => {
-        const index = newPosts.findIndex(p => p.id === serverPost.id);
-        if (index !== -1) {
-          // Update data jika ada perubahan (misal jumlah like)
-          newPosts[index] = serverPost;
+        const existing = prevMap.get(serverPost.id);
+        if (!existing) {
+          prevMap.set(serverPost.id, serverPost);
+          hasChanges = true;
         } else {
-          // Postingan baru
-          completelyNew.push(serverPost);
+          // Compare relevant fields to prevent unnecessary updates
+          const existingLikes = existing.likes?.[0]?.count || 0;
+          const serverLikes = serverPost.likes?.[0]?.count || 0;
+          const existingReplies = existing.replies?.[0]?.count || 0;
+          const serverReplies = serverPost.replies?.[0]?.count || 0;
+          const existingReposts = existing.reposts?.[0]?.count || 0;
+          const serverReposts = serverPost.reposts?.[0]?.count || 0;
+          
+          if (
+            existingLikes !== serverLikes ||
+            existingReplies !== serverReplies ||
+            existingReposts !== serverReposts ||
+            existing.hasLiked !== serverPost.hasLiked ||
+            existing.hasReposted !== serverPost.hasReposted
+          ) {
+            prevMap.set(serverPost.id, serverPost);
+            hasChanges = true;
+          }
         }
       });
-      
-      // Jika tidak ada perubahan signifikan, kembalikan referensi sebelumnya agar tidak re-render
-      if (completelyNew.length === 0 && JSON.stringify(newPosts.slice(0, initialPosts.length)) === JSON.stringify(initialPosts)) {
+
+      if (!hasChanges && initialPosts.length <= prev.length) {
         return prev;
       }
-      
-      return [...completelyNew, ...newPosts].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+
+      return Array.from(prevMap.values()).sort(
+        (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
     });
   }, [initialPosts]);
 
+  // Supabase Realtime Subscription
+  useEffect(() => {
+    const supabase = createClient();
+    const channel = supabase.channel('feed_realtime')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, async (payload) => {
+        const newPostId = payload.new.id;
+        if (payload.new.parent_id !== null) return;
+        
+        const { data, error } = await supabase
+          .from('posts')
+          .select(`
+            id,
+            content,
+            image_url,
+            created_at,
+            user_id,
+            profiles:user_id (full_name, username, avatar_url),
+            likes:post_likes(count),
+            reposts:post_reposts(count),
+            replies:posts!parent_id(count)
+          `)
+          .eq('id', newPostId)
+          .single();
+
+        if (data && !error) {
+          const enrichedData = {
+            ...data,
+            hasLiked: false,
+            hasReposted: false,
+            isOwnPost: currentUserId ? data.user_id === currentUserId : false
+          };
+          
+          setPosts(prev => {
+            if (prev.some(p => p.id === enrichedData.id)) return prev;
+            return [enrichedData, ...prev];
+          });
+        }
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [currentUserId]);
+
   const { ref, inView } = useInView({
     threshold: 0,
-    rootMargin: "400px", // Fetch before it reaches the exact bottom
+    rootMargin: "400px",
   });
 
   useEffect(() => {
@@ -66,7 +128,6 @@ export function FeedClient({ initialPosts, currentUserId }: FeedClientProps) {
       const nextPosts = await fetchMorePosts(page);
       if (nextPosts && nextPosts.length > 0) {
         setPosts((prev) => {
-          // Remove duplicates if any
           const newPosts = nextPosts.filter(
             (np) => !prev.some((p) => p.id === np.id)
           );

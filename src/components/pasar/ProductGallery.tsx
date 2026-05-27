@@ -24,7 +24,7 @@ export function ProductGallery({
       {/* Hero Image */}
       <div className="relative aspect-[4/3] bg-gray-100 dark:bg-neutral-800 overflow-hidden group cursor-crosshair">
         {imageUrl ? (
-          <img loading="lazy" src={imageUrl}
+          <img src={imageUrl}
             alt={title}
             className="w-full h-full object-cover transition-transform duration-500 ease-out will-change-transform group-hover:scale-110"
             draggable={false}

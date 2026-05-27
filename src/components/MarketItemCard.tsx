@@ -10,6 +10,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { CryptoPaymentModal } from "./crypto/CryptoPaymentModal";
 import { PaymentSelector } from "./pasar/PaymentSelector";
+import { useRef } from "react";
 
 interface MarketItemCardProps {
   id: string;
@@ -63,12 +64,25 @@ export function MarketItemCard({
   const [showPayment, setShowPayment] = useState(false);
   const [showCryptoModal, setShowCryptoModal] = useState(false);
   const { confirm, ConfirmDialog } = useConfirmDialog();
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setShowMenu(false);
+      }
+    };
+    if (showMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showMenu]);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("id-ID", {
@@ -123,36 +137,40 @@ export function MarketItemCard({
     <ConfirmDialog />
     <div
       className={`group relative flex flex-col h-full bg-white dark:bg-neutral-900 rounded-2xl border border-gray-200 dark:border-neutral-800 overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 hover:-translate-y-0.5 ${
-        isPending ? "opacity-50 pointer-events-none" : ""
+        isPending ? "opacity-50" : ""
       } ${!is_active ? "opacity-70" : ""}`}
     >
-      {/* Image */}
-      <Link href={`/pasar/${id}`} className="relative aspect-[4/3] bg-gray-100 dark:bg-neutral-800 overflow-hidden block">
-        {image_url ? (
-          <Image 
-            src={image_url}
-            alt={title}
-            fill
-            priority={priority}
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <Package className="w-12 h-12 text-gray-300 dark:text-neutral-600" />
-          </div>
-        )}
+      {/* Image Block */}
+      <div className="relative aspect-[4/3] bg-gray-100 dark:bg-neutral-800 overflow-hidden block">
+        <Link href={`/pasar/${id}`} className={`absolute inset-0 z-0 ${isPending ? 'pointer-events-none' : ''}`}>
+          {image_url ? (
+            <Image 
+              src={image_url}
+              alt={title}
+              fill
+              sizes="(max-width: 768px) 50vw, 33vw"
+              priority={priority}
+              unoptimized={true}
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <Package className="w-12 h-12 text-gray-300 dark:text-neutral-600" />
+            </div>
+          )}
 
-        {/* Status Badge */}
-        {!is_active && (
-          <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-            <span className="bg-red-500 text-white px-4 py-1.5 rounded-full font-semibold text-sm">
-              Terjual
-            </span>
-          </div>
-        )}
+          {/* Status Badge */}
+          {!is_active && (
+            <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+              <span className="bg-red-500 text-white px-4 py-1.5 rounded-full font-semibold text-sm">
+                Terjual
+              </span>
+            </div>
+          )}
+        </Link>
 
         {/* Category Badge */}
-        <div className="absolute top-3 left-3">
+        <div className="absolute top-3 left-3 pointer-events-none z-10">
           <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${categoryColor[category] || categoryColor["Lainnya"]}`}>
             {category}
           </span>
@@ -160,10 +178,10 @@ export function MarketItemCard({
 
         {/* Owner Menu */}
         {isOwner && (
-          <div className="absolute top-3 right-3">
+          <div className="absolute top-3 right-3 z-30" ref={menuRef}>
             <button
-              onClick={(e) => { e.preventDefault(); setShowMenu(!showMenu); }}
-              className="p-1.5 bg-black/40 hover:bg-black/60 rounded-full text-white transition-colors"
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowMenu(!showMenu); }}
+              className="p-1.5 bg-black/40 hover:bg-black/60 rounded-full text-white transition-colors relative"
             >
               <MoreVertical className="w-4 h-4" />
             </button>
@@ -171,20 +189,20 @@ export function MarketItemCard({
             {showMenu && (
               <div className="absolute right-0 top-9 w-44 bg-white dark:bg-neutral-900 rounded-xl shadow-xl border border-gray-200 dark:border-neutral-700 overflow-hidden z-20 py-1">
                 <button
-                  onClick={(e) => { e.preventDefault(); setShowMenu(false); onEdit?.(id); }}
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowMenu(false); onEdit?.(id); }}
                   className="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors flex items-center gap-2.5"
                 >
                   <Edit className="w-4 h-4" /> Edit Barang
                 </button>
                 <button
-                  onClick={(e) => { e.preventDefault(); handleToggleStatus(); }}
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleToggleStatus(); }}
                   className="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors flex items-center gap-2.5"
                 >
                   {is_active ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   {is_active ? "Tandai Terjual" : "Aktifkan Kembali"}
                 </button>
                 <button
-                  onClick={(e) => { e.preventDefault(); handleDelete(); }}
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleDelete(); }}
                   className="w-full text-left px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors flex items-center gap-2.5"
                 >
                   <Trash2 className="w-4 h-4" /> Hapus Barang
@@ -193,7 +211,7 @@ export function MarketItemCard({
             )}
           </div>
         )}
-      </Link>
+      </div>
 
       {/* Content */}
       <div className="p-4 flex flex-col flex-1">
@@ -229,7 +247,7 @@ export function MarketItemCard({
             {/* Seller Info */}
             <Link href={`/profil/${seller_username}`} className="flex items-center gap-2 min-w-0 hover:opacity-80 transition-opacity">
               {seller_avatar ? (
-                <img loading="lazy" src={seller_avatar} alt={seller_name} className="w-6 h-6 rounded-full object-cover flex-shrink-0" />
+                <img src={seller_avatar} alt={seller_name} className="w-6 h-6 rounded-full object-cover flex-shrink-0" />
               ) : (
                 <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-neutral-700 flex items-center justify-center text-[10px] font-bold text-gray-500 uppercase flex-shrink-0">
                   {seller_name.charAt(0)}

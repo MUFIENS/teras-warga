@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 
-import { useAccount } from "wagmi";
-import { CheckCircle2, Lock, Vote } from "lucide-react";
+import { CheckCircle2, Vote } from "lucide-react";
 
 export interface Proposal {
   id: string;
@@ -15,7 +14,6 @@ export interface Proposal {
 }
 
 export function VotingClient({ proposals }: { proposals: Proposal[] }) {
-  const { isConnected } = useAccount();
   const [hasVoted, setHasVoted] = useState<Record<string, boolean>>({});
 
   const handleVote = (proposalId: string, option: string) => {
@@ -72,19 +70,17 @@ export function VotingClient({ proposals }: { proposals: Proposal[] }) {
                           
                           <button
                             onClick={() => handleVote(proposal.id, option)}
-                            disabled={!isConnected || hasVoted[proposal.id]}
+                            disabled={hasVoted[proposal.id]}
                             aria-label={`Vote ${option}`}
                             className="flex items-center gap-1.5 px-3 py-1.5 bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-neutral-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                           >
                             {hasVoted[proposal.id] ? (
                               <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                            ) : !isConnected ? (
-                              <Lock className="w-4 h-4 text-gray-400" />
                             ) : (
                               <Vote className="w-4 h-4" />
                             )}
                             <span className="hidden sm:inline">
-                               {hasVoted[proposal.id] ? "Voted" : !isConnected ? "Kunci" : "Vote"}
+                               {hasVoted[proposal.id] ? "Voted" : "Vote"}
                             </span>
                           </button>
                         </div>

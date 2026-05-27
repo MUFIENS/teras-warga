@@ -196,7 +196,9 @@ export function PostCard({
               width={800}
               height={500}
               priority={priority}
-              className="w-full h-auto object-cover max-h-[500px]" 
+              sizes="(max-width: 768px) 100vw, 800px"
+              style={{ width: '100%', height: 'auto' }}
+              className="object-cover max-h-[500px]" 
             />
           </div>
         )}
