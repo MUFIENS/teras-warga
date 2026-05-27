@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, useRef } from "react";
+import { useState, useTransition, useRef, useEffect } from "react";
 import Link from "next/link";
 import {
   Edit3, MessageCircle, UserPlus, UserMinus, X,
@@ -15,6 +15,7 @@ import { useConfirmDialog } from "@/components/ui/confirm-dialog";
 import { usePresence } from "@/components/providers/PresenceProvider";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import { createClient } from "@/lib/supabase/client";
 
 import { Avatar } from "@/components/ui/avatar";
 
@@ -100,7 +101,31 @@ export function ProfilClient({ profile, isOwnProfile, currentUserId, relationshi
   const { isOnline, lastActive } = usePresence(profile.id, profile.last_active);
   const activity = getActivityStatus(isOnline, lastActive);
 
-  
+  // Sync with realtime changes
+  useEffect(() => {
+    const supabase = createClient();
+    const channel = supabase
+      .channel(`profile_changes_${profile.id}`)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'posts', filter: `user_id=eq.${profile.id}` }, () => {
+        router.refresh();
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'market_items', filter: `user_id=eq.${profile.id}` }, () => {
+        router.refresh();
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'friends', filter: `user_id=eq.${profile.id}` }, () => {
+        router.refresh();
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'friends', filter: `friend_id=eq.${profile.id}` }, () => {
+        router.refresh();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [profile.id, router]);
+
+
 
   const handleSendRequest = () => startTransition(async () => {
     try { await sendFriendRequest(profile.id); }
