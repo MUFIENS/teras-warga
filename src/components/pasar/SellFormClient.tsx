@@ -167,9 +167,9 @@ export function SellFormClient({ initialWallet, userId, initialData }: SellFormC
       // 3. Insert or Update Market Item
       let dbOperation;
       if (initialData) {
-        dbOperation = (supabase as any).from("market_items").update(payload).eq("id", initialData.id);
+        dbOperation = supabase.from("market_items").update(payload).eq("id", initialData.id);
       } else {
-        dbOperation = (supabase as any).from("market_items").insert({ ...payload, user_id: userId });
+        dbOperation = supabase.from("market_items").insert({ ...payload, user_id: userId });
       }
 
       const { data, error } = await dbOperation.select().single();

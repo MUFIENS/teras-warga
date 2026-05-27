@@ -122,9 +122,19 @@ export function VotingClient({
 
     startTransition(async () => {
       try {
-        await castVote(proposalId, option);
+        const res = await castVote(proposalId, option);
+        if (!res.success) {
+          toast.error(res.error || "Gagal memberikan suara.");
+          // Rollback
+          setUserVotes(prev => ({ ...prev, [proposalId]: userVotes[proposalId] || "" }));
+          setProposals(prev => prev.map(p => p.id === proposalId ? proposals.find(op => op.id === proposalId) || p : p));
+        }
       } catch (e) {
         console.error(e);
+        toast.error("Terjadi kesalahan.");
+        // Rollback
+        setUserVotes(prev => ({ ...prev, [proposalId]: userVotes[proposalId] || "" }));
+        setProposals(prev => prev.map(p => p.id === proposalId ? proposals.find(op => op.id === proposalId) || p : p));
       }
     });
   };
@@ -143,11 +153,19 @@ export function VotingClient({
 
     startTransition(async () => {
       try {
-        await deleteProposal(proposalId);
-        toast.success("Proposal berhasil dihapus!");
+        const res = await deleteProposal(proposalId);
+        if (res.success) {
+          toast.success("Proposal berhasil dihapus!");
+        } else {
+          toast.error(res.error || "Gagal menghapus proposal.");
+          // Rollback
+          setProposals(prev => [...prev, proposals.find(p => p.id === proposalId)!].filter(Boolean));
+        }
       } catch (e) {
-        toast.error("Gagal menghapus proposal.");
+        toast.error("Terjadi kesalahan.");
         console.error("Failed to delete proposal:", e);
+        // Rollback
+        setProposals(prev => [...prev, proposals.find(p => p.id === proposalId)!].filter(Boolean));
       }
     });
   };
@@ -162,14 +180,18 @@ export function VotingClient({
 
     startTransition(async () => {
       try {
-        await createProposal(newTitle, newDesc, validOptions);
-        setShowCreate(false);
-        setNewTitle("");
-        setNewDesc("");
-        setNewOptions(["", ""]);
-        toast.success("Proposal baru berhasil dibuat!");
+        const res = await createProposal(newTitle, newDesc, validOptions);
+        if (res.success) {
+          setShowCreate(false);
+          setNewTitle("");
+          setNewDesc("");
+          setNewOptions(["", ""]);
+          toast.success("Proposal baru berhasil dibuat!");
+        } else {
+          toast.error(res.error || "Gagal membuat proposal.");
+        }
       } catch (e) {
-        toast.error("Gagal membuat proposal.");
+        toast.error("Terjadi kesalahan.");
         console.error(e);
       }
     });

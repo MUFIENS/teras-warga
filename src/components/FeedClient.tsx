@@ -26,37 +26,37 @@ export function FeedClient({ initialPosts, currentUserId }: FeedClientProps) {
     if (!initialPosts || initialPosts.length === 0) return;
 
     setPosts((prev) => {
-      const prevMap = new Map(prev.map(p => [p.id, p]));
+      const prevMap = new Map(prev.map((p) => [p.id, p]));
       let hasChanges = false;
 
-      initialPosts.forEach(serverPost => {
+      initialPosts.forEach((serverPost) => {
         const existing = prevMap.get(serverPost.id);
         if (!existing) {
           prevMap.set(serverPost.id, serverPost);
           hasChanges = true;
         } else {
-          // Compare relevant fields to prevent unnecessary updates
-          const existingLikes = existing.likes?.[0]?.count || 0;
-          const serverLikes = serverPost.likes?.[0]?.count || 0;
-          const existingReplies = existing.replies?.[0]?.count || 0;
-          const serverReplies = serverPost.replies?.[0]?.count || 0;
-          const existingReposts = existing.reposts?.[0]?.count || 0;
-          const serverReposts = serverPost.reposts?.[0]?.count || 0;
-          
-          if (
-            existingLikes !== serverLikes ||
-            existingReplies !== serverReplies ||
-            existingReposts !== serverReposts ||
-            existing.hasLiked !== serverPost.hasLiked ||
-            existing.hasReposted !== serverPost.hasReposted
-          ) {
-            prevMap.set(serverPost.id, serverPost);
+          // Gunakan immutable merge berbasis ID.
+          // Pertahankan local optimistic state (hasLiked, hasReposted) agar tidak flicker
+          // akibat stale server props setelah router.refresh()
+          const mergedPost = {
+            ...serverPost,
+            hasLiked: existing.hasLiked !== undefined ? existing.hasLiked : serverPost.hasLiked,
+            hasReposted: existing.hasReposted !== undefined ? existing.hasReposted : serverPost.hasReposted,
+            // Untuk count, kita bisa biarkan Realtime yang mengatur, atau ambil nilai max jika optimistic
+            likes: [{ count: Math.max(existing.likes?.[0]?.count || 0, serverPost.likes?.[0]?.count || 0) }],
+            reposts: [{ count: Math.max(existing.reposts?.[0]?.count || 0, serverPost.reposts?.[0]?.count || 0) }],
+            replies: serverPost.replies
+          };
+
+          // Simple check to avoid unnecessary re-renders if nothing actually changed
+          if (JSON.stringify(existing) !== JSON.stringify(mergedPost)) {
+            prevMap.set(serverPost.id, mergedPost);
             hasChanges = true;
           }
         }
       });
 
-      if (!hasChanges && initialPosts.length <= prev.length) {
+      if (!hasChanges) {
         return prev;
       }
 

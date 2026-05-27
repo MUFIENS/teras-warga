@@ -60,6 +60,39 @@ export function MarketplaceClient({ items, currentUserId }: MarketplaceClientPro
     rootMargin: "400px",
   });
 
+  // Sync with incoming server data
+  useEffect(() => {
+    if (!items || items.length === 0) return;
+
+    setItemsList((prev) => {
+      const prevMap = new Map(prev.map((p) => [p.id, p]));
+      let hasChanges = false;
+
+      items.forEach((serverItem) => {
+        const existing = prevMap.get(serverItem.id);
+        if (!existing) {
+          prevMap.set(serverItem.id, serverItem);
+          hasChanges = true;
+        } else {
+          // Merge safely without overwriting important local states if we had any
+          const mergedItem = { ...existing, ...serverItem };
+          if (JSON.stringify(existing) !== JSON.stringify(mergedItem)) {
+            prevMap.set(serverItem.id, mergedItem);
+            hasChanges = true;
+          }
+        }
+      });
+
+      if (!hasChanges) {
+        return prev;
+      }
+
+      return Array.from(prevMap.values()).sort(
+        (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
+    });
+  }, [items]);
+
   // Effect to load more items when scrolled to bottom
   useEffect(() => {
     if (inView && hasMore && !loading) {
