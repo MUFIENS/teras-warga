@@ -319,7 +319,7 @@ export function KasClient({ transactions, currentYear }: KasClientProps) {
 
       {/* Payment Form Modal */}
       {showPayForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowPayForm(false)} />
           <div className="relative bg-white dark:bg-black rounded-2xl w-full max-w-md shadow-2xl border border-gray-200 dark:border-neutral-800 flex flex-col max-h-[85vh] mb-20 md:mb-0">
             

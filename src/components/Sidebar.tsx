@@ -24,6 +24,7 @@ import { usePresence } from "@/components/providers/PresenceProvider";
 import { Avatar } from "@/components/ui/avatar";
 import { Tooltip } from "@/components/ui/tooltip";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useConfirmDialog } from "@/components/ui/confirm-dialog";
 
 interface NavItem {
   label: string;
@@ -62,17 +63,30 @@ export function Sidebar({ unreadNotifications = 0, unreadMessages = 0, profile }
     { label: "Pasar", href: "/pasar", icon: Store },
   ];
 
+  const { confirm, ConfirmDialog } = useConfirmDialog();
+
   const handleLogout = async () => {
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    router.push("/login");
-    router.refresh();
+    const ok = await confirm({
+      title: "Keluar dari Akun?",
+      description: "Anda harus masuk kembali untuk mengakses fitur komunitas warga.",
+      confirmText: "Keluar",
+      cancelText: "Batal",
+      variant: "danger",
+    });
+
+    if (ok) {
+      const supabase = createClient();
+      await supabase.auth.signOut();
+      router.push("/login");
+      router.refresh();
+    }
   };
 
   const { isOnline } = usePresence(profile?.id, profile?.last_active || null);
 
   return (
     <>
+      <ConfirmDialog />
       {/* ─── DESKTOP SIDEBAR ─── */}
       <aside className="hidden md:flex w-[275px] h-screen sticky top-0 flex-col px-4 py-6 border-r border-gray-200 dark:border-neutral-800 bg-white dark:bg-black flex-shrink-0">
         {/* Header */}

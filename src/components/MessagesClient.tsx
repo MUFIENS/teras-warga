@@ -784,7 +784,7 @@ export function MessagesClient({ conversations, currentUserId, allMessages, init
 
   const renderNewChatModal = () => (
     // Same as before
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-16">
+    <div className="fixed inset-0 z-[60] flex items-start justify-center pt-16">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowNewChat(false)} />
       <div className="relative bg-white dark:bg-neutral-900 rounded-2xl w-full max-w-md mx-4 shadow-2xl border border-gray-200 dark:border-neutral-800 overflow-hidden max-h-[70vh] flex flex-col">
         <div className="flex items-center gap-3 px-4 py-3.5 border-b border-gray-200 dark:border-neutral-800">

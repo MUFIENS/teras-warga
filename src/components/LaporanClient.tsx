@@ -328,7 +328,7 @@ export function LaporanClient({ reports, currentUserId, userRole }: LaporanClien
 
       {/* ─── CREATE FORM MODAL ─── */}
       {showForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowForm(false)} />
           <div className="relative bg-white dark:bg-neutral-900 rounded-2xl w-full max-w-lg shadow-2xl border border-gray-200 dark:border-neutral-800 flex flex-col max-h-[85vh] mb-20 md:mb-0">
             {/* Modal Header */}

@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/drawer";
 import { createClient } from "@/lib/supabase/client";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useConfirmDialog } from "@/components/ui/confirm-dialog";
 
 interface BottomNavProps {
   unreadNotifications?: number;
@@ -49,12 +50,24 @@ export function BottomNav({ unreadNotifications = 0, unreadMessages = 0, profile
   const router = useRouter();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  const { confirm, ConfirmDialog } = useConfirmDialog();
+
   const handleLogout = async () => {
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    setDrawerOpen(false);
-    router.push("/login");
-    router.refresh();
+    const ok = await confirm({
+      title: "Keluar dari Akun?",
+      description: "Anda harus masuk kembali untuk mengakses fitur komunitas warga.",
+      confirmText: "Keluar",
+      cancelText: "Batal",
+      variant: "danger",
+    });
+
+    if (ok) {
+      const supabase = createClient();
+      await supabase.auth.signOut();
+      setDrawerOpen(false);
+      router.push("/login");
+      router.refresh();
+    }
   };
 
   const navItems = [
@@ -76,6 +89,7 @@ export function BottomNav({ unreadNotifications = 0, unreadMessages = 0, profile
 
   return (
     <>
+      <ConfirmDialog />
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/85 dark:bg-black/85 backdrop-blur-md border-t border-gray-200 dark:border-neutral-800 pb-[env(safe-area-inset-bottom)]">
         <div className="flex items-center justify-around h-16 px-2 relative">
           

@@ -52,7 +52,7 @@ export function CryptoPaymentModal({ isOpen, onClose, item, onSuccess }: CryptoP
   const isConfirmed = status === Web3PaymentStatus.SUCCESS;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
       
       <div className="relative bg-white dark:bg-neutral-900 rounded-3xl w-full max-w-md shadow-2xl border border-gray-200 dark:border-neutral-800 overflow-hidden flex flex-col">

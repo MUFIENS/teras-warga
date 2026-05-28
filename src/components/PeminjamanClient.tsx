@@ -308,7 +308,7 @@ export function PeminjamanClient({ items, requests, currentUserId, userRole }: P
 
       {/* ─── BORROW FORM MODAL ─── */}
       {showBorrowForm && selectedItem && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowBorrowForm(false)} />
           <div className="relative bg-white dark:bg-neutral-900 rounded-2xl w-full max-w-md shadow-2xl border border-gray-200 dark:border-neutral-800 overflow-hidden">
             <div className="p-4 border-b border-gray-100 dark:border-neutral-800 flex items-center justify-between bg-gray-50/50 dark:bg-neutral-900">
@@ -353,7 +353,7 @@ export function PeminjamanClient({ items, requests, currentUserId, userRole }: P
 
       {/* ─── ADMIN MANAGE MODAL ─── */}
       {showAdminModal && adminRequest && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowAdminModal(false)} />
           <div className="relative bg-white dark:bg-neutral-900 rounded-2xl w-full max-w-md shadow-2xl border border-gray-200 dark:border-neutral-800 overflow-hidden">
             <div className="p-4 border-b border-gray-100 dark:border-neutral-800 flex items-center justify-between">

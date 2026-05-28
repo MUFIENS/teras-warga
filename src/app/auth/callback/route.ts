@@ -8,8 +8,31 @@ export async function GET(request: Request) {
 
   if (code) {
     const supabase = await createClient()
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
-    if (!error) {
+    const { data: authData, error } = await supabase.auth.exchangeCodeForSession(code)
+    
+    if (!error && authData?.user) {
+      const user = authData.user;
+      
+      // Amankan pembuatan profil jika menggunakan Google OAuth (berjaga-jaga jika trigger DB tidak mencakup SSO)
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('id', user.id)
+        .single()
+
+      if (!profile) {
+        // Buat username unik dan aman dari email atau nama Google
+        const baseName = user.user_metadata?.full_name || user.email?.split('@')[0] || 'warga'
+        const safeUsername = baseName.toLowerCase().replace(/[^a-z0-9]/g, '') + Math.floor(Math.random() * 1000)
+        
+        await supabase.from('profiles').insert({
+          id: user.id,
+          full_name: user.user_metadata?.full_name || 'Warga Baru',
+          username: safeUsername,
+          avatar_url: user.user_metadata?.avatar_url || null,
+        })
+      }
+
       return NextResponse.redirect(`${origin}${next}`)
     }
   }
