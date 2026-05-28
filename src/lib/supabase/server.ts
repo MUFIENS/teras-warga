@@ -1,6 +1,7 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { Database } from '@/types/database.types';
+import { fetchWithRetry } from '@/lib/fetchWithRetry';
 
 export async function createClient() {
   const cookieStore = await cookies();
@@ -11,9 +12,8 @@ export async function createClient() {
     {
       global: {
         fetch: (...args) => {
-          return fetch(args[0], {
+          return fetchWithRetry(args[0], {
             ...args[1],
-            keepalive: false,
             cache: 'no-store'
           })
         }

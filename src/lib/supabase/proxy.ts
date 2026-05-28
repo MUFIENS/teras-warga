@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { fetchWithRetry } from '@/lib/fetchWithRetry'
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -15,9 +16,8 @@ export async function updateSession(request: NextRequest) {
     {
       global: {
         fetch: (...args) => {
-          return fetch(args[0], {
+          return fetchWithRetry(args[0], {
             ...args[1],
-            keepalive: false,
             cache: 'no-store'
           })
         }

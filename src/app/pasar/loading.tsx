@@ -3,9 +3,9 @@ export default function PasarLoading() {
     <div className="flex flex-col min-h-screen border-r border-gray-200 dark:border-neutral-800 animate-pulse">
       {/* Sticky Header */}
       <header className="sticky top-14 md:top-0 z-10 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
-        <div className="flex items-center justify-between px-4 h-14">
+        <div className="flex items-center justify-between px-4 md:px-6 h-14 md:h-16">
           <div className="flex items-center gap-2">
-            <div className="h-6 w-32 bg-gray-200 dark:bg-neutral-800 rounded-lg" />
+            <div className="h-6 md:h-7 w-32 bg-gray-200 dark:bg-neutral-800 rounded-lg" />
             <div className="h-5 w-16 bg-gray-200 dark:bg-neutral-800 rounded-full" />
           </div>
           <div className="h-9 w-20 bg-gray-200 dark:bg-neutral-800 rounded-full" />
@@ -29,9 +29,8 @@ export default function PasarLoading() {
       </header>
 
       {/* Product Grid Skeleton */}
-      <div className="p-4 flex-1">
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-          {Array.from({ length: 6 }).map((_, i) => (
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 p-4 md:p-6 flex-1">
+        {Array.from({ length: 8 }).map((_, i) => (
             <div 
               key={i} 
               className="bg-white dark:bg-neutral-900 rounded-3xl border border-gray-200 dark:border-neutral-800 overflow-hidden flex flex-col h-full"
@@ -66,7 +65,6 @@ export default function PasarLoading() {
               </div>
             </div>
           ))}
-        </div>
       </div>
     </div>
   );

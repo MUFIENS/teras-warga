@@ -23,10 +23,26 @@ export default function LaporanLoading() {
       </header>
 
       {/* Stats skeleton */}
-      <div className="grid grid-cols-3 gap-3 p-4">
-        {Array.from({ length: 3 }).map((_, i) => (
-          <div key={i} className="h-24 bg-gray-100 dark:bg-neutral-800/50 rounded-2xl" />
+      <div className="flex gap-3 p-4 overflow-x-auto no-scrollbar">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div key={i} className="min-w-[120px] flex-shrink-0 rounded-xl p-3.5 border border-gray-200 dark:border-neutral-800">
+            <div className="flex items-center gap-1.5 mb-1.5">
+              <div className="w-4 h-4 bg-gray-200 dark:bg-neutral-800 rounded-md" />
+              <div className="h-3 w-16 bg-gray-200 dark:bg-neutral-800 rounded" />
+            </div>
+            <div className="h-6 w-8 bg-gray-200 dark:bg-neutral-800 rounded" />
+          </div>
         ))}
+      </div>
+
+      {/* Tabs skeleton */}
+      <div className="flex border-b border-gray-200 dark:border-neutral-800 px-4">
+        <div className="px-4 py-3 border-b-2 border-[#1D9BF0]">
+          <div className="h-4 w-24 bg-gray-200 dark:bg-neutral-800 rounded" />
+        </div>
+        <div className="px-4 py-3 border-b-2 border-transparent">
+          <div className="h-4 w-24 bg-gray-100 dark:bg-neutral-800 rounded" />
+        </div>
       </div>
 
       {/* Report cards skeleton */}

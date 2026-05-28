@@ -183,7 +183,6 @@ export function MarketItemCard({
               fill
               sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
               priority={priority}
-              unoptimized={true}
               className={`object-cover transition-transform duration-500 md:group-hover/image:scale-105 ${!is_active ? "grayscale-[50%] brightness-75" : ""}`}
             />
           ) : (
