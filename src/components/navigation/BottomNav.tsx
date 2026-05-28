@@ -241,7 +241,77 @@ export function BottomNav({ unreadNotifications = 0, unreadMessages = 0, profile
             </div>
 
             <div className="flex flex-col gap-2 mt-2 px-1">
-              <ConnectButton showBalance={false} />
+              <ConnectButton.Custom>
+                {({
+                  account,
+                  chain,
+                  openAccountModal,
+                  openChainModal,
+                  openConnectModal,
+                  authenticationStatus,
+                  mounted,
+                }) => {
+                  const ready = mounted && authenticationStatus !== 'loading';
+                  const connected =
+                    ready &&
+                    account &&
+                    chain &&
+                    (!authenticationStatus ||
+                      authenticationStatus === 'authenticated');
+
+                  return (
+                    <div
+                      {...(!ready && {
+                        'aria-hidden': true,
+                        style: {
+                          opacity: 0,
+                          pointerEvents: 'none',
+                          userSelect: 'none',
+                        },
+                      })}
+                    >
+                      {(() => {
+                        if (!connected) {
+                          return (
+                            <button
+                              onClick={openConnectModal}
+                              className="flex items-center justify-center gap-2 p-3 w-full rounded-xl text-gray-600 dark:text-gray-400 hover:text-[#1D9BF0] hover:bg-[#1D9BF0]/10 transition-colors font-medium"
+                            >
+                              <Wallet className="w-5 h-5" />
+                              Hubungkan Dompet
+                            </button>
+                          );
+                        }
+
+                        if (chain.unsupported) {
+                          return (
+                            <button
+                              onClick={openChainModal}
+                              className="flex items-center justify-center gap-2 p-3 w-full rounded-xl text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors font-medium"
+                            >
+                              <ShieldAlert className="w-5 h-5" />
+                              Salah Jaringan
+                            </button>
+                          );
+                        }
+
+                        return (
+                          <button
+                            onClick={openAccountModal}
+                            className="flex items-center justify-center gap-2 p-3 w-full rounded-xl text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-neutral-900 transition-colors font-medium"
+                          >
+                            <div className="relative">
+                              <Wallet className="w-5 h-5 text-[#1D9BF0]" />
+                              <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-green-500 border-2 border-white dark:border-black rounded-full" />
+                            </div>
+                            <span>{account.displayName}</span>
+                          </button>
+                        );
+                      })()}
+                    </div>
+                  );
+                }}
+              </ConnectButton.Custom>
             </div>
 
             {profile && (

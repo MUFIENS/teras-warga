@@ -144,9 +144,79 @@ export function Sidebar({ unreadNotifications = 0, unreadMessages = 0, profile }
 
         {/* Footer */}
         <div className="mt-4 flex flex-col gap-3">
-          <div className="px-2">
-            <ConnectButton showBalance={false} />
-          </div>
+          <ConnectButton.Custom>
+            {({
+              account,
+              chain,
+              openAccountModal,
+              openChainModal,
+              openConnectModal,
+              authenticationStatus,
+              mounted,
+            }) => {
+              const ready = mounted && authenticationStatus !== 'loading';
+              const connected =
+                ready &&
+                account &&
+                chain &&
+                (!authenticationStatus ||
+                  authenticationStatus === 'authenticated');
+
+              return (
+                <div
+                  {...(!ready && {
+                    'aria-hidden': true,
+                    style: {
+                      opacity: 0,
+                      pointerEvents: 'none',
+                      userSelect: 'none',
+                    },
+                  })}
+                >
+                  {(() => {
+                    if (!connected) {
+                      return (
+                        <button
+                          onClick={openConnectModal}
+                          className="w-full flex items-center gap-4 rounded-full px-4 py-3 font-medium text-gray-500 hover:text-[#1D9BF0] hover:bg-gray-100 dark:hover:bg-neutral-800/50 transition-colors duration-200 group"
+                        >
+                          <Wallet className="h-6 w-6 group-hover:text-[#1D9BF0] transition-colors duration-200" />
+                          <span className="text-lg">Dompet Kripto</span>
+                        </button>
+                      );
+                    }
+
+                    if (chain.unsupported) {
+                      return (
+                        <button
+                          onClick={openChainModal}
+                          className="w-full flex items-center gap-4 rounded-full px-4 py-3 font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors duration-200 group"
+                        >
+                          <ShieldAlert className="h-6 w-6" />
+                          <span className="text-lg">Salah Jaringan</span>
+                        </button>
+                      );
+                    }
+
+                    return (
+                      <button
+                        onClick={openAccountModal}
+                        className="w-full flex items-center gap-4 rounded-full px-4 py-3 font-medium text-gray-500 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-neutral-800/50 transition-colors duration-200 group"
+                      >
+                        <div className="relative">
+                          <Wallet className="h-6 w-6 group-hover:text-[#1D9BF0] transition-colors duration-200" />
+                          <span className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-green-500 border-2 border-white dark:border-black rounded-full" />
+                        </div>
+                        <span className="text-lg truncate max-w-[140px] text-left">
+                          {account.displayName}
+                        </span>
+                      </button>
+                    );
+                  })()}
+                </div>
+              );
+            }}
+          </ConnectButton.Custom>
 
           {showPostingButton && (
             <button 

@@ -319,19 +319,19 @@ export function KasClient({ transactions, currentYear }: KasClientProps) {
 
       {/* Payment Form Modal */}
       {showPayForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowPayForm(false)} />
-          <div className="relative bg-white dark:bg-black rounded-2xl w-full max-w-md mx-4 shadow-2xl border border-gray-200 dark:border-neutral-800 overflow-hidden">
+          <div className="relative bg-white dark:bg-black rounded-2xl w-full max-w-md shadow-2xl border border-gray-200 dark:border-neutral-800 flex flex-col max-h-[90vh]">
             
             {/* Header */}
-            <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200 dark:border-neutral-800">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200 dark:border-neutral-800 flex-shrink-0">
               <h2 className="text-lg font-bold text-gray-900 dark:text-white">Bayar Iuran Kas</h2>
               <button onClick={() => setShowPayForm(false)} className="p-1.5 hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-full transition-colors">
                 <X className="w-5 h-5 text-gray-500" />
               </button>
             </div>
 
-            <div className="p-5">
+            <div className="p-5 overflow-y-auto">
               {/* Payment Info */}
               <div className="bg-[#1D9BF0]/5 border border-[#1D9BF0]/20 rounded-xl p-4 mb-5">
                 <div className="flex items-center justify-between mb-2">
