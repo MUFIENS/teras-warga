@@ -98,4 +98,12 @@
   }
 }
 
+/* Sembunyikan BottomNav saat chat aktif di layout mobile */
+body.chat-active-hide-nav #main-bottom-nav {
+  display: none !important;
+}
 
+/* Hilangkan ruang kosong eks BottomNav di main, tapi sisakan safe-area untuk keyboard/home indicator */
+body.chat-active-hide-nav main {
+  padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+}

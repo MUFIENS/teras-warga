@@ -31,6 +31,7 @@ import {
 import { createClient } from "@/lib/supabase/client";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useConfirmDialog } from "@/components/ui/confirm-dialog";
+import { Avatar } from "@/components/ui/avatar";
 
 interface BottomNavProps {
   unreadNotifications?: number;
@@ -90,7 +91,7 @@ export function BottomNav({ unreadNotifications = 0, unreadMessages = 0, profile
   return (
     <>
       <ConfirmDialog />
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/85 dark:bg-black/85 backdrop-blur-md border-t border-gray-200 dark:border-neutral-800 pb-[env(safe-area-inset-bottom)]">
+      <nav id="main-bottom-nav" className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/85 dark:bg-black/85 backdrop-blur-md border-t border-gray-200 dark:border-neutral-800 pb-[env(safe-area-inset-bottom)]">
         <div className="flex items-center justify-around h-16 px-2 relative">
           
           {/* Item 1 & 2 */}
@@ -210,9 +211,7 @@ export function BottomNav({ unreadNotifications = 0, unreadMessages = 0, profile
                 onClick={() => setDrawerOpen(false)}
                 className="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-neutral-900 transition-colors mb-2"
               >
-                <div className="bg-[#1D9BF0]/10 p-2 rounded-full text-[#1D9BF0]">
-                  <User className="w-6 h-6" />
-                </div>
+                <Avatar src={profile.avatar_url} alt={profile.full_name} className="w-10 h-10" />
                 <div>
                   <div className="font-bold">{profile.full_name}</div>
                   <div className="text-sm text-gray-500">Lihat Profil</div>

@@ -72,6 +72,16 @@ export function MessagesClient({ conversations, currentUserId, allMessages, init
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
+  // Menyembunyikan BottomNav saat berada di dalam chat aktif
+  useEffect(() => {
+    if (activeChat) {
+      document.body.classList.add('chat-active-hide-nav');
+    } else {
+      document.body.classList.remove('chat-active-hide-nav');
+    }
+    return () => document.body.classList.remove('chat-active-hide-nav');
+  }, [activeChat]);
+
   // Attachment & Media State
   const [showAttachmentMenu, setShowAttachmentMenu] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -602,7 +612,7 @@ export function MessagesClient({ conversations, currentUserId, allMessages, init
 
       {/* Chat Header */}
       <header className="sticky top-14 md:top-0 z-10 flex items-center gap-3 px-3 h-14 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800">
-        <button onClick={() => setActiveChat(null)} className="p-2 hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-full transition-colors">
+        <button onClick={() => { setActiveChat(null); window.scrollTo({ top: 0, behavior: 'instant' }); }} className="p-2 hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-full transition-colors">
           <ArrowLeft className="w-5 h-5" />
         </button>
         <Link href={`/profil/${activeChat!.username}`} className="flex items-center gap-3 min-w-0 hover:opacity-80 transition-opacity">
