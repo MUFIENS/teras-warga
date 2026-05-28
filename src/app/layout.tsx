@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Sidebar } from "@/components/Sidebar";
+import { BottomNav } from "@/components/navigation/BottomNav";
+import { MobileHeader } from "@/components/navigation/MobileHeader";
 import { PresenceProvider } from "@/components/providers/PresenceProvider";
 import { Web3Provider } from "@/components/providers/Web3Provider";
 import { createClient } from "@/lib/supabase/server";
@@ -120,6 +122,7 @@ export default async function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
+      data-scroll-behavior="smooth"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body suppressHydrationWarning className="bg-white dark:bg-black text-gray-900 dark:text-white antialiased">
@@ -132,12 +135,14 @@ export default async function RootLayout({
                 </main>
               ) : (
                 <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row min-h-screen">
+                  <MobileHeader profile={profileData && user?.id ? { ...profileData, id: user.id } : undefined} />
                   <Sidebar unreadNotifications={unreadNotifications} unreadMessages={unreadMessages} profile={profileData && user?.id ? { ...profileData, id: user.id } : undefined} />
-                  <main className="flex-1 flex flex-col relative">
+                  <main className="flex-1 flex flex-col relative pb-[calc(80px+env(safe-area-inset-bottom))] md:pb-0">
                     <div className="max-w-4xl mx-auto w-full flex-1">
                       {children}
                     </div>
                   </main>
+                  <BottomNav unreadNotifications={unreadNotifications} unreadMessages={unreadMessages} profile={profileData && user?.id ? { ...profileData, id: user.id } : undefined} />
                 </div>
               )}
             </PresenceProvider>

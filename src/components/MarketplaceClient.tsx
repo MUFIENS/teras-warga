@@ -201,16 +201,15 @@ export function MarketplaceClient({ items, currentUserId }: MarketplaceClientPro
   return (
     <>
       {/* Sticky Header */}
-      <header className="sticky top-14 md:top-0 z-40 bg-white dark:bg-[#050505] border-b border-gray-200 dark:border-neutral-800 shadow-sm">
-        <div className="flex items-center justify-between px-4 h-14">
+      <header className="sticky top-14 md:top-0 z-40 bg-white/80 dark:bg-[#050505]/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800 shadow-sm transition-all">
+        <div className="flex items-center justify-between px-4 md:px-6 h-14 md:h-16">
           <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold">Pasar Warga</h1>
+            <h1 className="text-xl md:text-2xl font-bold tracking-tight">Pasar Warga</h1>
             <span className="text-xs bg-[#1D9BF0]/10 text-[#1D9BF0] px-2 py-0.5 rounded-full font-semibold">
               {activeCount} barang
             </span>
           </div>
           <div className="flex items-center gap-2">
-            {!isConnected && <ConnectButton />}
             <Link
               href="/pasar/jual"
               className="flex items-center gap-1.5 bg-[#1D9BF0] text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-[#1A8CD8] transition-colors"
@@ -222,7 +221,7 @@ export function MarketplaceClient({ items, currentUserId }: MarketplaceClientPro
         </div>
 
         {/* Search Bar */}
-        <div className="px-4 pb-3">
+        <div className="px-4 md:px-6 pb-3 md:pb-4 pt-1 md:pt-2">
           <div className="relative">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-gray-400" />
             <input
@@ -244,7 +243,7 @@ export function MarketplaceClient({ items, currentUserId }: MarketplaceClientPro
         </div>
 
         {/* Category Filter */}
-        <div className="px-4 pb-3 flex items-center gap-2">
+        <div className="px-4 md:px-6 pb-3 md:pb-4 flex items-center gap-2">
           <div className="flex-1 flex gap-2 overflow-x-auto no-scrollbar">
             {CATEGORIES.map((cat) => (
               <button
@@ -274,7 +273,7 @@ export function MarketplaceClient({ items, currentUserId }: MarketplaceClientPro
 
         {/* Extra Filter */}
         {showFilter && (
-          <div className="px-4 pb-3 flex items-center gap-3 border-t border-gray-100 dark:border-neutral-800 pt-3">
+          <div className="px-4 md:px-6 pb-3 flex items-center gap-3 border-t border-gray-100 dark:border-neutral-800 pt-3">
             <label className="flex items-center gap-2 text-sm text-gray-600 dark:text-neutral-400 cursor-pointer">
               <input
                 type="checkbox"
@@ -290,7 +289,7 @@ export function MarketplaceClient({ items, currentUserId }: MarketplaceClientPro
 
       {/* Items Grid */}
       {filteredItems.length > 0 ? (
-        <div className="grid grid-cols-2 gap-4 p-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 p-4 md:p-6">
           {filteredItems.map((item, index) => (
             <MarketItemCard
               key={item.id}

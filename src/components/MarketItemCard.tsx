@@ -2,7 +2,7 @@
 
 import { useState, useTransition, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { MapPin, Tag, Package, MoreVertical, Trash2, Edit, Eye, EyeOff, MessageCircle, X } from "lucide-react";
+import { MapPin, Tag, Package, MoreVertical, Trash2, Edit, Eye, EyeOff, MessageCircle, X, CheckCircle2 } from "lucide-react";
 import { deleteMarketItem, toggleMarketItemStatus } from "@/app/pasar/actions";
 import { showInfo } from "@/lib/toast";
 import { useConfirmDialog } from "@/components/ui/confirm-dialog";
@@ -10,7 +10,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { CryptoPaymentModal } from "./crypto/CryptoPaymentModal";
 import { PaymentSelector } from "./pasar/PaymentSelector";
-import { useRef } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface MarketItemCardProps {
   id: string;
@@ -60,29 +65,15 @@ export function MarketItemCard({
   priority = false,
 }: MarketItemCardProps) {
   const [isPending, startTransition] = useTransition();
-  const [showMenu, setShowMenu] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
   const [showCryptoModal, setShowCryptoModal] = useState(false);
   const { confirm, ConfirmDialog } = useConfirmDialog();
-  const menuRef = useRef<HTMLDivElement>(null);
 
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setShowMenu(false);
-      }
-    };
-    if (showMenu) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [showMenu]);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("id-ID", {
@@ -94,7 +85,6 @@ export function MarketItemCard({
   };
 
   const handleDelete = async () => {
-    setShowMenu(false);
     const ok = await confirm({
       title: "Hapus Barang?",
       description: "Barang ini akan dihapus permanen dari pasar.",
@@ -111,7 +101,6 @@ export function MarketItemCard({
   };
 
   const handleToggleStatus = () => {
-    setShowMenu(false);
     onToggleStatus?.(id, !is_active);
     startTransition(async () => {
       await toggleMarketItemStatus(id);
@@ -134,151 +123,143 @@ export function MarketItemCard({
 
   return (
     <>
-    <ConfirmDialog />
-    <div
-      className={`group relative flex flex-col h-full bg-white dark:bg-neutral-900 rounded-2xl border border-gray-200 dark:border-neutral-800 overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 hover:-translate-y-0.5 ${
-        isPending ? "opacity-50" : ""
-      } ${!is_active ? "opacity-70" : ""}`}
-    >
-      {/* Image Block */}
-      <div className="relative aspect-[4/3] bg-gray-100 dark:bg-neutral-800 overflow-hidden block">
-        <Link href={`/pasar/${id}`} className={`absolute inset-0 z-0 ${isPending ? 'pointer-events-none' : ''}`}>
+      <ConfirmDialog />
+      <div
+        className={`group flex flex-col h-full bg-white dark:bg-[#121212] rounded-2xl border border-gray-100 dark:border-neutral-800 transition-all duration-300 md:hover:-translate-y-1 md:hover:border-gray-200 md:dark:hover:border-neutral-700 md:hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] md:dark:hover:shadow-[0_8px_30px_rgb(0,0,0,0.2)] md:p-3 overflow-hidden md:overflow-visible ${
+          isPending ? "opacity-50" : ""
+        }`}
+      >
+        {/* 1. Seller Header */}
+        <div className="flex items-center justify-between p-3 md:p-1 md:mb-2">
+          <Link href={`/profil/${seller_username}`} className="flex items-center gap-2.5 min-w-0 hover:opacity-80 transition-opacity flex-1">
+            {seller_avatar ? (
+              <img src={seller_avatar} alt={seller_name} className="w-8 h-8 md:w-9 md:h-9 rounded-full object-cover flex-shrink-0 border border-gray-100 dark:border-neutral-800" />
+            ) : (
+              <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-gray-100 dark:bg-neutral-800 flex items-center justify-center text-xs font-bold text-gray-500 uppercase flex-shrink-0">
+                {seller_name.charAt(0)}
+              </div>
+            )}
+            <div className="flex flex-col min-w-0">
+              <div className="flex items-center gap-1">
+                <span className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
+                  {seller_name}
+                </span>
+                {/* Simulated Verification/Seller Badge */}
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#1D9BF0] flex-shrink-0" />
+              </div>
+              <span className="text-[11px] text-gray-500 dark:text-gray-400">{timeAgo}</span>
+            </div>
+          </Link>
+
+          {isOwner && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="p-1.5 -mr-1.5 text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-full transition-colors focus:outline-none">
+                  <MoreVertical className="w-4.5 h-4.5" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem onClick={() => onEdit?.(id)} className="gap-2 cursor-pointer">
+                  <Edit className="w-4 h-4" /> Edit Barang
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleToggleStatus} className="gap-2 cursor-pointer">
+                  {is_active ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {is_active ? "Tandai Terjual" : "Aktifkan Kembali"}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleDelete} className="text-red-500 focus:bg-red-50 dark:focus:bg-red-950/30 focus:text-red-600 dark:focus:text-red-500 gap-2 cursor-pointer">
+                  <Trash2 className="w-4 h-4" /> Hapus Barang
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </div>
+
+        {/* 2. Product Media */}
+        <Link href={`/pasar/${id}`} className="relative aspect-[4/3] md:aspect-[1/1] w-full bg-gray-50 dark:bg-neutral-900 overflow-hidden md:rounded-xl flex-shrink-0 group/image block">
           {image_url ? (
             <Image 
               src={image_url}
               alt={title}
               fill
-              sizes="(max-width: 768px) 50vw, 33vw"
+              sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
               priority={priority}
               unoptimized={true}
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              className={`object-cover transition-transform duration-500 md:group-hover/image:scale-105 ${!is_active ? "grayscale-[50%] brightness-75" : ""}`}
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <Package className="w-12 h-12 text-gray-300 dark:text-neutral-600" />
+              <Package className="w-12 h-12 text-gray-300 dark:text-neutral-700" />
             </div>
           )}
 
-          {/* Status Badge */}
+          {/* Status Overlay */}
           {!is_active && (
-            <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-              <span className="bg-red-500 text-white px-4 py-1.5 rounded-full font-semibold text-sm">
-                Terjual
-              </span>
+            <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-10 backdrop-blur-[2px]">
+              <div className="bg-white/95 dark:bg-black/95 text-gray-900 dark:text-white px-5 py-2 rounded-full font-bold text-sm tracking-wide shadow-lg border border-black/5 dark:border-white/10">
+                TERJUAL
+              </div>
             </div>
           )}
         </Link>
 
-        {/* Category Badge */}
-        <div className="absolute top-3 left-3 pointer-events-none z-10">
-          <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${categoryColor[category] || categoryColor["Lainnya"]}`}>
-            {category}
-          </span>
+        {/* 3. Product Information */}
+        <div className="p-3 md:p-1 md:mt-3 flex flex-col flex-1">
+          <div className="flex items-start justify-between gap-2 mb-1">
+            <p className="text-[17px] font-bold text-[#1D9BF0] leading-tight">
+              {formatPrice(price_idr)}
+            </p>
+          </div>
+
+          <Link href={`/pasar/${id}`}>
+            <h3 className="font-semibold text-gray-800 dark:text-gray-100 text-[14px] line-clamp-2 leading-snug hover:text-[#1D9BF0] dark:hover:text-[#1D9BF0] transition-colors cursor-pointer mb-2">
+              {title}
+            </h3>
+          </Link>
+
+          <div className="flex flex-wrap items-center gap-1.5 mt-auto">
+            <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${categoryColor[category] || categoryColor["Lainnya"]}`}>
+              {category}
+            </span>
+            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-gray-500 dark:text-neutral-400 bg-gray-100 dark:bg-neutral-800 px-2 py-0.5 rounded-md">
+              <Tag className="w-3 h-3" />
+              {condition}
+            </span>
+          </div>
         </div>
 
-        {/* Owner Menu */}
-        {isOwner && (
-          <div className="absolute top-3 right-3 z-30" ref={menuRef}>
-            <button
-              onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowMenu(!showMenu); }}
-              className="p-1.5 bg-black/40 hover:bg-black/60 rounded-full text-white transition-colors relative"
-            >
-              <MoreVertical className="w-4 h-4" />
-            </button>
-
-            {showMenu && (
-              <div className="absolute right-0 top-9 w-44 bg-white dark:bg-neutral-900 rounded-xl shadow-xl border border-gray-200 dark:border-neutral-700 overflow-hidden z-20 py-1">
+        {/* 4. Action Footer */}
+        {!isOwner && (
+          <div className="px-3 pb-3 md:px-1 md:pb-1 mt-2">
+            <div className="flex items-center gap-2 w-full">
+              {is_active ? (
                 <button
-                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowMenu(false); onEdit?.(id); }}
-                  className="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors flex items-center gap-2.5"
+                  onClick={() => setShowPayment(true)}
+                  className="flex-1 flex items-center justify-center gap-1.5 text-sm font-semibold bg-[#1D9BF0] text-white py-2 rounded-xl hover:bg-[#1A8CD8] active:scale-[0.98] transition-all"
                 >
-                  <Edit className="w-4 h-4" /> Edit Barang
+                  <Package className="w-4 h-4" />
+                  Beli
                 </button>
+              ) : (
                 <button
-                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleToggleStatus(); }}
-                  className="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors flex items-center gap-2.5"
+                  disabled
+                  className="flex-1 flex items-center justify-center gap-1.5 text-sm font-semibold bg-gray-100 dark:bg-neutral-800 text-gray-400 dark:text-gray-500 py-2 rounded-xl cursor-not-allowed"
                 >
-                  {is_active ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  {is_active ? "Tandai Terjual" : "Aktifkan Kembali"}
+                  <CheckCircle2 className="w-4 h-4" />
+                  Terjual
                 </button>
-                <button
-                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleDelete(); }}
-                  className="w-full text-left px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors flex items-center gap-2.5"
-                >
-                  <Trash2 className="w-4 h-4" /> Hapus Barang
-                </button>
-              </div>
-            )}
+              )}
+              
+              <button
+                onClick={handleContact}
+                className="flex-1 flex items-center justify-center gap-1.5 text-sm font-semibold text-[#1D9BF0] bg-[#1D9BF0]/10 hover:bg-[#1D9BF0]/20 py-2 rounded-xl active:scale-[0.98] transition-all"
+              >
+                <MessageCircle className="w-4 h-4" />
+                Chat
+              </button>
+            </div>
           </div>
         )}
       </div>
-
-      {/* Content */}
-      <div className="p-4 flex flex-col flex-1">
-        {/* Price */}
-        <p className="text-lg font-bold text-[#1D9BF0]">
-          {formatPrice(price_idr)}
-        </p>
-
-        {/* Title */}
-        <Link href={`/pasar/${id}`}>
-          <h3 className="font-semibold text-[15px] mt-1 line-clamp-2 leading-snug hover:text-[#1D9BF0] transition-colors cursor-pointer">
-            {title}
-          </h3>
-        </Link>
-
-        {/* Condition & Location */}
-        <div className="flex flex-wrap items-center gap-2 mt-2.5">
-          <span className="inline-flex items-center gap-1 text-xs text-gray-500 dark:text-neutral-400 bg-gray-100 dark:bg-neutral-800 px-2 py-0.5 rounded-full">
-            <Tag className="w-3 h-3" />
-            {condition}
-          </span>
-          {location && (
-            <span className="inline-flex items-center gap-1 text-xs text-gray-500 dark:text-neutral-400 bg-gray-100 dark:bg-neutral-800 px-2 py-0.5 rounded-full">
-              <MapPin className="w-3 h-3" />
-              {location}
-            </span>
-          )}
-        </div>
-
-        {/* Separator */}
-        <div className="border-t border-gray-100 dark:border-neutral-800 mt-auto pt-3">
-          <div className="flex items-center justify-between">
-            {/* Seller Info */}
-            <Link href={`/profil/${seller_username}`} className="flex items-center gap-2 min-w-0 hover:opacity-80 transition-opacity">
-              {seller_avatar ? (
-                <img src={seller_avatar} alt={seller_name} className="w-6 h-6 rounded-full object-cover flex-shrink-0" />
-              ) : (
-                <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-neutral-700 flex items-center justify-center text-[10px] font-bold text-gray-500 uppercase flex-shrink-0">
-                  {seller_name.charAt(0)}
-                </div>
-              )}
-              <span className="text-xs text-gray-500 dark:text-neutral-400 truncate hover:underline">{seller_name}</span>
-            </Link>
-
-            {/* Contact Button */}
-            {!isOwner && is_active && (
-              <div className="flex items-center gap-1">
-                <button
-                  onClick={() => setShowPayment(true)}
-                  className="flex items-center gap-1.5 text-[11px] font-semibold bg-[#1D9BF0] text-white px-2.5 py-1.5 rounded-full hover:bg-[#1A8CD8] transition-colors"
-                >
-                  <Package className="w-3.5 h-3.5" />
-                  Beli
-                </button>
-                <button
-                  onClick={handleContact}
-                  className="flex items-center gap-1.5 text-[11px] font-semibold text-[#1D9BF0] hover:bg-[#1D9BF0]/10 px-2.5 py-1.5 rounded-full transition-colors"
-                >
-                  <MessageCircle className="w-3.5 h-3.5" />
-                  Chat
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
 
       {/* Payment Selector Modal */}
       {mounted && showPayment && createPortal(
