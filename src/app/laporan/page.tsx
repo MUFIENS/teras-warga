@@ -4,6 +4,8 @@ import { id as localeId } from "date-fns/locale";
 import { LaporanClient } from "@/components/LaporanClient";
 import { REPORT_CATEGORIES } from "@/lib/validators";
 
+export const dynamic = 'force-dynamic';
+
 export default async function Laporan() {
   const supabase = await createClient();
   const {

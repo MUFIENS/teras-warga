@@ -196,12 +196,12 @@ export function LaporanClient({ reports, currentUserId, userRole }: LaporanClien
         </div>
       </header>
 
-      <div className="grid grid-cols-5 gap-3 p-4 overflow-x-auto">
+      <div className="flex gap-3 p-4 overflow-x-auto no-scrollbar">
         {(["pending", "reviewed", "in_progress", "resolved", "rejected"] as const).map((s) => {
           const cfg = STATUS_CFG[s];
           const isActive = selectedStatus === s;
           return (
-            <button key={s} onClick={() => setSelectedStatus(isActive ? "Semua" : s)} className={`min-w-[120px] rounded-xl p-3.5 border transition-all text-left ${isActive ? `${cfg.bg} ${cfg.border} border-2` : "border-gray-200 dark:border-neutral-800 hover:border-gray-300 dark:hover:border-neutral-700"}`}>
+            <button key={s} onClick={() => setSelectedStatus(isActive ? "Semua" : s)} className={`min-w-[120px] flex-shrink-0 rounded-xl p-3.5 border transition-all text-left ${isActive ? `${cfg.bg} ${cfg.border} border-2` : "border-gray-200 dark:border-neutral-800 hover:border-gray-300 dark:hover:border-neutral-700"}`}>
               <div className={`flex items-center gap-1.5 ${cfg.color}`}>
                 <cfg.icon className={`w-4 h-4 ${s === "in_progress" && isActive ? "animate-spin" : ""}`} />
                 <span className="text-xs font-medium">{cfg.label}</span>
@@ -328,16 +328,16 @@ export function LaporanClient({ reports, currentUserId, userRole }: LaporanClien
 
       {/* ─── CREATE FORM MODAL ─── */}
       {showForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowForm(false)} />
-          <div className="relative bg-white dark:bg-neutral-900 rounded-2xl w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-200 dark:border-neutral-800">
+          <div className="relative bg-white dark:bg-neutral-900 rounded-2xl w-full max-w-lg shadow-2xl border border-gray-200 dark:border-neutral-800 flex flex-col max-h-[85vh] mb-20 md:mb-0">
             {/* Modal Header */}
-            <div className="sticky top-0 bg-white/95 dark:bg-neutral-900/95 backdrop-blur-sm flex items-center justify-between px-5 py-4 border-b border-gray-200 dark:border-neutral-800 z-10">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200 dark:border-neutral-800 shrink-0">
               <h2 className="text-lg font-bold">Buat Laporan</h2>
               <button onClick={() => setShowForm(false)} className="p-1.5 hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-full transition-colors"><X className="w-5 h-5" /></button>
             </div>
 
-            <div className="p-5 space-y-5">
+            <div className="p-5 space-y-5 overflow-y-auto">
               {/* Image Unggah */}
               <div>
                 <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Foto Bukti</label>
@@ -398,7 +398,7 @@ export function LaporanClient({ reports, currentUserId, userRole }: LaporanClien
             </div>
 
             {/* Modal Footer */}
-            <div className="sticky bottom-0 bg-white/95 dark:bg-neutral-900/95 backdrop-blur-sm px-5 py-4 border-t border-gray-200 dark:border-neutral-800">
+            <div className="px-5 py-4 border-t border-gray-200 dark:border-neutral-800 shrink-0">
               <button onClick={handleSubmit} disabled={isPending || !title.trim() || !description.trim() || description.trim().length < 10} className="w-full bg-[#1D9BF0] text-white font-bold py-3 rounded-xl hover:bg-[#1A8CD8] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all active:scale-[0.98]">
                 {isPending ? <><Loader2 className="w-5 h-5 animate-spin" />Mengirim...</> : "Kirim Laporan"}
               </button>

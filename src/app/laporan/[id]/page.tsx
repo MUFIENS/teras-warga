@@ -4,6 +4,8 @@ import { formatDistanceToNow } from "date-fns";
 import { id as localeId } from "date-fns/locale";
 import { LaporanDetailClient } from "@/components/LaporanDetailClient";
 
+export const dynamic = 'force-dynamic';
+
 export default async function LaporanDetailPage({
   params,
 }: {
