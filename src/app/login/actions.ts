@@ -37,7 +37,11 @@ export async function login(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data)
 
   if (error) {
-    return redirect(`/login?error=${encodeURIComponent(error.message)}`)
+    let errorMessage = error.message;
+    if (errorMessage === "Invalid login credentials") {
+      errorMessage = "Password atau alamat email salah";
+    }
+    return redirect(`/login?error=${encodeURIComponent(errorMessage)}`)
   }
 
   revalidatePath('/', 'layout')

@@ -209,6 +209,99 @@ export function FeatureShowcase() {
           </motion.div>
 
         </div>
+
+        {/* Premium Bento Grid - Row 3 */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+          
+          {/* Bento Item 5: Kas & Iuran (Large: 2 cols) */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="lg:col-span-2 group"
+          >
+            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col justify-between min-h-[420px]">
+            <div className="relative z-10 max-w-sm">
+               <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
+                 <Wallet className="w-5 h-5 text-gray-900 dark:text-white" />
+               </div>
+               <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2 tracking-tight">Kas & Iuran Transparan</h3>
+               <p className="text-gray-500 dark:text-neutral-400 text-sm leading-relaxed font-light">Pantau arus kas RT/RW secara real-time. Laporan keuangan disajikan otomatis tanpa ada yang ditutup-tutupi, mendukung transparansi penuh.</p>
+            </div>
+            
+            <div className="absolute right-0 bottom-0 w-[90%] max-w-[400px] h-[240px] bg-white dark:bg-[#0a0a0a] rounded-tl-3xl border-t border-l border-gray-200/80 dark:border-white/10 shadow-2xl transition-transform duration-500 group-hover:scale-[1.02] origin-bottom-right flex flex-col">
+               <div className="p-5 border-b border-gray-100 dark:border-white/5 flex items-center justify-between">
+                 <span className="text-xs font-semibold text-gray-900 dark:text-white uppercase tracking-wider">Saldo Kas Utama</span>
+                 <span className="text-xs font-bold text-green-500 bg-green-50 dark:bg-green-500/10 px-2 py-1 rounded-md">+2.4M Bulan Ini</span>
+               </div>
+               <div className="p-5 flex flex-col gap-4">
+                 <div className="text-3xl font-medium text-gray-900 dark:text-white font-mono mb-2">Rp 15.420.000</div>
+                 <div className="flex items-center gap-4">
+                   <div className="w-10 h-10 rounded-xl bg-green-50 dark:bg-green-500/10 flex items-center justify-center border border-green-100 dark:border-green-500/20">
+                     <ChevronRight className="w-4 h-4 text-green-500 rotate-[-90deg]" />
+                   </div>
+                   <div className="flex-1">
+                     <div className="text-sm font-medium text-gray-900 dark:text-white">Iuran Bulanan Blok B</div>
+                     <div className="text-[11px] text-gray-500 mt-0.5">Hari ini, 09:30 WIB</div>
+                   </div>
+                   <div className="text-sm font-semibold text-green-600 dark:text-green-400">+ Rp 200.000</div>
+                 </div>
+                 <div className="flex items-center gap-4">
+                   <div className="w-10 h-10 rounded-xl bg-red-50 dark:bg-red-500/10 flex items-center justify-center border border-red-100 dark:border-red-500/20">
+                     <ChevronRight className="w-4 h-4 text-red-500 rotate-[90deg]" />
+                   </div>
+                   <div className="flex-1">
+                     <div className="text-sm font-medium text-gray-900 dark:text-white">Perbaikan Lampu Taman</div>
+                     <div className="text-[11px] text-gray-500 mt-0.5">Kemarin, 14:15 WIB</div>
+                   </div>
+                   <div className="text-sm font-semibold text-red-600 dark:text-red-400">- Rp 150.000</div>
+                 </div>
+               </div>
+            </div>
+            </SpotlightCard>
+          </motion.div>
+
+          {/* Bento Item 6: Voting (Small: 1 col) */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="lg:col-span-1 group"
+          >
+            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col min-h-[420px]">
+            <div className="relative z-10">
+              <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
+                <svg className="w-5 h-5 text-gray-900 dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2 tracking-tight">E-Voting Demokratis</h3>
+              <p className="text-gray-500 dark:text-neutral-400 text-sm leading-relaxed font-light">Ambil keputusan bersama secara online tanpa repot kumpul-kumpul warga.</p>
+            </div>
+            
+            <div className="absolute inset-x-8 bottom-8 flex justify-center transition-transform duration-500 group-hover:scale-[1.03]">
+              <div className="w-full bg-white dark:bg-[#0a0a0a] rounded-2xl border border-gray-200/80 dark:border-white/10 shadow-xl p-5 flex flex-col">
+                 <div className="text-xs font-semibold text-gray-900 dark:text-white mb-4">Warna Seragam Satpam?</div>
+                 
+                 <div className="flex flex-col gap-3">
+                   <div className="relative w-full h-10 rounded-lg bg-gray-100 dark:bg-white/5 overflow-hidden flex items-center px-3 z-0">
+                     <div className="absolute inset-y-0 left-0 bg-[#3066be]/20 dark:bg-[#3066be]/30 w-[75%] -z-10 rounded-lg"></div>
+                     <span className="text-xs font-medium text-gray-900 dark:text-white flex-1">Biru Dongker</span>
+                     <span className="text-xs font-bold text-[#3066be]">75%</span>
+                   </div>
+                   <div className="relative w-full h-10 rounded-lg bg-gray-100 dark:bg-white/5 overflow-hidden flex items-center px-3 z-0">
+                     <div className="absolute inset-y-0 left-0 bg-gray-300 dark:bg-white/10 w-[25%] -z-10 rounded-lg"></div>
+                     <span className="text-xs font-medium text-gray-900 dark:text-white flex-1">Coklat Polisi</span>
+                     <span className="text-xs font-bold text-gray-500">25%</span>
+                   </div>
+                 </div>
+              </div>
+            </div>
+            </SpotlightCard>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

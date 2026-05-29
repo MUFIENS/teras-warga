@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { Home, Menu, X, ArrowRight } from "lucide-react";
+import Image from "next/image";
+import { Menu, X, ArrowRight } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function FloatingNavbar() {
@@ -42,13 +43,22 @@ export function FloatingNavbar() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/welcome" className="flex items-center gap-3 group">
-            <div className="relative h-10 w-10 flex items-center justify-center">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#1D9BF0] to-indigo-600 rounded-xl opacity-90 blur-sm group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="relative h-10 w-10 rounded-xl bg-gradient-to-br from-[#1D9BF0] to-indigo-600 flex items-center justify-center text-white border border-white/20 shadow-lg group-hover:scale-[1.02] transition-transform duration-300">
-                <Home className="h-5 w-5" />
-              </div>
+            <div className="relative h-10 flex items-center justify-center">
+              <Image 
+                src="/logo-ai.png" 
+                alt="Logo Teras Warga" 
+                width={120} 
+                height={40} 
+                className="h-9 w-auto object-contain rounded-xl block dark:hidden group-hover:scale-[1.02] transition-transform duration-300 shadow-sm"
+              />
+              <Image 
+                src="/logo-ai-dark.png" 
+                alt="Logo Teras Warga Dark" 
+                width={120} 
+                height={40} 
+                className="h-9 w-auto object-contain rounded-xl hidden dark:block group-hover:scale-[1.02] transition-transform duration-300 shadow-sm shadow-white/5"
+              />
             </div>
-            <span className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">Teras Warga</span>
           </Link>
 
           {/* Desktop Nav */}

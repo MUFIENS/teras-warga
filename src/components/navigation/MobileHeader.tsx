@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Home } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Avatar } from "@/components/ui/avatar";
@@ -25,10 +26,22 @@ export function MobileHeader({ profile }: MobileHeaderProps) {
     <header className="md:hidden sticky top-0 z-40 flex items-center justify-between px-4 h-14 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-neutral-800 w-full">
       <div className="flex items-center gap-2">
         <Link href="/" className="flex items-center gap-2">
-          <div className="h-7 w-7 rounded-full bg-[#1D9BF0] flex items-center justify-center text-white">
-            <Home className="h-4 w-4" />
+          <div className="relative h-7 flex items-center justify-center">
+            <Image 
+              src="/logo-ai.png" 
+              alt="Logo Teras Warga" 
+              width={85} 
+              height={28} 
+              className="h-7 w-auto object-contain rounded-md block dark:hidden"
+            />
+            <Image 
+              src="/logo-ai-dark.png" 
+              alt="Logo Teras Warga Dark" 
+              width={85} 
+              height={28} 
+              className="h-7 w-auto object-contain rounded-md hidden dark:block"
+            />
           </div>
-          <span className="font-bold text-lg">Teras Warga</span>
         </Link>
       </div>
 

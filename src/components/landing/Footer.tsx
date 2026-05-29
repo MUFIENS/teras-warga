@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Home } from "lucide-react";
+import Image from "next/image";
 
 const XIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
@@ -27,10 +27,22 @@ export function Footer() {
           
           <div className="md:col-span-2">
             <Link href="/welcome" className="flex items-center gap-2 mb-4">
-              <div className="h-8 w-8 rounded-full bg-[#1D9BF0] flex items-center justify-center text-white">
-                <Home className="h-4 w-4" />
+              <div className="relative h-10 flex items-center justify-center">
+                <Image 
+                  src="/logo-ai.png" 
+                  alt="Logo Teras Warga" 
+                  width={150} 
+                  height={50} 
+                  className="h-10 w-auto object-contain rounded-xl block dark:hidden grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                />
+                <Image 
+                  src="/logo-ai-dark.png" 
+                  alt="Logo Teras Warga Dark" 
+                  width={150} 
+                  height={50} 
+                  className="h-10 w-auto object-contain rounded-xl hidden dark:block grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                />
               </div>
-              <span className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">Teras Warga</span>
             </Link>
             <p className="text-sm text-gray-500 dark:text-neutral-400 mb-6 max-w-sm">
               Membangun ekosistem warga digital yang modern, aman, dan terintegrasi untuk masa depan lingkungan perumahan yang lebih cerdas.

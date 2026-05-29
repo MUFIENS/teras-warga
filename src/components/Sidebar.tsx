@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   Home,
@@ -92,10 +93,22 @@ export function Sidebar({ unreadNotifications = 0, unreadMessages = 0, profile }
         {/* Header */}
         <div className="flex items-center justify-between mb-8 px-2">
           <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity duration-200">
-            <div className="h-8 w-8 rounded-full bg-[#1D9BF0] flex items-center justify-center text-white">
-              <Home className="h-5 w-5" />
+            <div className="relative h-8 flex items-center justify-center">
+              <Image 
+                src="/logo-ai.png" 
+                alt="Logo Teras Warga" 
+                width={100} 
+                height={32} 
+                className="h-8 w-auto object-contain rounded-lg block dark:hidden shadow-sm"
+              />
+              <Image 
+                src="/logo-ai-dark.png" 
+                alt="Logo Teras Warga Dark" 
+                width={100} 
+                height={32} 
+                className="h-8 w-auto object-contain rounded-lg hidden dark:block shadow-sm shadow-white/5"
+              />
             </div>
-            <span className="text-xl font-bold">Teras Warga</span>
           </Link>
           <ThemeToggle />
         </div>

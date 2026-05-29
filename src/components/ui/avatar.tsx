@@ -14,11 +14,21 @@ interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
 export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
   ({ className, src, alt = "Avatar", fallbackClassName, iconClassName, ...props }, ref) => {
     const [hasError, setHasError] = React.useState(false);
+    const imgRef = React.useRef<HTMLImageElement>(null);
 
-    // Reset error state if src changes
+    // Reset error state if src changes and check for early failure
     React.useEffect(() => {
       setHasError(false);
+      
+      // Handle hydration edge case: image failed to load before React attached onError
+      if (imgRef.current) {
+        if (imgRef.current.complete && imgRef.current.naturalWidth === 0) {
+          setHasError(true);
+        }
+      }
     }, [src]);
+
+    const isValidSrc = typeof src === 'string' && src.trim() !== '' && src !== 'null' && src !== 'undefined';
 
     return (
       <div
@@ -29,11 +39,14 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
         )}
         {...props}
       >
-        {src && !hasError ? (
-          <img src={src}
+        {isValidSrc && !hasError ? (
+          <img 
+            ref={imgRef}
+            src={src}
             alt={alt}
             onError={() => setHasError(true)}
-            className="h-full w-full object-cover"
+            referrerPolicy="no-referrer"
+            className="h-full w-full object-cover text-transparent"
           />
         ) : (
           <div
