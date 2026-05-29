@@ -4,6 +4,12 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, LayoutDashboard, Search, Bell, Settings, MessageCircle, ShoppingBag, ShieldCheck, ChevronRight } from "lucide-react";
+import dynamic from 'next/dynamic';
+import ShinyText from "@/components/ui/react-bits/ShinyText";
+import TiltedCard from "@/components/ui/react-bits/TiltedCard";
+
+const FaultyTerminal = dynamic(() => import('@/components/ui/react-bits/FaultyTerminal'), { ssr: false });
+const PixelTrail = dynamic(() => import('@/components/ui/react-bits/PixelTrail'), { ssr: false });
 
 export function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -21,15 +27,22 @@ export function HeroSection() {
 
   return (
     <section ref={containerRef} className="relative min-h-[140vh] pt-32 pb-24 overflow-hidden bg-white dark:bg-black selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
-      {/* Structural Background Lines */}
+      {/* Faulty Terminal Background */}
       <motion.div 
         style={{ y: backgroundY }}
-        className="absolute inset-0 pointer-events-none opacity-20 dark:opacity-40"
+        className="absolute inset-0 pointer-events-none opacity-40 dark:opacity-50"
       >
-        <div className="absolute left-1/4 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gray-300 dark:via-neutral-800 to-transparent" />
-        <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gray-300 dark:via-neutral-800 to-transparent" />
-        <div className="absolute right-1/4 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gray-300 dark:via-neutral-800 to-transparent" />
+        <FaultyTerminal />
       </motion.div>
+
+      {/* Interactive Pixel Trail Cursor */}
+      <div className="absolute inset-0 z-0 pointer-events-auto">
+        <PixelTrail
+          pixelColor="#1D9BF0"
+          gridSize={40}
+          trailSize={0.08}
+        />
+      </div>
       
       <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12 relative flex flex-col lg:flex-row items-start justify-between gap-12 lg:gap-8 z-10 pt-10 md:pt-20">
         
@@ -44,10 +57,10 @@ export function HeroSection() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="inline-flex items-center gap-3 mb-8"
           >
-            <span className="px-2.5 py-1 rounded-full border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-[10px] font-bold tracking-widest uppercase text-gray-900 dark:text-white shadow-sm">
-              Teras Warga
+            <span className="px-2.5 py-1 rounded-full border border-gray-200 dark:border-neutral-800 bg-white/50 dark:bg-neutral-900/50 backdrop-blur-sm text-[10px] font-bold tracking-widest uppercase shadow-sm">
+              <ShinyText text="Teras Warga" speed={3} className="text-gray-900 dark:text-white" />
             </span>
-            <span className="text-xs font-medium text-gray-500 dark:text-neutral-400 tracking-tight">Platform Manajemen Ekosistem Warga</span>
+            <span className="text-xs font-medium text-gray-500 dark:text-neutral-400 tracking-tight backdrop-blur-sm">Platform Manajemen Ekosistem Warga</span>
           </motion.div>
 
           <motion.h1
@@ -101,8 +114,20 @@ export function HeroSection() {
           transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="w-full lg:w-[55%] z-30 mt-10 lg:mt-0 relative"
         >
-          {/* Grounded Shadow & Border */}
-          <div className="relative rounded-[24px] bg-white dark:bg-black border border-gray-200 dark:border-neutral-800 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden">
+          {/* Grounded Shadow & Border wrapping TiltedCard */}
+          <div className="relative">
+            <TiltedCard
+              containerHeight="100%"
+              containerWidth="100%"
+              imageHeight="100%"
+              imageWidth="100%"
+              scaleOnHover={1.05}
+              rotateAmplitude={12}
+              showMobileWarning={false}
+              showTooltip={false}
+              displayOverlayContent={false}
+            >
+              <div className="relative rounded-[24px] bg-white dark:bg-black border border-gray-200 dark:border-neutral-800 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden w-full h-[600px]">
             
             {/* App Header (Realistic) */}
             <div className="h-14 border-b border-gray-100 dark:border-neutral-900 flex items-center justify-between px-4 bg-gray-50 dark:bg-[#050505]">
@@ -186,6 +211,8 @@ export function HeroSection() {
                  <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white dark:from-[#0a0a0a] to-transparent pointer-events-none" />
               </div>
             </div>
+              </div>
+            </TiltedCard>
           </div>
         </motion.div>
       </div>
