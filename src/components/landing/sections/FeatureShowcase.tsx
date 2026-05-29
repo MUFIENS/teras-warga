@@ -51,7 +51,7 @@ export function FeatureShowcase() {
             transition={{ duration: 0.6 }}
             className="lg:col-span-2 group"
           >
-            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col justify-between min-h-[420px]">
+            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 pb-[280px] md:pb-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col justify-between min-h-[420px]">
             <div className="relative z-10 max-w-sm">
               <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
                 <Store className="w-5 h-5 text-gray-900 dark:text-white" />
@@ -100,7 +100,7 @@ export function FeatureShowcase() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="lg:col-span-1 group"
           >
-            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col min-h-[420px]">
+            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 pb-[200px] md:pb-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col min-h-[420px]">
             <div className="relative z-10">
               <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
                 <Wallet className="w-5 h-5 text-gray-900 dark:text-white" />
@@ -147,7 +147,7 @@ export function FeatureShowcase() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="lg:col-span-1 group"
           >
-            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col min-h-[400px]">
+            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 pb-[220px] md:pb-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col min-h-[400px]">
             <div className="relative z-10">
               <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
                 <MessageCircle className="w-5 h-5 text-gray-900 dark:text-white" />
@@ -175,7 +175,7 @@ export function FeatureShowcase() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="lg:col-span-2 group"
           >
-            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col justify-between min-h-[400px]">
+            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 pb-[220px] md:pb-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col justify-between min-h-[400px]">
             <div className="relative z-10 max-w-sm">
                <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
                  <ShieldAlert className="w-5 h-5 text-gray-900 dark:text-white" />
@@ -221,7 +221,7 @@ export function FeatureShowcase() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="lg:col-span-2 group"
           >
-            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col justify-between min-h-[420px]">
+            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 pb-[280px] md:pb-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col justify-between min-h-[420px]">
             <div className="relative z-10 max-w-sm">
                <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
                  <Wallet className="w-5 h-5 text-gray-900 dark:text-white" />
@@ -270,7 +270,7 @@ export function FeatureShowcase() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="lg:col-span-1 group"
           >
-            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col min-h-[420px]">
+            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 pb-[200px] md:pb-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col min-h-[420px]">
             <div className="relative z-10">
               <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
                 <svg className="w-5 h-5 text-gray-900 dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
