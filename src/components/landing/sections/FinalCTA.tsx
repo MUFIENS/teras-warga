@@ -28,7 +28,7 @@ export function FinalCTA() {
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/auth/login" className="w-full sm:w-auto">
+              <Link href="/register" className="w-full sm:w-auto">
                 <button className="w-full flex items-center justify-center gap-2 bg-black dark:bg-white text-white dark:text-black px-8 py-4 rounded-full font-medium text-sm hover:scale-[1.02] transition-transform duration-300">
                   Daftar Sekarang
                   <ArrowRight className="w-4 h-4" />
