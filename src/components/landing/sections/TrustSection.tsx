@@ -5,7 +5,7 @@ import { ShieldCheck, Lock, Server, Fingerprint, Activity } from "lucide-react";
 
 export function TrustSection() {
   return (
-    <section id="trust" className="py-32 bg-white dark:bg-[#050505] relative overflow-hidden border-t border-gray-100 dark:border-neutral-900">
+    <section id="trust" className="py-32 bg-transparent relative overflow-hidden border-t border-gray-100 dark:border-neutral-900">
       
       {/* Background Architectural Grid */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.03] dark:opacity-[0.05]" 

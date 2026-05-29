@@ -8,26 +8,16 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function FloatingNavbar() {
   const { scrollY } = useScroll();
-  const [hidden, setHidden] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [hoveredLink, setHoveredLink] = useState<string | null>(null);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = scrollY.getPrevious() ?? 0;
-    
     // Change background when scrolled
     if (latest > 50) {
       setIsScrolled(true);
     } else {
       setIsScrolled(false);
-    }
-
-    // Hide navbar on scroll down, show on scroll up
-    if (latest > previous && latest > 150) {
-      setHidden(true);
-      setMobileMenuOpen(false); // Auto close mobile menu on scroll down
-    } else {
-      setHidden(false);
     }
   });
 
@@ -39,19 +29,16 @@ export function FloatingNavbar() {
 
   return (
     <motion.nav
-      variants={{
-        visible: { y: 0, opacity: 1 },
-        hidden: { y: "-100%", opacity: 0 },
-      }}
-      animate={hidden ? "hidden" : "visible"}
-      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }} // smooth spring-like ease
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      className={`fixed top-4 inset-x-0 z-50 transition-colors duration-500 mx-auto w-[92%] max-w-5xl rounded-full ${
         isScrolled 
-          ? "bg-white/60 dark:bg-black/40 backdrop-blur-2xl border-b border-black/5 dark:border-white/5 shadow-[0_4px_30px_rgba(0,0,0,0.03)]" 
-          : "bg-transparent"
+          ? "bg-white/70 dark:bg-black/60 backdrop-blur-xl border border-black/10 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.08)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.4)]" 
+          : "bg-transparent border border-transparent shadow-none"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="px-5 sm:px-8 lg:px-10">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/welcome" className="flex items-center gap-3 group">
@@ -65,18 +52,27 @@ export function FloatingNavbar() {
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
               <a 
                 key={link.name} 
                 href={link.href}
+                onMouseEnter={() => setHoveredLink(link.name)}
+                onMouseLeave={() => setHoveredLink(null)}
                 onClick={(e) => {
                   e.preventDefault();
                   document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="text-[14px] font-medium text-gray-600 dark:text-neutral-300 hover:text-black dark:hover:text-white transition-colors tracking-tight"
+                className="relative px-4 py-2 text-[14px] font-medium text-gray-600 dark:text-neutral-300 hover:text-black dark:hover:text-white transition-colors tracking-tight rounded-full"
               >
-                {link.name}
+                {hoveredLink === link.name && (
+                  <motion.div
+                    layoutId="nav-hover"
+                    className="absolute inset-0 bg-gray-100 dark:bg-white/10 rounded-full -z-10"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+                <span className="relative z-10">{link.name}</span>
               </a>
             ))}
           </div>
@@ -117,11 +113,11 @@ export function FloatingNavbar() {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
+            initial={{ height: 0, opacity: 0, y: -10 }}
+            animate={{ height: "auto", opacity: 1, y: 0 }}
+            exit={{ height: 0, opacity: 0, y: -10 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="md:hidden overflow-hidden bg-white/80 dark:bg-black/80 backdrop-blur-2xl border-b border-gray-100 dark:border-neutral-800/50"
+            className="md:hidden absolute top-full left-0 right-0 mt-3 overflow-hidden bg-white/90 dark:bg-black/90 backdrop-blur-xl border border-gray-200/60 dark:border-white/10 rounded-3xl shadow-xl"
           >
             <div className="px-6 pt-4 pb-8 flex flex-col gap-4">
               {navLinks.map((link) => (

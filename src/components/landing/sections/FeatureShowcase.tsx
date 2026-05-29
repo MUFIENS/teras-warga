@@ -6,7 +6,7 @@ import SpotlightCard from "@/components/ui/react-bits/SpotlightCard";
 
 export function FeatureShowcase() {
   return (
-    <section id="features" className="py-32 relative bg-white dark:bg-black overflow-hidden border-t border-gray-100 dark:border-neutral-900">
+    <section id="features" className="py-32 relative bg-transparent overflow-hidden border-t border-gray-100 dark:border-neutral-900">
       <div className="max-w-[1200px] mx-auto px-6 sm:px-8 relative z-10">
         
         {/* Section Header */}

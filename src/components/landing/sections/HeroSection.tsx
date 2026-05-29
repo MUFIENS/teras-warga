@@ -1,18 +1,24 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
+import { useTheme } from "next-themes";
 import { ArrowRight, LayoutDashboard, Search, Bell, MessageCircle, ShoppingBag, ShieldCheck } from "lucide-react";
 import dynamic from 'next/dynamic';
 import ShinyText from "@/components/ui/react-bits/ShinyText";
 import TiltedCard from "@/components/ui/react-bits/TiltedCard";
 
 const FaultyTerminal = dynamic(() => import('@/components/ui/react-bits/FaultyTerminal'), { ssr: false });
-const PixelTrail = dynamic(() => import('@/components/ui/react-bits/PixelTrail'), { ssr: false });
 
 export function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -27,49 +33,53 @@ export function HeroSection() {
 
   return (
     <section ref={containerRef} className="relative min-h-[140vh] pt-32 pb-24 overflow-hidden bg-white dark:bg-black selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
+      {/* Ambient Gradient Orbs */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="absolute -top-[20%] -right-[10%] w-[70%] h-[70%] rounded-full bg-gradient-to-br from-[#3066be]/10 to-indigo-500/5 blur-3xl dark:opacity-20" />
+        <div className="absolute top-[40%] -left-[10%] w-[50%] h-[50%] rounded-full bg-gradient-to-tr from-sky-400/10 to-[#3066be]/5 blur-3xl dark:opacity-20" />
+      </div>
+
       {/* Faulty Terminal Background */}
       <motion.div 
         style={{ y: backgroundY }}
-        className="absolute inset-0 pointer-events-none opacity-40 dark:opacity-50"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: mounted && resolvedTheme === 'dark' ? 0.2 : 0.35 }}
+        transition={{ duration: 1 }}
+        className="absolute inset-0 pointer-events-none"
       >
-        <FaultyTerminal />
+        <FaultyTerminal tint={mounted && resolvedTheme === 'dark' ? '#ffffff' : '#3066be'} />
       </motion.div>
-
-      <div className="absolute inset-0 z-0 pointer-events-auto">
-        <PixelTrail
-          color="#1D9BF0"
-          gridSize={40}
-          trailSize={0.08}
-        />
-      </div>
       
       <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12 relative flex flex-col lg:flex-row items-start justify-between gap-12 lg:gap-8 z-10 pt-10 md:pt-20">
         
         {/* Asymmetrical Left Content */}
         <motion.div 
           style={{ y: textY, opacity }} 
-          className="w-full lg:w-[45%] flex flex-col items-start z-20 sticky top-40"
+          className="w-full lg:w-[45%] flex flex-col items-start z-20 sticky top-40 relative"
         >
+          {/* Subtle radial glow behind text to guarantee legibility against the noisy terminal */}
+          <div className="absolute -inset-10 bg-white/70 dark:bg-black/70 blur-3xl pointer-events-none rounded-full -z-10" />
+
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="inline-flex items-center gap-3 mb-8"
           >
-            <span className="px-2.5 py-1 rounded-full border border-gray-200 dark:border-neutral-800 bg-white/50 dark:bg-neutral-900/50 backdrop-blur-sm text-[10px] font-bold tracking-widest uppercase shadow-sm">
-              <ShinyText text="Teras Warga" speed={3} className="text-gray-900 dark:text-white" />
+            <span className="px-3 py-1 rounded-full border border-[#3066be]/20 dark:border-neutral-800 bg-[#3066be]/5 dark:bg-neutral-900/50 backdrop-blur-sm text-[10px] font-bold tracking-widest uppercase shadow-sm">
+              <ShinyText text="Teras Warga" speed={3} className="text-[#3066be] dark:text-white" />
             </span>
-            <span className="text-xs font-medium text-gray-500 dark:text-neutral-400 tracking-tight backdrop-blur-sm">Platform Manajemen Ekosistem Warga</span>
+            <span className="text-xs font-medium text-gray-600 dark:text-neutral-400 tracking-tight backdrop-blur-sm">Platform Manajemen Ekosistem Warga</span>
           </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-5xl md:text-7xl lg:text-[5.5rem] font-medium tracking-tight text-gray-900 dark:text-white leading-[1.05]"
+            className="text-5xl md:text-7xl lg:text-[5.5rem] font-black tracking-tighter text-slate-950 dark:text-white leading-[1.05]"
           >
             Sistem Operasi <br className="hidden md:block" />
-            <span className="text-neutral-400 dark:text-neutral-500">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3066be] to-[#1a3a6e] dark:from-blue-400 dark:to-indigo-400">
               Perumahan.
             </span>
           </motion.h1>
@@ -78,7 +88,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-8 text-lg text-gray-500 dark:text-neutral-400 max-w-md tracking-tight leading-relaxed font-light"
+            className="mt-8 text-lg text-slate-900 dark:text-neutral-300 max-w-md tracking-tight leading-relaxed font-medium"
           >
             Dari laporan keamanan, pasar komunitas dengan pembayaran Web3, hingga obrolan warga secara real-time. Infrastruktur lengkap untuk lingkungan modern.
           </motion.p>
@@ -91,14 +101,14 @@ export function HeroSection() {
           >
             <Link
               href="/register"
-              className="flex items-center justify-center gap-2 bg-black dark:bg-white text-white dark:text-black px-7 py-3.5 rounded-full font-medium text-sm transition-transform hover:scale-[1.02] active:scale-[0.98]"
+              className="flex items-center justify-center gap-2 bg-[#3066be] text-white px-7 py-3.5 rounded-full font-semibold text-sm hover:bg-blue-700 transition-all shadow-lg shadow-[#3066be]/25 hover:scale-[1.02] active:scale-[0.98]"
             >
               Mulai Ekosistem Anda
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               href="#features"
-              className="flex items-center justify-center gap-2 bg-transparent text-gray-900 dark:text-white px-7 py-3.5 rounded-full font-medium text-sm border border-gray-200 dark:border-neutral-800 hover:bg-gray-50 dark:hover:bg-neutral-900 transition-colors"
+              className="flex items-center justify-center gap-2 bg-white dark:bg-black text-gray-900 dark:text-white px-7 py-3.5 rounded-full font-medium text-sm border border-gray-200 dark:border-neutral-800 hover:bg-gray-50 dark:hover:bg-neutral-900 transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               Pelajari Lebih Lanjut
             </Link>
