@@ -51,7 +51,7 @@ export function FeatureShowcase() {
             transition={{ duration: 0.6 }}
             className="lg:col-span-2 group"
           >
-            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 pb-[280px] md:pb-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col justify-between min-h-[420px]">
+            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col justify-between min-h-[420px]">
             <div className="relative z-10 max-w-sm">
               <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
                 <Store className="w-5 h-5 text-gray-900 dark:text-white" />
@@ -61,7 +61,7 @@ export function FeatureShowcase() {
             </div>
             
             {/* Architectural UI Miniature */}
-            <div className="absolute right-0 bottom-0 w-[90%] max-w-[400px] h-[240px] bg-white dark:bg-[#0a0a0a] rounded-tl-3xl border-t border-l border-gray-200/80 dark:border-white/10 shadow-2xl transition-transform duration-500 group-hover:scale-[1.02] origin-bottom-right flex flex-col">
+            <div className="mt-8 self-end lg:mt-0 lg:absolute lg:right-0 lg:bottom-0 w-[90%] max-w-[400px] h-[240px] bg-white dark:bg-[#0a0a0a] rounded-tl-3xl border-t border-l border-gray-200/80 dark:border-white/10 shadow-2xl transition-transform duration-500 group-hover:scale-[1.02] lg:origin-bottom-right flex flex-col">
                <div className="p-5 border-b border-gray-100 dark:border-white/5 flex items-center justify-between">
                  <span className="text-xs font-semibold text-gray-900 dark:text-white uppercase tracking-wider">Produk Warga Terbaru</span>
                  <ChevronRight className="w-4 h-4 text-gray-400" />
@@ -100,7 +100,7 @@ export function FeatureShowcase() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="lg:col-span-1 group"
           >
-            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 pb-[200px] md:pb-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col min-h-[420px]">
+            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col min-h-[420px]">
             <div className="relative z-10">
               <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
                 <Wallet className="w-5 h-5 text-gray-900 dark:text-white" />
@@ -109,7 +109,7 @@ export function FeatureShowcase() {
               <p className="text-gray-500 dark:text-neutral-400 text-sm leading-relaxed font-light">Mendukung transaksi crypto terdesentralisasi yang aman dan cepat.</p>
             </div>
             
-            <div className="absolute inset-x-8 bottom-12 flex justify-center transition-transform duration-500 group-hover:scale-[1.03]">
+            <div className="mt-10 lg:mt-0 lg:absolute lg:inset-x-8 lg:bottom-12 flex justify-center transition-transform duration-500 group-hover:scale-[1.03]">
               <div className="w-full bg-white dark:bg-[#0a0a0a] rounded-2xl border border-gray-200/80 dark:border-white/10 shadow-xl p-6 flex flex-col items-center">
                  <div className="flex -space-x-3 mb-5">
                    <div className="w-12 h-12 rounded-full bg-[#627EEA] border-2 border-white dark:border-[#0a0a0a] flex items-center justify-center z-30 shadow-sm">
@@ -147,7 +147,7 @@ export function FeatureShowcase() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="lg:col-span-1 group"
           >
-            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 pb-[220px] md:pb-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col min-h-[400px]">
+            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col min-h-[400px]">
             <div className="relative z-10">
               <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
                 <MessageCircle className="w-5 h-5 text-gray-900 dark:text-white" />
@@ -156,7 +156,7 @@ export function FeatureShowcase() {
               <p className="text-gray-500 dark:text-neutral-400 text-sm leading-relaxed font-light">Pesan instan antar warga tanpa delay.</p>
             </div>
             
-            <div className="absolute inset-x-8 bottom-0 h-[180px] bg-white dark:bg-[#0a0a0a] rounded-t-3xl border-t border-x border-gray-200/80 dark:border-white/10 shadow-2xl p-5 flex flex-col gap-3 justify-end transition-transform duration-500 group-hover:translate-y-[-8px]">
+            <div className="mt-8 lg:mt-0 lg:absolute lg:inset-x-8 lg:bottom-0 h-[180px] bg-white dark:bg-[#0a0a0a] rounded-t-3xl border-t border-x border-gray-200/80 dark:border-white/10 shadow-2xl p-5 flex flex-col gap-3 justify-end transition-transform duration-500 group-hover:translate-y-[-8px]">
                <div className="bg-gray-100 dark:bg-white/5 rounded-2xl rounded-bl-sm p-3 w-[85%] self-start">
                  <div className="text-xs text-gray-600 dark:text-gray-300 leading-snug">Jadwal siskamling malam ini kumpul jam berapa pak?</div>
                </div>
@@ -175,7 +175,7 @@ export function FeatureShowcase() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="lg:col-span-2 group"
           >
-            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 pb-[220px] md:pb-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col justify-between min-h-[400px]">
+            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col justify-between min-h-[400px]">
             <div className="relative z-10 max-w-sm">
                <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
                  <ShieldAlert className="w-5 h-5 text-gray-900 dark:text-white" />
@@ -184,7 +184,7 @@ export function FeatureShowcase() {
                <p className="text-gray-500 dark:text-neutral-400 text-sm leading-relaxed font-light">Laporkan kejadian darurat atau fasilitas rusak langsung ke pengurus. Notifikasi tersebar seketika ke seluruh warga yang berkepentingan.</p>
             </div>
             
-            <div className="absolute right-8 bottom-8 left-8 lg:left-auto lg:w-[420px] bg-white dark:bg-[#0a0a0a] rounded-2xl border border-gray-200/80 dark:border-white/10 shadow-2xl p-6 transition-transform duration-500 group-hover:scale-[1.02]">
+            <div className="mt-8 w-full lg:mt-0 lg:absolute lg:right-8 lg:bottom-8 lg:w-[420px] bg-white dark:bg-[#0a0a0a] rounded-2xl border border-gray-200/80 dark:border-white/10 shadow-2xl p-6 transition-transform duration-500 group-hover:scale-[1.02]">
                <div className="flex items-center justify-between mb-5">
                  <div className="flex items-center gap-2">
                    <div className="relative flex h-2 w-2">
@@ -221,7 +221,7 @@ export function FeatureShowcase() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="lg:col-span-2 group"
           >
-            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 pb-[280px] md:pb-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col justify-between min-h-[420px]">
+            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col justify-between min-h-[420px]">
             <div className="relative z-10 max-w-sm">
                <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
                  <Wallet className="w-5 h-5 text-gray-900 dark:text-white" />
@@ -230,7 +230,7 @@ export function FeatureShowcase() {
                <p className="text-gray-500 dark:text-neutral-400 text-sm leading-relaxed font-light">Pantau arus kas RT/RW secara real-time. Laporan keuangan disajikan otomatis tanpa ada yang ditutup-tutupi, mendukung transparansi penuh.</p>
             </div>
             
-            <div className="absolute right-0 bottom-0 w-[90%] max-w-[400px] h-[240px] bg-white dark:bg-[#0a0a0a] rounded-tl-3xl border-t border-l border-gray-200/80 dark:border-white/10 shadow-2xl transition-transform duration-500 group-hover:scale-[1.02] origin-bottom-right flex flex-col">
+            <div className="mt-8 self-end lg:mt-0 lg:absolute lg:right-0 lg:bottom-0 w-[90%] max-w-[400px] h-[240px] bg-white dark:bg-[#0a0a0a] rounded-tl-3xl border-t border-l border-gray-200/80 dark:border-white/10 shadow-2xl transition-transform duration-500 group-hover:scale-[1.02] lg:origin-bottom-right flex flex-col">
                <div className="p-5 border-b border-gray-100 dark:border-white/5 flex items-center justify-between">
                  <span className="text-xs font-semibold text-gray-900 dark:text-white uppercase tracking-wider">Saldo Kas Utama</span>
                  <span className="text-xs font-bold text-green-500 bg-green-50 dark:bg-green-500/10 px-2 py-1 rounded-md">+2.4M Bulan Ini</span>
@@ -270,7 +270,7 @@ export function FeatureShowcase() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="lg:col-span-1 group"
           >
-            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 pb-[200px] md:pb-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col min-h-[420px]">
+            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col min-h-[420px]">
             <div className="relative z-10">
               <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
                 <svg className="w-5 h-5 text-gray-900 dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -281,7 +281,7 @@ export function FeatureShowcase() {
               <p className="text-gray-500 dark:text-neutral-400 text-sm leading-relaxed font-light">Ambil keputusan bersama secara online tanpa repot kumpul-kumpul warga.</p>
             </div>
             
-            <div className="absolute inset-x-8 bottom-8 flex justify-center transition-transform duration-500 group-hover:scale-[1.03]">
+            <div className="mt-8 lg:mt-0 lg:absolute lg:inset-x-8 lg:bottom-8 flex justify-center transition-transform duration-500 group-hover:scale-[1.03]">
               <div className="w-full bg-white dark:bg-[#0a0a0a] rounded-2xl border border-gray-200/80 dark:border-white/10 shadow-xl p-5 flex flex-col">
                  <div className="text-xs font-semibold text-gray-900 dark:text-white mb-4">Warna Seragam Satpam?</div>
                  
