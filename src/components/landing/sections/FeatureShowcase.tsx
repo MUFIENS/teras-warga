@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { MessageCircle, Store, Wallet, ShieldAlert, ShoppingBag, ChevronRight, Bell } from "lucide-react";
+import SpotlightCard from "@/components/ui/react-bits/SpotlightCard";
 
 export function FeatureShowcase() {
   return (
@@ -48,8 +49,9 @@ export function FeatureShowcase() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6 }}
-            className="lg:col-span-2 group bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 overflow-hidden relative flex flex-col justify-between min-h-[420px]"
+            className="lg:col-span-2 group"
           >
+            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col justify-between min-h-[420px]">
             <div className="relative z-10 max-w-sm">
               <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
                 <Store className="w-5 h-5 text-gray-900 dark:text-white" />
@@ -87,6 +89,7 @@ export function FeatureShowcase() {
                  </div>
                </div>
             </div>
+            </SpotlightCard>
           </motion.div>
 
           {/* Bento Item 2: Web3 (Small: 1 col) */}
@@ -95,8 +98,9 @@ export function FeatureShowcase() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="lg:col-span-1 group bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 overflow-hidden relative flex flex-col h-[420px]"
+            className="lg:col-span-1 group"
           >
+            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col min-h-[420px]">
             <div className="relative z-10">
               <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
                 <Wallet className="w-5 h-5 text-gray-900 dark:text-white" />
@@ -128,6 +132,7 @@ export function FeatureShowcase() {
                  <div className="text-2xl font-mono font-medium text-gray-900 dark:text-white">$1,240.50</div>
               </div>
             </div>
+            </SpotlightCard>
           </motion.div>
         </div>
 
@@ -140,8 +145,9 @@ export function FeatureShowcase() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="lg:col-span-1 group bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 overflow-hidden relative flex flex-col h-[400px]"
+            className="lg:col-span-1 group"
           >
+            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col min-h-[400px]">
             <div className="relative z-10">
               <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
                 <MessageCircle className="w-5 h-5 text-gray-900 dark:text-white" />
@@ -158,6 +164,7 @@ export function FeatureShowcase() {
                  <div className="text-xs text-white dark:text-black leading-snug">Sesuai jadwal jam 21:00 ya.</div>
                </div>
             </div>
+            </SpotlightCard>
           </motion.div>
 
           {/* Bento Item 4: Security (Large: 2 cols) */}
@@ -166,8 +173,9 @@ export function FeatureShowcase() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="lg:col-span-2 group bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 overflow-hidden relative flex flex-col justify-between h-[400px]"
+            className="lg:col-span-2 group"
           >
+            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col justify-between min-h-[400px]">
             <div className="relative z-10 max-w-sm">
                <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
                  <ShieldAlert className="w-5 h-5 text-gray-900 dark:text-white" />
@@ -197,6 +205,7 @@ export function FeatureShowcase() {
                  </div>
                </div>
             </div>
+            </SpotlightCard>
           </motion.div>
 
         </div>

@@ -35,10 +35,9 @@ export function HeroSection() {
         <FaultyTerminal />
       </motion.div>
 
-      {/* Interactive Pixel Trail Cursor */}
       <div className="absolute inset-0 z-0 pointer-events-auto">
         <PixelTrail
-          pixelColor="#1D9BF0"
+          color="#1D9BF0"
           gridSize={40}
           trailSize={0.08}
         />
