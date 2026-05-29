@@ -8,6 +8,7 @@ import { ArrowRight, LayoutDashboard, Search, Bell, MessageCircle, ShoppingBag, 
 import dynamic from 'next/dynamic';
 import ShinyText from "@/components/ui/react-bits/ShinyText";
 import TiltedCard from "@/components/ui/react-bits/TiltedCard";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 const FaultyTerminal = dynamic(() => import('@/components/ui/react-bits/FaultyTerminal'), { ssr: false });
 
@@ -15,6 +16,7 @@ export function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     setMounted(true);
@@ -40,15 +42,17 @@ export function HeroSection() {
       </div>
 
       {/* Faulty Terminal Background */}
-      <motion.div 
-        style={{ y: backgroundY }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: mounted && resolvedTheme === 'dark' ? 0.2 : 0.35 }}
-        transition={{ duration: 1 }}
-        className="absolute inset-0 pointer-events-none"
-      >
-        <FaultyTerminal tint={mounted && resolvedTheme === 'dark' ? '#ffffff' : '#3066be'} />
-      </motion.div>
+      {!isMobile && (
+        <motion.div 
+          style={{ y: backgroundY }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: mounted && resolvedTheme === 'dark' ? 0.2 : 0.35 }}
+          transition={{ duration: 1 }}
+          className="absolute inset-0 pointer-events-none"
+        >
+          <FaultyTerminal tint={mounted && resolvedTheme === 'dark' ? '#ffffff' : '#3066be'} />
+        </motion.div>
+      )}
       
       <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12 relative flex flex-col lg:flex-row items-start justify-between gap-12 lg:gap-8 z-10 pt-10 md:pt-20">
         

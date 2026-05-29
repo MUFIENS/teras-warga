@@ -13,11 +13,13 @@ import { ReactLenis } from "lenis/react";
 import Ribbons from "../ui/react-bits/Ribbons";
 import { useTheme } from "next-themes";
 import { useRef } from "react";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 export function LandingClient() {
   const [mounted, setMounted] = useState(false);
   const { resolvedTheme } = useTheme();
   const containerRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     setMounted(true);
@@ -33,15 +35,17 @@ export function LandingClient() {
   return (
     <ReactLenis root options={{ lerp: 0.08, smoothWheel: true }}>
       <div ref={containerRef} className="min-h-screen bg-white dark:bg-black selection:bg-[#1D9BF0] selection:text-white relative">
-        {/* Global Ribbons Background */}
-        <div className="fixed inset-0 z-0 pointer-events-none opacity-40">
-          <Ribbons
-            colors={mounted && resolvedTheme === 'dark' ? ['#222222', '#333333', '#111111'] : ['#3066be', '#4da3ff', '#1a3a6e']}
-            baseThickness={10}
-            pointCount={35}
-            speedMultiplier={0.5}
-          />
-        </div>
+        {/* Global Ribbons Background (Dinonaktifkan di HP untuk menghemat performa GPU) */}
+        {!isMobile && (
+          <div className="fixed inset-0 z-0 pointer-events-none opacity-40">
+            <Ribbons
+              colors={mounted && resolvedTheme === 'dark' ? ['#222222', '#333333', '#111111'] : ['#3066be', '#4da3ff', '#1a3a6e']}
+              baseThickness={10}
+              pointCount={35}
+              speedMultiplier={0.5}
+            />
+          </div>
+        )}
 
         <FloatingNavbar />
         <main className="relative z-10">
