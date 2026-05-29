@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, LayoutDashboard, Search, Bell, Settings, MessageCircle, ShoppingBag, ShieldCheck, ChevronRight } from "lucide-react";
+import { ArrowRight, LayoutDashboard, Search, Bell, MessageCircle, ShoppingBag, ShieldCheck } from "lucide-react";
 import dynamic from 'next/dynamic';
 import ShinyText from "@/components/ui/react-bits/ShinyText";
 import TiltedCard from "@/components/ui/react-bits/TiltedCard";
