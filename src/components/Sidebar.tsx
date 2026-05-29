@@ -26,6 +26,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { Tooltip } from "@/components/ui/tooltip";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useConfirmDialog } from "@/components/ui/confirm-dialog";
+import { useDisconnect } from "wagmi";
 
 interface NavItem {
   label: string;
@@ -41,6 +42,7 @@ interface ProfileData {
   avatar_url: string | null;
   is_seller: boolean;
   last_active: string | null;
+  crypto_wallet?: string | null;
 }
 
 export function Sidebar({ unreadNotifications = 0, unreadMessages = 0, profile }: { unreadNotifications?: number; unreadMessages?: number; profile?: ProfileData }) {
@@ -191,17 +193,22 @@ export function Sidebar({ unreadNotifications = 0, unreadMessages = 0, profile }
 
               return (
                 <div
-                  {...(!ready && {
+                  {...(!ready && profile?.crypto_wallet ? {
                     'aria-hidden': true,
                     style: {
                       opacity: 0,
                       pointerEvents: 'none',
                       userSelect: 'none',
                     },
-                  })}
+                  } : {})}
                 >
                   {(() => {
-                    if (!connected) {
+                    const isMismatchedWallet = connected && account && (
+                      !profile?.crypto_wallet || 
+                      account.address.toLowerCase() !== profile.crypto_wallet.toLowerCase()
+                    );
+
+                    if (!connected || isMismatchedWallet) {
                       return (
                         <button
                           onClick={openConnectModal}

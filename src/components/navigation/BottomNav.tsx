@@ -32,6 +32,7 @@ import { createClient } from "@/lib/supabase/client";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useConfirmDialog } from "@/components/ui/confirm-dialog";
 import { Avatar } from "@/components/ui/avatar";
+import { useDisconnect } from "wagmi";
 
 interface BottomNavProps {
   unreadNotifications?: number;
@@ -43,6 +44,7 @@ interface BottomNavProps {
     avatar_url: string | null;
     is_seller?: boolean;
     last_active?: string | null;
+    crypto_wallet?: string | null;
   };
 }
 
@@ -50,7 +52,6 @@ export function BottomNav({ unreadNotifications = 0, unreadMessages = 0, profile
   const pathname = usePathname();
   const router = useRouter();
   const [drawerOpen, setDrawerOpen] = useState(false);
-
   const { confirm, ConfirmDialog } = useConfirmDialog();
 
   const handleLogout = async () => {
@@ -274,17 +275,22 @@ export function BottomNav({ unreadNotifications = 0, unreadMessages = 0, profile
 
                   return (
                     <div
-                      {...(!ready && {
+                      {...(!ready && profile?.crypto_wallet ? {
                         'aria-hidden': true,
                         style: {
                           opacity: 0,
                           pointerEvents: 'none',
                           userSelect: 'none',
                         },
-                      })}
+                      } : {})}
                     >
                       {(() => {
-                        if (!connected) {
+                        const isMismatchedWallet = connected && account && (
+                          !profile?.crypto_wallet || 
+                          account.address.toLowerCase() !== profile.crypto_wallet.toLowerCase()
+                        );
+
+                        if (!connected || isMismatchedWallet) {
                           return (
                             <button
                               onClick={openConnectModal}

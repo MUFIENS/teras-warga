@@ -134,6 +134,19 @@ export async function updateCryptoWallet(walletAddress: string) {
 
   if (!user) throw new Error("Unauthorized")
 
+  if (walletAddress) {
+    const { data: existingUser } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('crypto_wallet', walletAddress)
+      .neq('id', user.id)
+      .single()
+
+    if (existingUser) {
+      throw new Error('Wallet sudah digunakan oleh akun lain')
+    }
+  }
+
   const { error } = await supabase
     .from('profiles')
     .update({ crypto_wallet: walletAddress || null })

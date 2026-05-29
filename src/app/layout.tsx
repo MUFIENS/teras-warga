@@ -91,7 +91,7 @@ export default async function RootLayout({
 
   let unreadNotifications = 0;
   let unreadMessages = 0;
-  let profileData: { id: string; username: string; full_name: string; avatar_url: string | null; is_seller: boolean; last_active: string | null } | null = null;
+  let profileData: { id: string; username: string; full_name: string; avatar_url: string | null; is_seller: boolean; last_active: string | null; crypto_wallet: string | null } | null = null;
 
   if (user) {
     // Paralelisasi query agar tidak sequential (waterfall)
@@ -111,7 +111,7 @@ export default async function RootLayout({
 
     unreadNotifications = notiResult.count || 0;
     unreadMessages = msgResult.count || 0;
-    profileData = profileResult ? { ...profileResult, id: user.id, is_seller: profileResult.is_seller ?? false } : null;
+    profileData = profileResult ? { ...profileResult, id: user.id, is_seller: profileResult.is_seller ?? false, crypto_wallet: profileResult.crypto_wallet ?? null } : null;
   }
 
   const headersList = await headers();
@@ -127,7 +127,7 @@ export default async function RootLayout({
     >
       <body suppressHydrationWarning className="bg-white dark:bg-black text-gray-900 dark:text-white antialiased">
         <ThemeProvider>
-          <Web3Provider>
+          <Web3Provider cryptoWallet={profileData?.crypto_wallet || null} userId={user?.id}>
             <PresenceProvider currentUserId={user?.id}>
               {isPublicRoute ? (
                 <main className="min-h-screen w-full flex flex-col relative bg-white dark:bg-black">
