@@ -31,7 +31,7 @@ export function HeroSection() {
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
   const mockupY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "60%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+  const opacity = useTransform(scrollYProgress, [0.5, 0.9], [1, 0]);
 
   return (
     <section ref={containerRef} className="relative min-h-[140vh] pt-32 pb-24 overflow-hidden bg-transparent selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
