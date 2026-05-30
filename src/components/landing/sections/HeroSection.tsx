@@ -93,7 +93,7 @@ export function HeroSection() {
             className="text-5xl md:text-7xl lg:text-[5.5rem] font-black tracking-tighter text-slate-950 dark:text-white leading-[1.05]"
           >
             Tata Kelola Lingkungan <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3066be] to-[#1a3a6e] dark:from-blue-400 dark:to-indigo-400">
+            <span className="text-[#3066be] dark:text-blue-400">
               Modern & Transparan.
             </span>
           </motion.h1>
