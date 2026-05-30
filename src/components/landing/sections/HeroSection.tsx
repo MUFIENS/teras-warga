@@ -28,6 +28,7 @@ export function HeroSection() {
   });
 
   // Multilayered Parallax
+  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "-30%"]);
   const mockupY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "60%"]);
 
@@ -66,6 +67,7 @@ export function HeroSection() {
         
         {/* Asymmetrical Left Content */}
         <motion.div 
+          style={isMobile ? {} : { y: textY }}
           className="w-full lg:w-[45%] flex flex-col items-start z-20 relative lg:sticky lg:top-40"
         >
           {/* Subtle radial glow behind text to guarantee legibility against the noisy terminal */}
