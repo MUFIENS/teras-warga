@@ -69,7 +69,7 @@ export function HeroSection() {
         {/* Asymmetrical Left Content */}
         <motion.div 
           style={isMobile ? {} : { y: textY, opacity }} 
-          className="w-full lg:w-[45%] flex flex-col items-start z-20 relative lg:sticky lg:top-40"
+          className="w-full lg:w-[45%] flex flex-col items-start z-20 relative"
         >
           {/* Subtle radial glow behind text to guarantee legibility against the noisy terminal */}
           <div className="absolute -inset-10 bg-white/70 dark:bg-black/70 blur-3xl pointer-events-none rounded-full -z-10" />
