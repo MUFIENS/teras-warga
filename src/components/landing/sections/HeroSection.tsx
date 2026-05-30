@@ -33,7 +33,7 @@ export function HeroSection() {
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "60%"]);
 
   return (
-    <section ref={containerRef} className="relative min-h-[140vh] pt-32 pb-24 overflow-hidden bg-transparent selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
+    <section ref={containerRef} className="relative min-h-screen pt-32 pb-24 overflow-hidden bg-transparent selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
       {/* Ambient Gradient Orbs (Original Subtle Version) */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <div className="absolute -top-[20%] -right-[10%] w-[70%] h-[70%] rounded-full bg-gradient-to-br from-[#3066be]/10 to-indigo-500/5 blur-3xl dark:opacity-20 hidden md:block" />
@@ -68,7 +68,7 @@ export function HeroSection() {
         {/* Asymmetrical Left Content */}
         <motion.div 
           style={isMobile ? {} : { y: textY }}
-          className="w-full lg:w-[45%] flex flex-col items-start z-20 relative lg:sticky lg:top-40"
+          className="w-full lg:w-[45%] flex flex-col items-start z-20 relative"
         >
           {/* Subtle radial glow behind text to guarantee legibility against the noisy terminal */}
           <div className="absolute -inset-10 bg-white/70 dark:bg-black/70 blur-3xl pointer-events-none rounded-full -z-10" />
