@@ -28,10 +28,8 @@ export function HeroSection() {
   });
 
   // Multilayered Parallax
-  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
   const mockupY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "60%"]);
-  const opacity = useTransform(scrollYProgress, [0.85, 1], [1, 0]);
 
   return (
     <section ref={containerRef} className="relative min-h-[140vh] pt-32 pb-24 overflow-hidden bg-transparent selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
@@ -68,8 +66,7 @@ export function HeroSection() {
         
         {/* Asymmetrical Left Content */}
         <motion.div 
-          style={isMobile ? {} : { y: textY, opacity }} 
-          className="w-full lg:w-[45%] flex flex-col items-start z-20 relative"
+          className="w-full lg:w-[45%] flex flex-col items-start z-20 relative lg:sticky lg:top-40"
         >
           {/* Subtle radial glow behind text to guarantee legibility against the noisy terminal */}
           <div className="absolute -inset-10 bg-white/70 dark:bg-black/70 blur-3xl pointer-events-none rounded-full -z-10" />
