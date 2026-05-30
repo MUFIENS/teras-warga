@@ -22,10 +22,10 @@ export function MarketplacePreview() {
                 <span className="text-sm font-semibold tracking-wide uppercase text-neutral-900 dark:text-white">Ekonomi Warga</span>
               </div>
               <h2 className="text-4xl md:text-5xl font-medium text-gray-900 dark:text-white tracking-tight mb-6 leading-tight">
-                Pasar Warga & <br className="hidden lg:block"/> Integrasi Kripto.
+                Pemberdayaan Ekonomi <br className="hidden lg:block"/> Lingkungan Internal.
               </h2>
               <p className="text-lg text-gray-500 dark:text-neutral-400 mb-10 max-w-xl mx-auto lg:mx-0 tracking-tight leading-relaxed font-light">
-                Punya barang tidak terpakai? Atau sedang merintis usaha kecil rumahan? Teras Warga menyediakan etalase digital tanpa biaya layanan. Bangun ekonomi sirkular langsung di lingkungan Anda.
+                Fasilitasi kewirausahaan warga melalui sistem marketplace tertutup. Bebas dari potongan komisi, dirancang khusus untuk memajukan ekosistem ekonomi mikro di dalam kawasan perumahan Anda.
               </p>
 
               <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
@@ -54,15 +54,15 @@ export function MarketplacePreview() {
           </div>
 
           {/* Right Visuals - Structured Marketplace Cascade */}
-          <div className="flex-1 relative w-full h-[600px] perspective-1000">
+          <div className="flex-1 relative w-full min-h-[400px] md:h-[600px] perspective-1000 flex justify-center items-center md:block mt-8 md:mt-0">
 
-            {/* Back Card */}
+            {/* Back Card (Hidden on Mobile) */}
             <motion.div
               initial={{ opacity: 0, y: 100, x: -30, scale: 0.9 }}
               whileInView={{ opacity: 1, y: 40, x: 0, scale: 0.95 }}
-              viewport={{ once: true, margin: "-100px" }}
+              viewport={{ once: true }}
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute top-10 left-0 md:left-10 w-72 bg-gray-100 dark:bg-[#0a0a0a] rounded-2xl p-4 border border-gray-200 dark:border-neutral-800 z-10"
+              className="hidden md:block absolute top-10 left-0 md:left-10 w-72 bg-gray-100 dark:bg-[#0a0a0a] rounded-2xl p-4 border border-gray-200 dark:border-neutral-800 z-10"
             >
               <div className="h-40 bg-gray-200 dark:bg-neutral-900 rounded-xl mb-4" />
               <div className="h-4 w-3/4 bg-gray-200 dark:bg-neutral-900 rounded mb-2" />
@@ -72,13 +72,13 @@ export function MarketplacePreview() {
               </div>
             </motion.div>
 
-            {/* Middle Card */}
+            {/* Middle Card (Hidden on Mobile) */}
             <motion.div
               initial={{ opacity: 0, y: 120, x: 20, scale: 0.95 }}
               whileInView={{ opacity: 1, y: 80, x: 0, scale: 0.98 }}
-              viewport={{ once: true, margin: "-100px" }}
+              viewport={{ once: true }}
               transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute top-20 right-0 md:right-10 w-72 bg-white dark:bg-[#050505] rounded-2xl p-4 shadow-[0_10px_40px_rgba(0,0,0,0.05)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.4)] border border-gray-200 dark:border-neutral-800 z-20"
+              className="hidden md:block absolute top-20 right-0 md:right-10 w-72 bg-white dark:bg-[#050505] rounded-2xl p-4 shadow-[0_10px_40px_rgba(0,0,0,0.05)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.4)] border border-gray-200 dark:border-neutral-800 z-20"
             >
               <div className="h-36 bg-gray-100 dark:bg-neutral-900 rounded-xl mb-4 flex items-center justify-center border border-gray-200 dark:border-neutral-800">
                 <Store className="w-8 h-8 text-gray-300 dark:text-neutral-700" />
@@ -97,13 +97,13 @@ export function MarketplacePreview() {
               </div>
             </motion.div>
 
-            {/* Front Featured Card */}
+            {/* Front Featured Card (Responsive) */}
             <motion.div
-              initial={{ opacity: 0, y: 180, x: "-50%" }}
-              whileInView={{ opacity: 1, y: 140, x: "-50%" }}
-              viewport={{ once: true, margin: "-100px" }}
+              initial={{ opacity: 0, y: 60 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute top-32 left-1/2 w-[340px] max-w-[95%] bg-white dark:bg-[#0c0c0c] rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.1)] dark:shadow-[0_30px_60px_rgba(0,0,0,0.5)] border border-gray-200 dark:border-neutral-800 z-30 transform-gpu"
+              className="relative md:absolute md:top-32 md:left-1/2 md:-translate-x-1/2 w-[340px] max-w-[100%] bg-white dark:bg-[#0c0c0c] rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.1)] dark:shadow-[0_30px_60px_rgba(0,0,0,0.5)] border border-gray-200 dark:border-neutral-800 z-30 transform-gpu"
             >
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">

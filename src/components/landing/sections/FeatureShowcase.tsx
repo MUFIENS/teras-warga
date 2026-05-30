@@ -18,7 +18,7 @@ export function FeatureShowcase() {
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-100 dark:bg-neutral-900 text-gray-900 dark:text-white font-medium text-xs mb-6"
           >
-            Infrastruktur Lengkap
+            Ekosistem Terintegrasi
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -27,7 +27,7 @@ export function FeatureShowcase() {
             transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="text-4xl md:text-5xl font-medium tracking-tight mb-6 text-gray-900 dark:text-white"
           >
-            Modul Inti Teras Warga.
+            Solusi Manajemen Residensial Komprehensif.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -36,7 +36,7 @@ export function FeatureShowcase() {
             transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="text-lg text-gray-500 dark:text-neutral-400 tracking-tight font-light max-w-2xl leading-relaxed"
           >
-            Sistem perumahan yang cerdas dibangun dalam satu ekosistem yang terintegrasi. Mulai dari komunikasi hingga ekonomi sirkular.
+            Sistem tata kelola cerdas yang menyatukan komunikasi, keamanan, administrasi, dan ekonomi sirkular dalam satu antarmuka profesional.
           </motion.p>
         </div>
 
@@ -51,13 +51,13 @@ export function FeatureShowcase() {
             transition={{ duration: 0.6 }}
             className="lg:col-span-2 group"
           >
-            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-6 lg:p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col justify-between min-h-[420px]">
+            <SpotlightCard className="h-full bg-white dark:bg-[#050505] shadow-sm hover:shadow-md transition-shadow duration-300 rounded-3xl p-6 lg:p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col justify-between min-h-[420px]">
             <div className="relative z-10 max-w-sm">
               <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
                 <Store className="w-5 h-5 text-gray-900 dark:text-white" />
               </div>
               <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2 tracking-tight">Marketplace Internal</h3>
-              <p className="text-gray-500 dark:text-neutral-400 text-sm leading-relaxed font-light">Jual beli barang dengan warga sekitar tanpa biaya admin. Bangun sirkulasi ekonomi lingkungan yang transparan.</p>
+              <p className="text-gray-500 dark:text-neutral-400 text-sm leading-relaxed font-light">Platform jual beli khusus warga perumahan tanpa komisi. Mendorong sirkulasi ekonomi lingkungan secara transparan dan efisien.</p>
             </div>
             
             {/* Architectural UI Miniature */}
@@ -100,13 +100,13 @@ export function FeatureShowcase() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="lg:col-span-1 group"
           >
-            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-6 lg:p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col min-h-[420px]">
+            <SpotlightCard className="h-full bg-white dark:bg-[#050505] shadow-sm hover:shadow-md transition-shadow duration-300 rounded-3xl p-6 lg:p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col min-h-[420px]">
             <div className="relative z-10">
               <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
                 <Wallet className="w-5 h-5 text-gray-900 dark:text-white" />
               </div>
-              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2 tracking-tight">Pembayaran Web3</h3>
-              <p className="text-gray-500 dark:text-neutral-400 text-sm leading-relaxed font-light">Mendukung transaksi crypto terdesentralisasi yang aman dan cepat.</p>
+              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2 tracking-tight">Gerbang Pembayaran Fleksibel</h3>
+              <p className="text-gray-500 dark:text-neutral-400 text-sm leading-relaxed font-light">Mendukung berbagai metode transaksi modern, mulai dari integrasi bank lokal hingga infrastruktur pembayaran berbasis Web3.</p>
             </div>
             
             <div className="mt-10 lg:mt-0 lg:absolute lg:inset-x-8 lg:bottom-12 flex justify-center transition-transform duration-500 group-hover:scale-[1.03]">
@@ -147,13 +147,13 @@ export function FeatureShowcase() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="lg:col-span-1 group"
           >
-            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-6 lg:p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col min-h-[400px]">
+            <SpotlightCard className="h-full bg-white dark:bg-[#050505] shadow-sm hover:shadow-md transition-shadow duration-300 rounded-3xl p-6 lg:p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col min-h-[400px]">
             <div className="relative z-10">
               <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
                 <MessageCircle className="w-5 h-5 text-gray-900 dark:text-white" />
               </div>
-              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2 tracking-tight">Real-time Chat</h3>
-              <p className="text-gray-500 dark:text-neutral-400 text-sm leading-relaxed font-light">Pesan instan antar warga tanpa delay.</p>
+              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2 tracking-tight">Komunikasi Real-Time</h3>
+              <p className="text-gray-500 dark:text-neutral-400 text-sm leading-relaxed font-light">Saluran komunikasi pesan instan terpusat untuk diskusi pengurus dan warga tanpa gangguan iklan.</p>
             </div>
             
             <div className="mt-8 lg:mt-0 lg:absolute lg:inset-x-8 lg:bottom-0 h-auto lg:h-[180px] pb-5 lg:pb-0 bg-white dark:bg-[#0a0a0a] rounded-t-3xl border-t border-x border-gray-200/80 dark:border-white/10 shadow-2xl p-5 flex flex-col gap-3 justify-end transition-transform duration-500 group-hover:translate-y-[-8px]">
@@ -175,13 +175,13 @@ export function FeatureShowcase() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="lg:col-span-2 group"
           >
-            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-6 lg:p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col justify-between min-h-[400px]">
+            <SpotlightCard className="h-full bg-white dark:bg-[#050505] shadow-sm hover:shadow-md transition-shadow duration-300 rounded-3xl p-6 lg:p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col justify-between min-h-[400px]">
             <div className="relative z-10 max-w-sm">
                <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
                  <ShieldAlert className="w-5 h-5 text-gray-900 dark:text-white" />
                </div>
-               <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2 tracking-tight">Keamanan Terpusat</h3>
-               <p className="text-gray-500 dark:text-neutral-400 text-sm leading-relaxed font-light">Laporkan kejadian darurat atau fasilitas rusak langsung ke pengurus. Notifikasi tersebar seketika ke seluruh warga yang berkepentingan.</p>
+               <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2 tracking-tight">Sistem Keamanan & Tanggap Darurat</h3>
+               <p className="text-gray-500 dark:text-neutral-400 text-sm leading-relaxed font-light">Pelaporan insiden dan fasilitas terintegrasi. Notifikasi peringatan darurat disiarkan secara langsung kepada petugas keamanan dan pengurus terkait.</p>
             </div>
             
             <div className="mt-8 w-full lg:mt-0 lg:absolute lg:right-8 lg:bottom-8 lg:w-[420px] bg-white dark:bg-[#0a0a0a] rounded-2xl border border-gray-200/80 dark:border-white/10 shadow-2xl p-6 transition-transform duration-500 group-hover:scale-[1.02]">
@@ -221,13 +221,13 @@ export function FeatureShowcase() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="lg:col-span-2 group"
           >
-            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-6 lg:p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col justify-between min-h-[420px]">
+            <SpotlightCard className="h-full bg-white dark:bg-[#050505] shadow-sm hover:shadow-md transition-shadow duration-300 rounded-3xl p-6 lg:p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col justify-between min-h-[420px]">
             <div className="relative z-10 max-w-sm">
                <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
                  <Wallet className="w-5 h-5 text-gray-900 dark:text-white" />
                </div>
-               <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2 tracking-tight">Kas & Iuran Transparan</h3>
-               <p className="text-gray-500 dark:text-neutral-400 text-sm leading-relaxed font-light">Pantau arus kas RT/RW secara real-time. Laporan keuangan disajikan otomatis tanpa ada yang ditutup-tutupi, mendukung transparansi penuh.</p>
+               <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2 tracking-tight">Laporan Keuangan Transparan</h3>
+               <p className="text-gray-500 dark:text-neutral-400 text-sm leading-relaxed font-light">Pantau arus kas lingkungan secara real-time. Menghadirkan akuntabilitas finansial melalui laporan pencatatan otomatis yang dapat diakses seluruh warga.</p>
             </div>
             
             <div className="mt-8 self-end lg:mt-0 lg:absolute lg:right-0 lg:bottom-0 w-full lg:w-[90%] max-w-[400px] h-auto lg:h-[240px] pb-5 lg:pb-0 bg-white dark:bg-[#0a0a0a] rounded-tl-3xl rounded-tr-3xl lg:rounded-tr-none border-t border-x lg:border-r-0 border-gray-200/80 dark:border-white/10 shadow-2xl transition-transform duration-500 group-hover:scale-[1.02] lg:origin-bottom-right flex flex-col">
@@ -270,15 +270,15 @@ export function FeatureShowcase() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="lg:col-span-1 group"
           >
-            <SpotlightCard className="h-full bg-[#FAFAFA] dark:bg-[#050505] rounded-3xl p-6 lg:p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col min-h-[420px]">
+            <SpotlightCard className="h-full bg-white dark:bg-[#050505] shadow-sm hover:shadow-md transition-shadow duration-300 rounded-3xl p-6 lg:p-8 border border-gray-200/60 dark:border-white/5 relative flex flex-col min-h-[420px]">
             <div className="relative z-10">
               <div className="w-10 h-10 rounded-xl bg-white dark:bg-white/5 flex items-center justify-center mb-5 shadow-sm border border-gray-200/50 dark:border-white/5">
                 <svg className="w-5 h-5 text-gray-900 dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2 tracking-tight">E-Voting Demokratis</h3>
-              <p className="text-gray-500 dark:text-neutral-400 text-sm leading-relaxed font-light">Ambil keputusan bersama secara online tanpa repot kumpul-kumpul warga.</p>
+              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2 tracking-tight">Pemungutan Suara Digital (E-Voting)</h3>
+              <p className="text-gray-500 dark:text-neutral-400 text-sm leading-relaxed font-light">Fasilitasi pengambilan keputusan demokratis melalui pemungutan suara daring, meningkatkan partisipasi warga tanpa keharusan hadir secara fisik.</p>
             </div>
             
             <div className="mt-8 lg:mt-0 lg:absolute lg:inset-x-8 lg:bottom-8 flex justify-center transition-transform duration-500 group-hover:scale-[1.03]">

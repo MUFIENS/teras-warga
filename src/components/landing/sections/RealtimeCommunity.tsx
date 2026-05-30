@@ -20,20 +20,20 @@ export function RealtimeCommunity() {
             >
               <div className="inline-flex items-center gap-2 mb-6">
                 <div className="w-1.5 h-1.5 bg-neutral-900 dark:bg-white rounded-full" />
-                <span className="text-sm font-semibold tracking-wide uppercase text-neutral-900 dark:text-white">Komunikasi</span>
+                <span className="text-sm font-semibold tracking-wide uppercase text-neutral-900 dark:text-white">Komunikasi Sinkron</span>
               </div>
               <h2 className="text-4xl md:text-5xl font-medium text-gray-900 dark:text-white tracking-tight mb-6 leading-tight">
-                Terhubung Detik Ini Juga.
+                Aliran Informasi Real-Time Tanpa Hambatan.
               </h2>
               <p className="text-lg text-gray-500 dark:text-neutral-400 mb-10 max-w-xl mx-auto lg:mx-0 tracking-tight leading-relaxed font-light">
-                Infrastruktur WebSockets memastikan lingkungan Anda tidak tertinggal. Lihat presensi online, terima pesan instan, dan pantau notifikasi tanpa memuat ulang halaman.
+                Didukung oleh arsitektur WebSockets modern, memastikan seluruh pengurus dan warga menerima pembaruan informasi serta instruksi keamanan seketika tanpa perlu memuat ulang sistem.
               </p>
               
               <ul className="space-y-6 text-left max-w-md mx-auto lg:mx-0">
                 {[
-                  { title: "Indikator Presensi", desc: "Sistem cerdas untuk mengetahui warga yang aktif." },
-                  { title: "Notifikasi Instan", desc: "Pembaruan langsung tanpa delay pada UI." },
-                  { title: "Sinkronisasi Perangkat", desc: "Data tersinkronisasi mulus di seluruh ekosistem." },
+                  { title: "Pemantauan Presensi Pengguna", desc: "Deteksi status aktif pengurus dan warga secara akurat." },
+                  { title: "Distribusi Notifikasi Instan", desc: "Pembaruan informasi dan peringatan didistribusikan secara push ke seluruh perangkat." },
+                  { title: "Sinkronisasi Multi-Perangkat", desc: "Konsistensi dan keandalan akses data penuh dari berbagai ekosistem perangkat." },
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-4">
                     <div className="mt-1 flex-shrink-0">

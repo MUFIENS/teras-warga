@@ -21,7 +21,7 @@ export function TrustSection() {
             className="inline-flex items-center gap-2 mb-6"
           >
             <div className="w-1.5 h-1.5 bg-neutral-900 dark:bg-white rounded-full" />
-            <span className="text-sm font-semibold tracking-wide uppercase text-neutral-900 dark:text-white">Infrastruktur Keamanan</span>
+            <span className="text-sm font-semibold tracking-wide uppercase text-neutral-900 dark:text-white">Standar Keamanan & Privasi</span>
           </motion.div>
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
@@ -30,7 +30,7 @@ export function TrustSection() {
             transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-6 text-gray-900 dark:text-white leading-[1.1]"
           >
-            Privasi Tingkat Tinggi.
+            Privasi Data Prioritas Utama.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -39,7 +39,7 @@ export function TrustSection() {
             transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="text-lg text-gray-500 dark:text-neutral-400 tracking-tight font-light max-w-2xl mx-auto leading-relaxed"
           >
-            Dibangun dengan standar keamanan industri. Kami memastikan perlindungan penuh atas data pribadi, percakapan warga, dan seluruh rekam jejak transaksi di lingkungan Anda.
+            Infrastruktur keamanan tingkat enterprise. Kami menjamin kerahasiaan penuh atas data pribadi, arus komunikasi, dan rekam jejak finansial di lingkungan Anda.
           </motion.p>
         </div>
 
@@ -52,16 +52,16 @@ export function TrustSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-2 relative flex flex-col justify-between p-8 sm:p-10 rounded-[28px] bg-gray-50 dark:bg-[#0a0a0a] border border-gray-200 dark:border-neutral-800 overflow-hidden group min-h-[380px]"
+            className="lg:col-span-2 relative flex flex-col justify-between p-8 sm:p-10 rounded-[28px] bg-white shadow-sm hover:shadow-md transition-shadow duration-300 dark:bg-[#0a0a0a] border border-gray-200 dark:border-neutral-800 overflow-hidden group min-h-[380px]"
           >
             <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 dark:bg-blue-500/10 blur-3xl rounded-full -translate-y-1/2 translate-x-1/3 pointer-events-none" />
             <div className="relative z-10 max-w-md">
               <div className="h-12 w-12 bg-white dark:bg-black rounded-xl flex items-center justify-center mb-8 border border-gray-200 dark:border-neutral-800 shadow-sm">
                 <Lock className="h-5 w-5 text-gray-900 dark:text-white" />
               </div>
-              <h3 className="text-2xl font-semibold mb-4 tracking-tight text-gray-900 dark:text-white">Enkripsi Data End-to-End</h3>
+              <h3 className="text-2xl font-semibold mb-4 tracking-tight text-gray-900 dark:text-white">Enkripsi Data Berstandar Tinggi</h3>
               <p className="text-base text-gray-500 dark:text-neutral-400 leading-relaxed font-light">
-                Seluruh data profil dan percakapan dilindungi dengan algoritma enkripsi mutakhir, memastikan privasi warga tidak pernah dapat diakses oleh pihak yang tidak berkepentingan.
+                Seluruh data komunikasi dan profil warga dilindungi oleh enkripsi modern, menjamin bahwa privasi Anda tidak dapat diakses oleh pihak luar.
               </p>
             </div>
             
@@ -90,16 +90,16 @@ export function TrustSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="relative flex flex-col justify-between p-8 sm:p-10 rounded-[28px] bg-gray-50 dark:bg-[#0a0a0a] border border-gray-200 dark:border-neutral-800 overflow-hidden group min-h-[380px]"
+            className="relative flex flex-col justify-between p-8 sm:p-10 rounded-[28px] bg-white shadow-sm hover:shadow-md transition-shadow duration-300 dark:bg-[#0a0a0a] border border-gray-200 dark:border-neutral-800 overflow-hidden group min-h-[380px]"
           >
             <div className="relative z-10">
               <div className="h-12 w-12 bg-white dark:bg-black rounded-xl flex items-center justify-center mb-8 border border-gray-200 dark:border-neutral-800 shadow-sm relative group-hover:scale-105 transition-transform duration-500">
                 <div className="absolute -inset-2 bg-emerald-500/10 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                 <Fingerprint className="h-5 w-5 text-gray-900 dark:text-white relative z-10" />
               </div>
-              <h3 className="text-xl font-semibold mb-3 tracking-tight text-gray-900 dark:text-white">Otentikasi Warga</h3>
+              <h3 className="text-xl font-semibold mb-3 tracking-tight text-gray-900 dark:text-white">Sistem Verifikasi Berlapis</h3>
               <p className="text-sm text-gray-500 dark:text-neutral-400 leading-relaxed font-light">
-                Sistem tertutup yang mencegah akun anonim. Menjamin ekosistem lingkungan tetap kondusif, aman, dan dapat dipercaya.
+                Setiap pengguna wajib melalui proses verifikasi oleh otoritas pengurus lingkungan, memastikan ekosistem residensial yang aman dan akuntabel.
               </p>
             </div>
             
@@ -120,7 +120,7 @@ export function TrustSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-3 relative flex flex-col md:flex-row items-center justify-between p-8 sm:p-10 rounded-[28px] bg-gray-50 dark:bg-[#0a0a0a] border border-gray-200 dark:border-neutral-800 overflow-hidden group"
+            className="lg:col-span-3 relative flex flex-col md:flex-row items-center justify-between p-8 sm:p-10 rounded-[28px] bg-white shadow-sm hover:shadow-md transition-shadow duration-300 dark:bg-[#0a0a0a] border border-gray-200 dark:border-neutral-800 overflow-hidden group"
           >
             {/* Animated Background Nodes */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30 dark:opacity-20">
@@ -134,9 +134,9 @@ export function TrustSection() {
                 <div className="absolute -inset-2 bg-blue-500/10 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                 <Server className="h-5 w-5 text-gray-900 dark:text-white relative z-10" />
               </div>
-              <h3 className="text-2xl font-semibold mb-3 tracking-tight text-gray-900 dark:text-white">Arsitektur Edge Computing</h3>
+              <h3 className="text-2xl font-semibold mb-3 tracking-tight text-gray-900 dark:text-white">Arsitektur Cloud Berkinerja Tinggi</h3>
               <p className="text-base text-gray-500 dark:text-neutral-400 leading-relaxed font-light">
-                Didistribusikan secara global untuk memastikan latensi sangat rendah. Aplikasi warga Anda merespons dalam hitungan milidetik, bahkan dalam kondisi jaringan suboptimal.
+                Dioptimalkan untuk akses dengan latensi rendah. Sistem beroperasi secara efisien di berbagai perangkat dan kondisi jaringan yang fluktuatif.
               </p>
             </div>
             
@@ -151,7 +151,7 @@ export function TrustSection() {
                     <Activity className="w-6 h-6 text-emerald-500" />
                  </div>
                  <div className="flex flex-col pr-4">
-                    <span className="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-wider font-bold mb-0.5">System Uptime</span>
+                    <span className="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-wider font-bold mb-0.5">Ketersediaan Sistem</span>
                     <span className="text-2xl font-mono font-semibold text-gray-900 dark:text-white tracking-tighter leading-none">99.99%</span>
                  </div>
                </motion.div>

@@ -34,7 +34,7 @@ export function HeroSection() {
   const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
   return (
-    <section ref={containerRef} className="relative min-h-[140vh] pt-32 pb-24 overflow-hidden bg-white dark:bg-black selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
+    <section ref={containerRef} className="relative min-h-[140vh] pt-32 pb-24 overflow-hidden bg-transparent selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
       {/* Ambient Gradient Orbs (Original Subtle Version) */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <div className="absolute -top-[20%] -right-[10%] w-[70%] h-[70%] rounded-full bg-gradient-to-br from-[#3066be]/10 to-indigo-500/5 blur-3xl dark:opacity-20 hidden md:block" />
@@ -83,7 +83,7 @@ export function HeroSection() {
             <span className="whitespace-nowrap flex-shrink-0 px-3 py-1 rounded-full border border-[#3066be]/20 dark:border-neutral-800 bg-[#3066be]/5 dark:bg-neutral-900/50 backdrop-blur-sm text-[10px] font-bold tracking-widest uppercase shadow-sm">
               <ShinyText text="Teras Warga" speed={3} className="text-[#3066be] dark:text-white" />
             </span>
-            <span className="text-xs font-medium text-gray-600 dark:text-neutral-400 tracking-tight backdrop-blur-sm">Platform Manajemen Ekosistem Warga</span>
+            <span className="text-xs font-medium text-gray-600 dark:text-neutral-400 tracking-tight backdrop-blur-sm">Platform Manajemen Residensial</span>
           </motion.div>
 
           <motion.h1
@@ -92,9 +92,9 @@ export function HeroSection() {
             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="text-5xl md:text-7xl lg:text-[5.5rem] font-black tracking-tighter text-slate-950 dark:text-white leading-[1.05]"
           >
-            Sistem Operasi <br className="hidden md:block" />
+            Tata Kelola Lingkungan <br className="hidden md:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3066be] to-[#1a3a6e] dark:from-blue-400 dark:to-indigo-400">
-              Perumahan.
+              Modern & Transparan.
             </span>
           </motion.h1>
 
@@ -104,7 +104,7 @@ export function HeroSection() {
             transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="mt-8 text-lg text-slate-900 dark:text-neutral-300 max-w-md tracking-tight leading-relaxed font-medium"
           >
-            Dari laporan keamanan, pasar komunitas dengan pembayaran Web3, hingga obrolan warga secara real-time. Infrastruktur lengkap untuk lingkungan modern.
+            Solusi terpadu untuk digitalisasi perumahan. Kelola administrasi kas, tingkatkan keamanan, dan bangun ekosistem ekonomi warga dalam satu platform yang andal.
           </motion.p>
 
           <motion.div
@@ -117,7 +117,7 @@ export function HeroSection() {
               href="/register"
               className="flex items-center justify-center gap-2 bg-[#3066be] text-white px-7 py-3.5 rounded-full font-semibold text-sm hover:bg-blue-700 transition-all shadow-lg shadow-[#3066be]/25 hover:scale-[1.02] active:scale-[0.98]"
             >
-              Mulai Ekosistem Anda
+              Mulai Transformasi Digital
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link

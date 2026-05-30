@@ -15,6 +15,8 @@ import { useTheme } from "next-themes";
 import { useRef } from "react";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
+import { LogoTicker } from "./sections/LogoTicker";
+
 export function LandingClient() {
   const [mounted, setMounted] = useState(false);
   const { resolvedTheme } = useTheme();
@@ -34,7 +36,7 @@ export function LandingClient() {
 
   return (
     <ReactLenis root options={{ lerp: 0.08, smoothWheel: true }}>
-      <div ref={containerRef} className="min-h-screen bg-white dark:bg-black selection:bg-[#1D9BF0] selection:text-white relative">
+      <div ref={containerRef} className="min-h-screen bg-[#F8F9FA] dark:bg-black selection:bg-[#1D9BF0] selection:text-white relative">
         {/* Global Ribbons Background (Dinonaktifkan di HP untuk menghemat performa GPU) */}
         {!isMobile && (
           <div className="fixed inset-0 z-0 pointer-events-none opacity-40">
@@ -50,6 +52,7 @@ export function LandingClient() {
         <FloatingNavbar />
         <main className="relative z-10">
           <HeroSection />
+          <LogoTicker />
           <FeatureShowcase />
           <RealtimeCommunity />
           <MarketplacePreview />
