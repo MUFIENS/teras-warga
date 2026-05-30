@@ -35,10 +35,20 @@ export function HeroSection() {
 
   return (
     <section ref={containerRef} className="relative min-h-[140vh] pt-32 pb-24 overflow-hidden bg-white dark:bg-black selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
-      {/* Ambient Gradient Orbs */}
+      {/* Ambient Gradient Orbs (Original Subtle Version) */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-[20%] -right-[10%] w-[70%] h-[70%] rounded-full bg-gradient-to-br from-[#3066be]/10 to-indigo-500/5 blur-3xl dark:opacity-20" />
-        <div className="absolute top-[40%] -left-[10%] w-[50%] h-[50%] rounded-full bg-gradient-to-tr from-sky-400/10 to-[#3066be]/5 blur-3xl dark:opacity-20" />
+        <div className="absolute -top-[20%] -right-[10%] w-[70%] h-[70%] rounded-full bg-gradient-to-br from-[#3066be]/10 to-indigo-500/5 blur-3xl dark:opacity-20 hidden md:block" />
+        <div className="absolute top-[40%] -left-[10%] w-[50%] h-[50%] rounded-full bg-gradient-to-tr from-sky-400/10 to-[#3066be]/5 blur-3xl dark:opacity-20 hidden md:block" />
+      </div>
+
+      {/* Mobile Premium SaaS Background (Not AI-looking) */}
+      <div className="absolute inset-0 md:hidden z-0 pointer-events-none overflow-hidden">
+        {/* Soft organic top light mimicking physical studio lighting */}
+        <div className="absolute -top-[10%] inset-x-0 h-[50%] bg-gradient-to-b from-[#3066be]/15 dark:from-[#3066be]/20 to-transparent blur-[80px]" />
+        
+        {/* Barely visible, elegant architectural grid (like Linear/Vercel) */}
+        <div className="absolute inset-0 opacity-[0.04] dark:opacity-[0.06]"
+             style={{ backgroundImage: `linear-gradient(to right, #888 1px, transparent 1px), linear-gradient(to bottom, #888 1px, transparent 1px)`, backgroundSize: '48px 48px' }} />
       </div>
 
       {/* Faulty Terminal Background */}
@@ -58,8 +68,8 @@ export function HeroSection() {
         
         {/* Asymmetrical Left Content */}
         <motion.div 
-          style={{ y: textY, opacity }} 
-          className="w-full lg:w-[45%] flex flex-col items-start z-20 sticky top-40 relative"
+          style={isMobile ? {} : { y: textY, opacity }} 
+          className="w-full lg:w-[45%] flex flex-col items-start z-20 relative lg:sticky lg:top-40"
         >
           {/* Subtle radial glow behind text to guarantee legibility against the noisy terminal */}
           <div className="absolute -inset-10 bg-white/70 dark:bg-black/70 blur-3xl pointer-events-none rounded-full -z-10" />
@@ -70,7 +80,7 @@ export function HeroSection() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="inline-flex items-center gap-3 mb-8"
           >
-            <span className="px-3 py-1 rounded-full border border-[#3066be]/20 dark:border-neutral-800 bg-[#3066be]/5 dark:bg-neutral-900/50 backdrop-blur-sm text-[10px] font-bold tracking-widest uppercase shadow-sm">
+            <span className="whitespace-nowrap flex-shrink-0 px-3 py-1 rounded-full border border-[#3066be]/20 dark:border-neutral-800 bg-[#3066be]/5 dark:bg-neutral-900/50 backdrop-blur-sm text-[10px] font-bold tracking-widest uppercase shadow-sm">
               <ShinyText text="Teras Warga" speed={3} className="text-[#3066be] dark:text-white" />
             </span>
             <span className="text-xs font-medium text-gray-600 dark:text-neutral-400 tracking-tight backdrop-blur-sm">Platform Manajemen Ekosistem Warga</span>
@@ -121,7 +131,7 @@ export function HeroSection() {
 
         {/* Asymmetrical Right Mockup */}
         <motion.div
-          style={{ y: mockupY }}
+          style={isMobile ? {} : { y: mockupY }}
           initial={{ opacity: 0, y: 60, x: 20 }}
           animate={{ opacity: 1, y: 0, x: 0 }}
           transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}

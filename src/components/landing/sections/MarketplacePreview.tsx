@@ -74,8 +74,8 @@ export function MarketplacePreview() {
 
             {/* Middle Card */}
             <motion.div
-              initial={{ opacity: 0, y: 120, x: 30, scale: 0.95 }}
-              whileInView={{ opacity: 1, y: 80, x: 50, scale: 0.98 }}
+              initial={{ opacity: 0, y: 120, x: 20, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 80, x: 0, scale: 0.98 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="absolute top-20 right-0 md:right-10 w-72 bg-white dark:bg-[#050505] rounded-2xl p-4 shadow-[0_10px_40px_rgba(0,0,0,0.05)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.4)] border border-gray-200 dark:border-neutral-800 z-20"
@@ -99,11 +99,11 @@ export function MarketplacePreview() {
 
             {/* Front Featured Card */}
             <motion.div
-              initial={{ opacity: 0, y: 140 }}
-              whileInView={{ opacity: 1, y: 140 }}
+              initial={{ opacity: 0, y: 180, x: "-50%" }}
+              whileInView={{ opacity: 1, y: 140, x: "-50%" }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute top-32 left-1/2 -translate-x-1/2 w-[340px] bg-white dark:bg-[#0c0c0c] rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.1)] dark:shadow-[0_30px_60px_rgba(0,0,0,0.5)] border border-gray-200 dark:border-neutral-800 z-30 transform-gpu"
+              className="absolute top-32 left-1/2 w-[340px] max-w-[95%] bg-white dark:bg-[#0c0c0c] rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.1)] dark:shadow-[0_30px_60px_rgba(0,0,0,0.5)] border border-gray-200 dark:border-neutral-800 z-30 transform-gpu"
             >
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
